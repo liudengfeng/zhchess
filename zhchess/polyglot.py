@@ -252,9 +252,9 @@ class ZobristHasher:
         zobrist_hash = 0
 
         # Hash in the castling flags.
-        if board.has_kingside_castling_rights(zhchess.WHITE):
+        if board.has_kingside_castling_rights(zhchess.RED):
             zobrist_hash ^= self.array[768]
-        if board.has_queenside_castling_rights(zhchess.WHITE):
+        if board.has_queenside_castling_rights(zhchess.RED):
             zobrist_hash ^= self.array[768 + 1]
         if board.has_kingside_castling_rights(zhchess.BLACK):
             zobrist_hash ^= self.array[768 + 2]
@@ -268,7 +268,7 @@ class ZobristHasher:
         if board.ep_square:
             # But only if there's actually a pawn ready to capture it. Legality
             # of the potential capture is irrelevant.
-            if board.turn == zhchess.WHITE:
+            if board.turn == zhchess.RED:
                 ep_mask = zhchess.shift_down(zhchess.BB_SQUARES[board.ep_square])
             else:
                 ep_mask = zhchess.shift_up(zhchess.BB_SQUARES[board.ep_square])
@@ -280,7 +280,7 @@ class ZobristHasher:
 
     def hash_turn(self, board: zhchess.Board) -> int:
         # Hash in the turn.
-        return self.array[780] if board.turn == zhchess.WHITE else 0
+        return self.array[780] if board.turn == zhchess.RED else 0
 
     def __call__(self, board: zhchess.Board) -> int:
         return (self.hash_board(board) ^ self.hash_castling(board) ^

@@ -749,7 +749,7 @@ class ChildNode(GameNode):
                 type(self).__name__,
                 id(self),
                 parent_board.fullmove_number,
-                "." if parent_board.turn == zhchess.WHITE else "...",
+                "." if parent_board.turn == zhchess.RED else "...",
                 parent_board.san(self.move))
 
 
@@ -1357,7 +1357,7 @@ class StringExporterMixin:
     def visit_move(self, board: zhchess.Board, move: zhchess.Move) -> None:
         if self.variations or not self.variation_depth:
             # Write the move number.
-            if board.turn == zhchess.WHITE:
+            if board.turn == zhchess.RED:
                 self.write_token(str(board.fullmove_number) + ". ")
             elif self.force_movenumber:
                 self.write_token(str(board.fullmove_number) + "... ")

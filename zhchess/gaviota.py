@@ -1590,11 +1590,11 @@ class PythonTablebase:
             return 0
 
         # Prepare the tablebase request.
-        white_squares = list(zhchess.SquareSet(board.occupied_co[zhchess.WHITE]))
+        white_squares = list(zhchess.SquareSet(board.occupied_co[zhchess.RED]))
         white_types = [typing.cast(zhchess.PieceType, board.piece_type_at(sq)) for sq in white_squares]
         black_squares = list(zhchess.SquareSet(board.occupied_co[zhchess.BLACK]))
         black_types = [typing.cast(zhchess.PieceType, board.piece_type_at(sq)) for sq in black_squares]
-        side = 0 if (board.turn == zhchess.WHITE) else 1
+        side = 0 if (board.turn == zhchess.RED) else 1
         epsq = board.ep_square if board.ep_square else NOSQUARE
         req = Request(white_squares, white_types, black_squares, black_types, side, epsq)
 
@@ -2005,7 +2005,7 @@ class NativeTablebase:
         if zhchess.popcount(board.occupied) > 5:
             raise KeyError(f"gaviota tables support up to 5 pieces, not {zhchess.popcount(board.occupied)}: {board.fen()}")
 
-        stm = ctypes.c_uint(0 if board.turn == zhchess.WHITE else 1)
+        stm = ctypes.c_uint(0 if board.turn == zhchess.RED else 1)
         ep_square = ctypes.c_uint(board.ep_square if board.ep_square else 64)
         castling = ctypes.c_uint(0)
 
@@ -2013,7 +2013,7 @@ class NativeTablebase:
         c_wp = (ctypes.c_ubyte * 17)()
 
         i = -1
-        for i, square in enumerate(zhchess.SquareSet(board.occupied_co[zhchess.WHITE])):
+        for i, square in enumerate(zhchess.SquareSet(board.occupied_co[zhchess.RED])):
             c_ws[i] = square
             c_wp[i] = typing.cast(zhchess.PieceType, board.piece_type_at(square))
 
@@ -2051,7 +2051,7 @@ class NativeTablebase:
 
         # White mates.
         if ret and info.value == 1:
-            return dtm if board.turn == zhchess.WHITE else -dtm
+            return dtm if board.turn == zhchess.RED else -dtm
 
         # Black mates.
         if ret and info.value == 2:

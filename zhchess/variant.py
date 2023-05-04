@@ -100,7 +100,7 @@ class SuicideBoard(zhchess.Board):
         elif self.occupied == self.knights and zhchess.popcount(self.knights) == 2:
             return (
                 self.turn == color ^
-                bool(self.occupied_co[zhchess.WHITE] & zhchess.BB_LIGHT_SQUARES) ^
+                bool(self.occupied_co[zhchess.RED] & zhchess.BB_LIGHT_SQUARES) ^
                 bool(self.occupied_co[zhchess.BLACK] & zhchess.BB_DARK_SQUARES))
         else:
             return False
@@ -235,9 +235,9 @@ class AtomicBoard(zhchess.Board):
         if self.occupied_co[not color] & ~self.kings:
             # Unless there are only bishops that cannot explode each other.
             if self.occupied == self.bishops | self.kings:
-                if not (self.bishops & self.occupied_co[zhchess.WHITE] & zhchess.BB_DARK_SQUARES):
+                if not (self.bishops & self.occupied_co[zhchess.RED] & zhchess.BB_DARK_SQUARES):
                     return not (self.bishops & self.occupied_co[zhchess.BLACK] & zhchess.BB_LIGHT_SQUARES)
-                if not (self.bishops & self.occupied_co[zhchess.WHITE] & zhchess.BB_LIGHT_SQUARES):
+                if not (self.bishops & self.occupied_co[zhchess.RED] & zhchess.BB_LIGHT_SQUARES):
                     return not (self.bishops & self.occupied_co[zhchess.BLACK] & zhchess.BB_DARK_SQUARES)
             return False
 
@@ -265,7 +265,7 @@ class AtomicBoard(zhchess.Board):
         return super()._attacked_for_king(path, occupied)
 
     def _kings_connected(self) -> bool:
-        white_kings = self.kings & self.occupied_co[zhchess.WHITE]
+        white_kings = self.kings & self.occupied_co[zhchess.RED]
         black_kings = self.kings & self.occupied_co[zhchess.BLACK]
         return any(zhchess.BB_KING_ATTACKS[sq] & black_kings for sq in zhchess.scan_forward(white_kings))
 
@@ -274,7 +274,7 @@ class AtomicBoard(zhchess.Board):
 
         # Destroy castling rights.
         self.castling_rights &= ~explosion_radius
-        if explosion_radius & self.kings & self.occupied_co[zhchess.WHITE] & ~self.promoted:
+        if explosion_radius & self.kings & self.occupied_co[zhchess.RED] & ~self.promoted:
             self.castling_rights &= ~zhchess.BB_RANK_1
         if explosion_radius & self.kings & self.occupied_co[zhchess.BLACK] & ~self.promoted:
             self.castling_rights &= ~zhchess.BB_RANK_8
@@ -322,7 +322,7 @@ class AtomicBoard(zhchess.Board):
     def status(self) -> zhchess.Status:
         status = super().status()
         status &= ~zhchess.STATUS_OPPOSITE_CHECK
-        if self.turn == zhchess.WHITE:
+        if self.turn == zhchess.RED:
             status &= ~zhchess.STATUS_NO_WHITE_KING
         else:
             status &= ~zhchess.STATUS_NO_BLACK_KING
@@ -388,7 +388,7 @@ class RacingKingsBoard(zhchess.Board):
             return False
 
         black_kings = self.kings & self.occupied_co[zhchess.BLACK]
-        if self.turn == zhchess.WHITE or black_kings & zhchess.BB_RANK_8 or not black_kings:
+        if self.turn == zhchess.RED or black_kings & zhchess.BB_RANK_8 or not black_kings:
             return True
 
         # White has reached the backrank. The game is over if black can not
@@ -396,7 +396,7 @@ class RacingKingsBoard(zhchess.Board):
         # safe squares for the king.
         black_king = zhchess.msb(black_kings)
         targets = zhchess.BB_KING_ATTACKS[black_king] & zhchess.BB_RANK_8 & ~self.occupied_co[zhchess.BLACK]
-        return all(self.attackers_mask(zhchess.WHITE, target) for target in zhchess.scan_forward(targets))
+        return all(self.attackers_mask(zhchess.RED, target) for target in zhchess.scan_forward(targets))
 
     def is_variant_draw(self) -> bool:
         in_goal = self.kings & zhchess.BB_RANK_8
@@ -473,7 +473,7 @@ class HordeBoard(zhchess.Board):
         # See https://github.com/stevepapazis/horde-insufficient-material-tests
         # for how the following has been derived.
 
-        white = self.occupied_co[zhchess.WHITE]
+        white = self.occupied_co[zhchess.RED]
         queens = zhchess.popcount(white & self.queens)
         pawns = zhchess.popcount(white & self.pawns)
         rooks = zhchess.popcount(white & self.rooks)
@@ -484,7 +484,7 @@ class HordeBoard(zhchess.Board):
         # squares around the enemy king.
         horde_darkb = zhchess.popcount(zhchess.BB_DARK_SQUARES & white & self.bishops)
         horde_lightb = zhchess.popcount(zhchess.BB_LIGHT_SQUARES & white & self.bishops)
-        horde_bishop_co = zhchess.WHITE if horde_lightb >= 1 else zhchess.BLACK
+        horde_bishop_co = zhchess.RED if horde_lightb >= 1 else zhchess.BLACK
         horde_num = (
             pawns + knights + rooks + queens +
             (horde_darkb if horde_darkb <= 2 else 2) +
@@ -502,16 +502,16 @@ class HordeBoard(zhchess.Board):
         pieces_num = zhchess.popcount(pieces)
 
         def pieces_oppositeb_of(square_color: zhchess.Color) -> int:
-            return pieces_darkb if square_color == zhchess.WHITE else pieces_lightb
+            return pieces_darkb if square_color == zhchess.RED else pieces_lightb
 
         def pieces_sameb_as(square_color: zhchess.Color) -> int:
-            return pieces_lightb if square_color == zhchess.WHITE else pieces_darkb
+            return pieces_lightb if square_color == zhchess.RED else pieces_darkb
 
         def pieces_of_type_not(piece: int) -> int:
             return pieces_num - piece
 
         def has_bishop_pair(side: zhchess.Color) -> bool:
-            return (horde_lightb >= 1 and horde_darkb >= 1) if side == zhchess.WHITE else (pieces_lightb >= 1 and pieces_darkb >= 1)
+            return (horde_lightb >= 1 and horde_darkb >= 1) if side == zhchess.RED else (pieces_lightb >= 1 and pieces_darkb >= 1)
 
         if horde_num == 0:
             return True
@@ -555,10 +555,10 @@ class HordeBoard(zhchess.Board):
                 # white can mate.
                 pawn_square = zhchess.SquareSet(self.pawns & white).pop()
                 promote_to_queen = self.copy(stack=False)
-                promote_to_queen.set_piece_at(pawn_square, zhchess.Piece(zhchess.QUEEN, zhchess.WHITE))
+                promote_to_queen.set_piece_at(pawn_square, zhchess.Piece(zhchess.QUEEN, zhchess.RED))
                 promote_to_knight = self.copy(stack=False)
-                promote_to_knight.set_piece_at(pawn_square, zhchess.Piece(zhchess.KNIGHT, zhchess.WHITE))
-                return promote_to_queen.has_insufficient_material(zhchess.WHITE) and promote_to_knight.has_insufficient_material(zhchess.WHITE)
+                promote_to_knight.set_piece_at(pawn_square, zhchess.Piece(zhchess.KNIGHT, zhchess.RED))
+                return promote_to_queen.has_insufficient_material(zhchess.RED) and promote_to_knight.has_insufficient_material(zhchess.RED)
             elif rooks == 1:
                 # A lone rook mates a king on A8 bounded by a pawn/rook on A7 and a
                 # pawn/knight on B7. We ignore every other case, since it can be
@@ -618,7 +618,7 @@ class HordeBoard(zhchess.Board):
                 # pawn/bishop/knight on B2. On the other hand, if black only has
                 # major pieces it is a draw.
                 return not (pieces_pawns + pieces_bishops + pieces_knights >= 1)
-            elif has_bishop_pair(zhchess.WHITE):
+            elif has_bishop_pair(zhchess.RED):
                 return not (
                     # A king on A1 obstructed by a pawn/bishop on A2 is mated
                     # by the bishop pair.
@@ -660,7 +660,7 @@ class HordeBoard(zhchess.Board):
         elif horde_num == 3:
             # A king in the corner is mated by two knights and a bishop or three
             # knights or the bishop pair and a knight/bishop.
-            if (knights == 2 and bishops == 1) or knights == 3 or has_bishop_pair(zhchess.WHITE):
+            if (knights == 2 and bishops == 1) or knights == 3 or has_bishop_pair(zhchess.RED):
                 return False
             else:
                 # White has two same color bishops and a knight.
@@ -675,14 +675,14 @@ class HordeBoard(zhchess.Board):
         status = super().status()
         status &= ~zhchess.STATUS_NO_WHITE_KING
 
-        if zhchess.popcount(self.occupied_co[zhchess.WHITE]) <= 36:
+        if zhchess.popcount(self.occupied_co[zhchess.RED]) <= 36:
             status &= ~zhchess.STATUS_TOO_MANY_WHITE_PIECES
             status &= ~zhchess.STATUS_TOO_MANY_WHITE_PAWNS
 
         if not self.pawns & zhchess.BB_RANK_8 and not self.occupied_co[zhchess.BLACK] & self.pawns & zhchess.BB_RANK_1:
             status &= ~zhchess.STATUS_PAWNS_ON_BACKRANK
 
-        if self.occupied_co[zhchess.WHITE] & self.kings:
+        if self.occupied_co[zhchess.RED] & self.kings:
             status |= zhchess.STATUS_TOO_MANY_KINGS
 
         return status
@@ -693,12 +693,12 @@ ThreeCheckBoardT = TypeVar("ThreeCheckBoardT", bound="ThreeCheckBoard")
 class _ThreeCheckBoardState(Generic[ThreeCheckBoardT], zhchess._BoardState[ThreeCheckBoardT]):
     def __init__(self, board: ThreeCheckBoardT) -> None:
         super().__init__(board)
-        self.remaining_checks_w = board.remaining_checks[zhchess.WHITE]
+        self.remaining_checks_w = board.remaining_checks[zhchess.RED]
         self.remaining_checks_b = board.remaining_checks[zhchess.BLACK]
 
     def restore(self, board: ThreeCheckBoardT) -> None:
         super().restore(board)
-        board.remaining_checks[zhchess.WHITE] = self.remaining_checks_w
+        board.remaining_checks[zhchess.RED] = self.remaining_checks_w
         board.remaining_checks[zhchess.BLACK] = self.remaining_checks_b
 
 class ThreeCheckBoard(zhchess.Board):
@@ -719,12 +719,12 @@ class ThreeCheckBoard(zhchess.Board):
 
     def reset_board(self) -> None:
         super().reset_board()
-        self.remaining_checks[zhchess.WHITE] = 3
+        self.remaining_checks[zhchess.RED] = 3
         self.remaining_checks[zhchess.BLACK] = 3
 
     def clear_board(self) -> None:
         super().clear_board()
-        self.remaining_checks[zhchess.WHITE] = 3
+        self.remaining_checks[zhchess.RED] = 3
         self.remaining_checks[zhchess.BLACK] = 3
 
     def _board_state(self: ThreeCheckBoardT) -> _ThreeCheckBoardState[ThreeCheckBoardT]:
@@ -776,12 +776,12 @@ class ThreeCheckBoard(zhchess.Board):
 
         # Set fen.
         super().set_fen(" ".join(parts))
-        self.remaining_checks[zhchess.WHITE] = wc
+        self.remaining_checks[zhchess.RED] = wc
         self.remaining_checks[zhchess.BLACK] = bc
 
     def epd(self, shredder: bool = False, en_passant: zhchess._EnPassantSpec = "legal", promoted: Optional[bool] = None, **operations: Union[None, str, int, float, zhchess.Move, Iterable[zhchess.Move]]) -> str:
         epd = [super().epd(shredder=shredder, en_passant=en_passant, promoted=promoted),
-               "{:d}+{:d}".format(max(self.remaining_checks[zhchess.WHITE], 0),
+               "{:d}+{:d}".format(max(self.remaining_checks[zhchess.RED], 0),
                                   max(self.remaining_checks[zhchess.BLACK], 0))]
         if operations:
             epd.append(self._epd_operations(operations))
@@ -791,7 +791,7 @@ class ThreeCheckBoard(zhchess.Board):
         return any(remaining_checks <= 0 for remaining_checks in self.remaining_checks)
 
     def is_variant_draw(self) -> bool:
-        return self.remaining_checks[zhchess.WHITE] <= 0 and self.remaining_checks[zhchess.BLACK] <= 0
+        return self.remaining_checks[zhchess.RED] <= 0 and self.remaining_checks[zhchess.BLACK] <= 0
 
     def is_variant_loss(self) -> bool:
         return self.remaining_checks[not self.turn] <= 0 < self.remaining_checks[self.turn]
@@ -804,7 +804,7 @@ class ThreeCheckBoard(zhchess.Board):
 
     def _transposition_key(self) -> Hashable:
         return (super()._transposition_key(),
-                self.remaining_checks[zhchess.WHITE], self.remaining_checks[zhchess.BLACK])
+                self.remaining_checks[zhchess.RED], self.remaining_checks[zhchess.BLACK])
 
     def copy(self: ThreeCheckBoardT, stack: Union[bool, int] = True) -> ThreeCheckBoardT:
         board = super().copy(stack=stack)
@@ -813,8 +813,8 @@ class ThreeCheckBoard(zhchess.Board):
 
     def mirror(self: ThreeCheckBoardT) -> ThreeCheckBoardT:
         board = super().mirror()
-        board.remaining_checks[zhchess.WHITE] = self.remaining_checks[zhchess.BLACK]
-        board.remaining_checks[zhchess.BLACK] = self.remaining_checks[zhchess.WHITE]
+        board.remaining_checks[zhchess.RED] = self.remaining_checks[zhchess.BLACK]
+        board.remaining_checks[zhchess.BLACK] = self.remaining_checks[zhchess.RED]
         return board
 
 
@@ -823,12 +823,12 @@ CrazyhouseBoardT = TypeVar("CrazyhouseBoardT", bound="CrazyhouseBoard")
 class _CrazyhouseBoardState(Generic[CrazyhouseBoardT], zhchess._BoardState[CrazyhouseBoardT]):
     def __init__(self, board: CrazyhouseBoardT) -> None:
         super().__init__(board)
-        self.pockets_w = board.pockets[zhchess.WHITE].copy()
+        self.pockets_w = board.pockets[zhchess.RED].copy()
         self.pockets_b = board.pockets[zhchess.BLACK].copy()
 
     def restore(self, board: CrazyhouseBoardT) -> None:
         super().restore(board)
-        board.pockets[zhchess.WHITE] = self.pockets_w
+        board.pockets[zhchess.RED] = self.pockets_w
         board.pockets[zhchess.BLACK] = self.pockets_b
 
 CrazyhousePocketT = TypeVar("CrazyhousePocketT", bound="CrazyhousePocket")
@@ -891,12 +891,12 @@ class CrazyhouseBoard(zhchess.Board):
 
     def reset_board(self) -> None:
         super().reset_board()
-        self.pockets[zhchess.WHITE].reset()
+        self.pockets[zhchess.RED].reset()
         self.pockets[zhchess.BLACK].reset()
 
     def clear_board(self) -> None:
         super().clear_board()
-        self.pockets[zhchess.WHITE].reset()
+        self.pockets[zhchess.RED].reset()
         self.pockets[zhchess.BLACK].reset()
 
     def _board_state(self: CrazyhouseBoardT) -> _CrazyhouseBoardState[CrazyhouseBoardT]:
@@ -923,7 +923,7 @@ class CrazyhouseBoard(zhchess.Board):
     def _transposition_key(self) -> Hashable:
         return (super()._transposition_key(),
                 self.promoted,
-                str(self.pockets[zhchess.WHITE]), str(self.pockets[zhchess.BLACK]))
+                str(self.pockets[zhchess.RED]), str(self.pockets[zhchess.BLACK]))
 
     def legal_drop_squares_mask(self) -> zhchess.Bitboard:
         king = self.king(self.turn)
@@ -1028,7 +1028,7 @@ class CrazyhouseBoard(zhchess.Board):
 
         # Set FEN and pockets.
         super().set_fen(position_part + " " + info_part)
-        self.pockets[zhchess.WHITE] = white_pocket
+        self.pockets[zhchess.RED] = white_pocket
         self.pockets[zhchess.BLACK] = black_pocket
 
     def board_fen(self, promoted: Optional[bool] = None) -> str:
@@ -1039,28 +1039,28 @@ class CrazyhouseBoard(zhchess.Board):
     def epd(self, shredder: bool = False, en_passant: zhchess._EnPassantSpec = "legal", promoted: Optional[bool] = None, **operations: Union[None, str, int, float, zhchess.Move, Iterable[zhchess.Move]]) -> str:
         epd = super().epd(shredder=shredder, en_passant=en_passant, promoted=promoted)
         board_part, info_part = epd.split(" ", 1)
-        return f"{board_part}[{str(self.pockets[zhchess.WHITE]).upper()}{self.pockets[zhchess.BLACK]}] {info_part}"
+        return f"{board_part}[{str(self.pockets[zhchess.RED]).upper()}{self.pockets[zhchess.BLACK]}] {info_part}"
 
     def copy(self: CrazyhouseBoardT, stack: Union[bool, int] = True) -> CrazyhouseBoardT:
         board = super().copy(stack=stack)
-        board.pockets[zhchess.WHITE] = self.pockets[zhchess.WHITE].copy()
+        board.pockets[zhchess.RED] = self.pockets[zhchess.RED].copy()
         board.pockets[zhchess.BLACK] = self.pockets[zhchess.BLACK].copy()
         return board
 
     def mirror(self: CrazyhouseBoardT) -> CrazyhouseBoardT:
         board = super().mirror()
-        board.pockets[zhchess.WHITE] = self.pockets[zhchess.BLACK].copy()
-        board.pockets[zhchess.BLACK] = self.pockets[zhchess.WHITE].copy()
+        board.pockets[zhchess.RED] = self.pockets[zhchess.BLACK].copy()
+        board.pockets[zhchess.BLACK] = self.pockets[zhchess.RED].copy()
         return board
 
     def status(self) -> zhchess.Status:
         status = super().status()
 
-        if zhchess.popcount(self.pawns) + self.pockets[zhchess.WHITE].count(zhchess.PAWN) + self.pockets[zhchess.BLACK].count(zhchess.PAWN) <= 16:
+        if zhchess.popcount(self.pawns) + self.pockets[zhchess.RED].count(zhchess.PAWN) + self.pockets[zhchess.BLACK].count(zhchess.PAWN) <= 16:
             status &= ~zhchess.STATUS_TOO_MANY_BLACK_PAWNS
             status &= ~zhchess.STATUS_TOO_MANY_WHITE_PAWNS
 
-        if zhchess.popcount(self.occupied) + len(self.pockets[zhchess.WHITE]) + len(self.pockets[zhchess.BLACK]) <= 32:
+        if zhchess.popcount(self.occupied) + len(self.pockets[zhchess.RED]) + len(self.pockets[zhchess.BLACK]) <= 32:
             status &= ~zhchess.STATUS_TOO_MANY_BLACK_PIECES
             status &= ~zhchess.STATUS_TOO_MANY_WHITE_PIECES
 

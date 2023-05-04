@@ -71,7 +71,7 @@ Crazyhouse
     .. py:attribute:: pockets
        :value: [zhchess.variant.CrazyhousePocket(), zhchess.variant.CrazyhousePocket()]
 
-        Pockets for each color. For example, ``board.pockets[zhchess.WHITE]``
+        Pockets for each color. For example, ``board.pockets[zhchess.RED]``
         are the pocket pieces available to White.
 
 Three-check
@@ -83,7 +83,7 @@ Three-check
        :value: [3, 3]
 
         Remaining checks until victory for each color. For example,
-        ``board.remaining_checks[zhchess.WHITE] == 0`` implies that White has won.
+        ``board.remaining_checks[zhchess.RED] == 0`` implies that White has won.
 
 UCI/XBoard
 ----------

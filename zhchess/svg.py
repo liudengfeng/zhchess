@@ -256,7 +256,7 @@ def piece(piece: zhchess.Piece, size: Optional[int] = None) -> str:
 def board(
     board: Optional[zhchess.BaseBoard] = None,
     *,
-    orientation: Color = zhchess.WHITE,
+    orientation: Color = zhchess.RED,
     lastmove: Optional[zhchess.Move] = None,
     check: Optional[Square] = None,
     arrows: Iterable[Union[Arrow, Tuple[Square, Square]]] = [],
@@ -274,7 +274,7 @@ def board(
 
     :param board: A :class:`zhchess.BaseBoard` for a chessboard with pieces, or
         ``None`` (the default) for a chessboard without pieces.
-    :param orientation: The point of view, defaulting to ``zhchess.WHITE``.
+    :param orientation: The point of view, defaulting to ``zhchess.RED``.
     :param lastmove: A :class:`zhchess.Move` to be highlighted.
     :param check: A square to be marked indicating a check.
     :param arrows: A list of :class:`~zhchess.svg.Arrow` objects, like

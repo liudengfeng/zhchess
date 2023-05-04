@@ -29,7 +29,7 @@ Changes:
 
 New features:
 
-* Add ``zhchess.Board.unicode(..., orientation=zhchess.WHITE)``.
+* Add ``zhchess.Board.unicode(..., orientation=zhchess.RED)``.
 
 New in v1.9.2 (17th Jun 2022)
 -----------------------------

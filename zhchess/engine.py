@@ -454,7 +454,7 @@ class PovScore:
     """The relative :class:`~zhchess.engine.Score`."""
 
     turn: Color
-    """The point of view (``zhchess.WHITE`` or ``zhchess.BLACK``)."""
+    """The point of view (``zhchess.RED`` or ``zhchess.BLACK``)."""
 
     def __init__(self, relative: Score, turn: Color) -> None:
         self.relative = relative
@@ -462,7 +462,7 @@ class PovScore:
 
     def white(self) -> Score:
         """Gets the score from White's point of view."""
-        return self.pov(zhchess.WHITE)
+        return self.pov(zhchess.RED)
 
     def black(self) -> Score:
         """Gets the score from Black's point of view."""
@@ -481,7 +481,7 @@ class PovScore:
         return PovWdl(self.relative.wdl(model=model, ply=ply), self.turn)
 
     def __repr__(self) -> str:
-        return "PovScore({!r}, {})".format(self.relative, "WHITE" if self.turn else "BLACK")
+        return "PovScore({!r}, {})".format(self.relative, "RED" if self.turn else "BLACK")
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, PovScore):
@@ -820,7 +820,7 @@ class PovWdl:
     """The relative :class:`~zhchess.engine.Wdl`."""
 
     turn: Color
-    """The point of view (``zhchess.WHITE`` or ``zhchess.BLACK``)."""
+    """The point of view (``zhchess.RED`` or ``zhchess.BLACK``)."""
 
     def __init__(self, relative: Wdl, turn: Color) -> None:
         self.relative = relative
@@ -828,7 +828,7 @@ class PovWdl:
 
     def white(self) -> Wdl:
         """Gets the :class:`~zhchess.engine.Wdl` from White's point of view."""
-        return self.pov(zhchess.WHITE)
+        return self.pov(zhchess.RED)
 
     def black(self) -> Wdl:
         """Gets the :class:`~zhchess.engine.Wdl` from Black's point of view."""
@@ -845,7 +845,7 @@ class PovWdl:
         return bool(self.relative)
 
     def __repr__(self) -> str:
-        return "PovWdl({!r}, {})".format(self.relative, "WHITE" if self.turn else "BLACK")
+        return "PovWdl({!r}, {})".format(self.relative, "RED" if self.turn else "BLACK")
 
     # Unfortunately in python-zhchess v1.1.0, info["wdl"] was a simple tuple
     # of the relative permille values, so we have to support __iter__,
@@ -1702,7 +1702,7 @@ class UciProtocol(Protocol):
                         ponder_limit = copy.copy(limit)
                         if ponder_limit.white_clock is not None:
                             ponder_limit.white_clock += (ponder_limit.white_inc or 0.0)
-                            if self.pondering.turn == zhchess.WHITE:
+                            if self.pondering.turn == zhchess.RED:
                                 ponder_limit.white_clock -= time_used
                         if ponder_limit.black_clock is not None:
                             ponder_limit.black_clock += (ponder_limit.black_inc or 0.0)

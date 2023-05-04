@@ -6,7 +6,7 @@ Colors
 
 Constants for the side to move or the color of a piece.
 
-.. py:data:: zhchess.WHITE
+.. py:data:: zhchess.RED
     :type: zhchess.Color
     :value: True
 

@@ -163,10 +163,10 @@ Features
 
       >>> board.is_check()
       True
-      >>> board.is_attacked_by(zhchess.WHITE, zhchess.E8)
+      >>> board.is_attacked_by(zhchess.RED, zhchess.E8)
       True
 
-      >>> attackers = board.attackers(zhchess.WHITE, zhchess.F3)
+      >>> attackers = board.attackers(zhchess.RED, zhchess.F3)
       >>> attackers
       SquareSet(0x0000_0000_0000_4040)
       >>> zhchess.G2 in attackers

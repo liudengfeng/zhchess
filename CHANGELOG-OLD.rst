@@ -1421,8 +1421,8 @@ Changes:
 
   `stop` and `ponderhit` no longer have a result.
 
-* The values of the color constants `zhchess.WHITE` and `zhchess.BLACK` have been
-  changed. Previously `WHITE` was `0`, `BLACK` was `1`. Now `WHITE` is `True`,
+* The values of the color constants `zhchess.RED` and `zhchess.BLACK` have been
+  changed. Previously `RED` was `0`, `BLACK` was `1`. Now `RED` is `True`,
   `BLACK` is `False`. The recommended way to invert `color` is using
   `not color`.
 

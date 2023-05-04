@@ -176,11 +176,11 @@ class MoveTestCase(unittest.TestCase):
 class PieceTestCase(unittest.TestCase):
 
     def test_equality(self):
-        a = zhchess.Piece(zhchess.BISHOP, zhchess.WHITE)
+        a = zhchess.Piece(zhchess.BISHOP, zhchess.RED)
         b = zhchess.Piece(zhchess.KING, zhchess.BLACK)
-        c = zhchess.Piece(zhchess.KING, zhchess.WHITE)
-        d1 = zhchess.Piece(zhchess.BISHOP, zhchess.WHITE)
-        d2 = zhchess.Piece(zhchess.BISHOP, zhchess.WHITE)
+        c = zhchess.Piece(zhchess.KING, zhchess.RED)
+        d1 = zhchess.Piece(zhchess.BISHOP, zhchess.RED)
+        d2 = zhchess.Piece(zhchess.BISHOP, zhchess.RED)
 
         self.assertEqual(len(set([a, b, c, d1, d2])), 3)
 
@@ -204,7 +204,7 @@ class PieceTestCase(unittest.TestCase):
     def test_from_symbol(self):
         white_knight = zhchess.Piece.from_symbol("N")
 
-        self.assertEqual(white_knight.color, zhchess.WHITE)
+        self.assertEqual(white_knight.color, zhchess.RED)
         self.assertEqual(white_knight.piece_type, zhchess.KNIGHT)
         self.assertEqual(white_knight.symbol(), "N")
         self.assertEqual(str(white_knight), "N")
@@ -229,7 +229,7 @@ class BoardTestCase(unittest.TestCase):
         board = zhchess.Board()
         self.assertEqual(board.piece_at(zhchess.B1), zhchess.Piece.from_symbol("N"))
         self.assertEqual(board.fen(), zhchess.STARTING_FEN)
-        self.assertEqual(board.turn, zhchess.WHITE)
+        self.assertEqual(board.turn, zhchess.RED)
 
     def test_empty(self):
         board = zhchess.Board.empty()
@@ -279,12 +279,12 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(board.clean_castling_rights(), zhchess.BB_G1 | zhchess.BB_A8 | zhchess.BB_G8)
         self.assertEqual(board.shredder_fen(), "rn2k1r1/ppp1pp1p/3p2p1/5bn1/P7/2N2B2/1PPPPP2/2BNK1RR w Gga - 4 11")
         self.assertEqual(board.fen(), xfen)
-        self.assertTrue(board.has_castling_rights(zhchess.WHITE))
+        self.assertTrue(board.has_castling_rights(zhchess.RED))
         self.assertTrue(board.has_castling_rights(zhchess.BLACK))
         self.assertTrue(board.has_kingside_castling_rights(zhchess.BLACK))
-        self.assertTrue(board.has_kingside_castling_rights(zhchess.WHITE))
+        self.assertTrue(board.has_kingside_castling_rights(zhchess.RED))
         self.assertTrue(board.has_queenside_castling_rights(zhchess.BLACK))
-        self.assertFalse(board.has_queenside_castling_rights(zhchess.WHITE))
+        self.assertFalse(board.has_queenside_castling_rights(zhchess.RED))
 
         # Chess960 position #284.
         board = zhchess.Board("rkbqrbnn/pppppppp/8/8/8/8/PPPPPPPP/RKBQRBNN w - - 0 1", chess960=True)
@@ -331,7 +331,7 @@ class BoardTestCase(unittest.TestCase):
 
     def test_color_at(self):
         board = zhchess.Board()
-        self.assertEqual(board.color_at(zhchess.A1), zhchess.WHITE)
+        self.assertEqual(board.color_at(zhchess.A1), zhchess.RED)
         self.assertEqual(board.color_at(zhchess.G7), zhchess.BLACK)
         self.assertEqual(board.color_at(zhchess.E4), None)
 
@@ -494,8 +494,8 @@ class BoardTestCase(unittest.TestCase):
         board = zhchess.Board("1r2k3/8/8/8/8/8/8/R3KR2 w KQkq - 0 1")
         self.assertEqual(board.status(), zhchess.STATUS_BAD_CASTLING_RIGHTS)
         self.assertEqual(board.fen(), "1r2k3/8/8/8/8/8/8/R3KR2 w Q - 0 1")
-        self.assertTrue(board.has_queenside_castling_rights(zhchess.WHITE))
-        self.assertFalse(board.has_kingside_castling_rights(zhchess.WHITE))
+        self.assertTrue(board.has_queenside_castling_rights(zhchess.RED))
+        self.assertFalse(board.has_kingside_castling_rights(zhchess.RED))
         self.assertFalse(board.has_queenside_castling_rights(zhchess.BLACK))
         self.assertFalse(board.has_kingside_castling_rights(zhchess.BLACK))
 
@@ -550,7 +550,7 @@ class BoardTestCase(unittest.TestCase):
 
     def test_insufficient_material(self):
         def _check(board, white, black):
-            self.assertEqual(board.has_insufficient_material(zhchess.WHITE), white)
+            self.assertEqual(board.has_insufficient_material(zhchess.RED), white)
             self.assertEqual(board.has_insufficient_material(zhchess.BLACK), black)
             self.assertEqual(board.is_insufficient_material(), white and black)
 
@@ -927,9 +927,9 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(board.fen(), fen)
         self.assertTrue(board.kings & zhchess.BB_G1)
         self.assertTrue(board.occupied & zhchess.BB_G1)
-        self.assertTrue(board.occupied_co[zhchess.WHITE] & zhchess.BB_G1)
-        self.assertEqual(board.piece_at(zhchess.G1), zhchess.Piece(zhchess.KING, zhchess.WHITE))
-        self.assertEqual(board.piece_at(zhchess.C1), zhchess.Piece(zhchess.ROOK, zhchess.WHITE))
+        self.assertTrue(board.occupied_co[zhchess.RED] & zhchess.BB_G1)
+        self.assertEqual(board.piece_at(zhchess.G1), zhchess.Piece(zhchess.KING, zhchess.RED))
+        self.assertEqual(board.piece_at(zhchess.C1), zhchess.Piece(zhchess.ROOK, zhchess.RED))
 
     def test_move_generation_bug(self):
         # Specific problematic position.
@@ -1055,7 +1055,7 @@ class BoardTestCase(unittest.TestCase):
 
     def test_one_king_movegen(self):
         board = zhchess.Board.empty()
-        board.set_piece_at(zhchess.A1, zhchess.Piece(zhchess.KING, zhchess.WHITE))
+        board.set_piece_at(zhchess.A1, zhchess.Piece(zhchess.KING, zhchess.RED))
         self.assertFalse(board.is_valid())
         self.assertEqual(board.legal_moves.count(), 3)
         self.assertEqual(board.pseudo_legal_moves.count(), 3)
@@ -1176,7 +1176,7 @@ class BoardTestCase(unittest.TestCase):
     def test_attackers(self):
         board = zhchess.Board("r1b1k2r/pp1n1ppp/2p1p3/q5B1/1b1P4/P1n1PN2/1P1Q1PPP/2R1KB1R b Kkq - 3 10")
 
-        attackers = board.attackers(zhchess.WHITE, zhchess.C3)
+        attackers = board.attackers(zhchess.RED, zhchess.C3)
         self.assertEqual(len(attackers), 3)
         self.assertIn(zhchess.C1, attackers)
         self.assertIn(zhchess.D2, attackers)
@@ -1219,7 +1219,7 @@ class BoardTestCase(unittest.TestCase):
         board = zhchess.Board()
         board.clear()
 
-        self.assertEqual(board.turn, zhchess.WHITE)
+        self.assertEqual(board.turn, zhchess.RED)
         self.assertEqual(board.fullmove_number, 1)
         self.assertEqual(board.halfmove_clock, 0)
         self.assertEqual(board.castling_rights, zhchess.BB_EMPTY)
@@ -1462,7 +1462,7 @@ class BoardTestCase(unittest.TestCase):
 
     def test_pieces(self):
         board = zhchess.Board()
-        king = board.pieces(zhchess.KING, zhchess.WHITE)
+        king = board.pieces(zhchess.KING, zhchess.RED)
         self.assertIn(zhchess.E1, king)
         self.assertEqual(len(king), 1)
 
@@ -1534,19 +1534,19 @@ class BoardTestCase(unittest.TestCase):
 
     def test_pin(self):
         board = zhchess.Board("rnb1k1nr/2pppppp/3P4/8/1b5q/8/PPPNPBPP/RNBQKB1R w KQkq - 0 1")
-        self.assertTrue(board.is_pinned(zhchess.WHITE, zhchess.F2))
-        self.assertTrue(board.is_pinned(zhchess.WHITE, zhchess.D2))
-        self.assertFalse(board.is_pinned(zhchess.WHITE, zhchess.E1))
+        self.assertTrue(board.is_pinned(zhchess.RED, zhchess.F2))
+        self.assertTrue(board.is_pinned(zhchess.RED, zhchess.D2))
+        self.assertFalse(board.is_pinned(zhchess.RED, zhchess.E1))
         self.assertFalse(board.is_pinned(zhchess.BLACK, zhchess.H4))
         self.assertFalse(board.is_pinned(zhchess.BLACK, zhchess.E8))
 
-        self.assertEqual(board.pin(zhchess.WHITE, zhchess.B1), zhchess.BB_ALL)
+        self.assertEqual(board.pin(zhchess.RED, zhchess.B1), zhchess.BB_ALL)
 
-        self.assertEqual(board.pin(zhchess.WHITE, zhchess.F2), zhchess.BB_E1 | zhchess.BB_F2 | zhchess.BB_G3 | zhchess.BB_H4)
+        self.assertEqual(board.pin(zhchess.RED, zhchess.F2), zhchess.BB_E1 | zhchess.BB_F2 | zhchess.BB_G3 | zhchess.BB_H4)
 
-        self.assertEqual(board.pin(zhchess.WHITE, zhchess.D2), zhchess.BB_E1 | zhchess.BB_D2 | zhchess.BB_C3 | zhchess.BB_B4 | zhchess.BB_A5)
+        self.assertEqual(board.pin(zhchess.RED, zhchess.D2), zhchess.BB_E1 | zhchess.BB_D2 | zhchess.BB_C3 | zhchess.BB_B4 | zhchess.BB_A5)
 
-        self.assertEqual(zhchess.Board(None).pin(zhchess.WHITE, zhchess.F7), zhchess.BB_ALL)
+        self.assertEqual(zhchess.Board(None).pin(zhchess.RED, zhchess.F7), zhchess.BB_ALL)
 
     def test_pin_in_check(self):
         # The knight on the eighth rank is on the outer side of the rank attack.
@@ -2798,11 +2798,11 @@ class PgnTestCase(unittest.TestCase):
         self.assertEqual(game.clock(), clock)
 
         self.assertTrue(game.eval() is None)
-        game.set_eval(zhchess.engine.PovScore(zhchess.engine.Cp(-80), zhchess.WHITE))
+        game.set_eval(zhchess.engine.PovScore(zhchess.engine.Cp(-80), zhchess.RED))
         self.assertEqual(game.comment, "foo [%bar] baz [%clk 3:25:45] [%eval -0.80]")
         self.assertEqual(game.eval().white().score(), -80)
         self.assertEqual(game.eval_depth(), None)
-        game.set_eval(zhchess.engine.PovScore(zhchess.engine.Mate(1), zhchess.WHITE), 5)
+        game.set_eval(zhchess.engine.PovScore(zhchess.engine.Mate(1), zhchess.RED), 5)
         self.assertEqual(game.comment, "foo [%bar] baz [%clk 3:25:45] [%eval #1,5]")
         self.assertEqual(game.eval().white().mate(), 1)
         self.assertEqual(game.eval_depth(), 5)
@@ -2835,7 +2835,7 @@ class PgnTestCase(unittest.TestCase):
     def test_eval(self):
         game = zhchess.pgn.Game()
         for cp in range(199, 220):
-            game.set_eval(zhchess.engine.PovScore(zhchess.engine.Cp(cp), zhchess.WHITE))
+            game.set_eval(zhchess.engine.PovScore(zhchess.engine.Cp(cp), zhchess.RED))
             self.assertEqual(game.eval().white().cp, cp)
 
     def test_float_emt(self):
@@ -2866,24 +2866,24 @@ class PgnTestCase(unittest.TestCase):
 
     def test_node_turn(self):
         game = zhchess.pgn.Game()
-        self.assertEqual(game.turn(), zhchess.WHITE)
+        self.assertEqual(game.turn(), zhchess.RED)
         node = game.add_variation(zhchess.Move.from_uci("a2a3"))
         self.assertEqual(node.turn(), zhchess.BLACK)
         node = node.add_variation(zhchess.Move.from_uci("a7a6"))
-        self.assertEqual(node.turn(), zhchess.WHITE)
+        self.assertEqual(node.turn(), zhchess.RED)
 
         game = zhchess.pgn.Game()
         game.setup("4k3/8/8/8/8/8/8/4K3 b - - 7 6")
         self.assertEqual(game.turn(), zhchess.BLACK)
         node = game.add_variation(zhchess.Move.from_uci("e8e7"))
-        self.assertEqual(node.turn(), zhchess.WHITE)
+        self.assertEqual(node.turn(), zhchess.RED)
         node = node.add_variation(zhchess.Move.from_uci("e1e2"))
         self.assertEqual(node.turn(), zhchess.BLACK)
 
     def test_skip_inner_variation(self):
         class BlackVariationsOnly(zhchess.pgn.GameBuilder):
             def begin_variation(self):
-                self.skipping = self.variation_stack[-1].turn() != zhchess.WHITE
+                self.skipping = self.variation_stack[-1].turn() != zhchess.RED
                 if self.skipping:
                     return zhchess.pgn.SKIP
                 else:
@@ -3429,7 +3429,7 @@ class EngineTestCase(unittest.TestCase):
         info = zhchess.engine._parse_uci_info("depth 7 seldepth 8 score mate 3", board)
         self.assertEqual(info["depth"], 7)
         self.assertEqual(info["seldepth"], 8)
-        self.assertEqual(info["score"], zhchess.engine.PovScore(zhchess.engine.Mate(+3), zhchess.WHITE))
+        self.assertEqual(info["score"], zhchess.engine.PovScore(zhchess.engine.Mate(+3), zhchess.RED))
 
         # Info: tbhits, cpuload, hashfull, time, nodes, nps.
         info = zhchess.engine._parse_uci_info("tbhits 123 cpuload 456 hashfull 789 time 987 nodes 654 nps 321", board)
@@ -3444,7 +3444,7 @@ class EngineTestCase(unittest.TestCase):
         info = zhchess.engine._parse_uci_info("depth 10 seldepth 9 score cp 22  time 17 nodes 48299 nps 2683000 tbhits 0", board)
         self.assertEqual(info["depth"], 10)
         self.assertEqual(info["seldepth"], 9)
-        self.assertEqual(info["score"], zhchess.engine.PovScore(zhchess.engine.Cp(22), zhchess.WHITE))
+        self.assertEqual(info["score"], zhchess.engine.PovScore(zhchess.engine.Cp(22), zhchess.RED))
         self.assertEqual(info["time"], 0.017)
         self.assertEqual(info["nodes"], 48299)
         self.assertEqual(info["nps"], 2683000)
@@ -3457,7 +3457,7 @@ class EngineTestCase(unittest.TestCase):
         self.assertEqual(info["seldepth"], 2)
         self.assertEqual(info["time"], 0.016)
         self.assertEqual(info["nodes"], 1)
-        self.assertEqual(info["score"], zhchess.engine.PovScore(zhchess.engine.Cp(72), zhchess.WHITE))
+        self.assertEqual(info["score"], zhchess.engine.PovScore(zhchess.engine.Cp(72), zhchess.RED))
         self.assertEqual(info["multipv"], 1)
         self.assertEqual(info["pv"], [zhchess.Move.from_uci("g1f3"), zhchess.Move.from_uci("g8f6")])
 
@@ -4333,7 +4333,7 @@ class AtomicTestCase(unittest.TestCase):
 
     def test_atomic_king_exploded(self):
         board = zhchess.variant.AtomicBoard("rn5r/pp4pp/2p3Nn/5p2/1b2P1PP/8/PPP2P2/R1B1KB1R b KQ - 0 9")
-        self.assertEqual(board.outcome().winner, zhchess.WHITE)
+        self.assertEqual(board.outcome().winner, zhchess.RED)
         self.assertEqual(board.status(), zhchess.STATUS_VALID)
 
 
@@ -4509,7 +4509,7 @@ class ThreeCheckTestCase(unittest.TestCase):
 
     def test_lichess_fen(self):
         board = zhchess.variant.ThreeCheckBoard("8/8/1K2p3/3qP2k/8/8/8/8 b - - 3 57 +1+2")
-        self.assertEqual(board.remaining_checks[zhchess.WHITE], 2)
+        self.assertEqual(board.remaining_checks[zhchess.RED], 2)
         self.assertEqual(board.remaining_checks[zhchess.BLACK], 1)
 
     def test_set_epd(self):
@@ -4555,22 +4555,22 @@ class ThreeCheckTestCase(unittest.TestCase):
 
     def test_three_check_root(self):
         board = zhchess.variant.ThreeCheckBoard("r1bq1bnr/pppp1kpp/2n5/4p3/4P3/8/PPPP1PPP/RNBQK1NR w KQ - 2+3 0 4")
-        self.assertEqual(board.root().remaining_checks[zhchess.WHITE], 2)
+        self.assertEqual(board.root().remaining_checks[zhchess.RED], 2)
         self.assertEqual(board.root().remaining_checks[zhchess.BLACK], 3)
-        self.assertEqual(board.copy().root().remaining_checks[zhchess.WHITE], 2)
+        self.assertEqual(board.copy().root().remaining_checks[zhchess.RED], 2)
         self.assertEqual(board.copy().root().remaining_checks[zhchess.BLACK], 3)
 
         board.push_san("Qf3+")
         board.push_san("Ke6")
         board.push_san("Qb3+")
-        self.assertEqual(board.root().remaining_checks[zhchess.WHITE], 2)
+        self.assertEqual(board.root().remaining_checks[zhchess.RED], 2)
         self.assertEqual(board.root().remaining_checks[zhchess.BLACK], 3)
-        self.assertEqual(board.copy().root().remaining_checks[zhchess.WHITE], 2)
+        self.assertEqual(board.copy().root().remaining_checks[zhchess.RED], 2)
         self.assertEqual(board.copy().root().remaining_checks[zhchess.BLACK], 3)
 
     def test_three_check_epd(self):
         board, ops = zhchess.variant.ThreeCheckBoard.from_epd("rnb1kbnr/pppp1ppp/8/8/2B1Pp1q/8/PPPP2PP/RNBQ1KNR b kq - 3+2 hmvc 3; fmvn 4; bm Qf2+")
-        self.assertEqual(board.remaining_checks[zhchess.WHITE], 3)
+        self.assertEqual(board.remaining_checks[zhchess.RED], 3)
         self.assertEqual(board.remaining_checks[zhchess.BLACK], 2)
         self.assertEqual(board.halfmove_clock, 3)
         self.assertEqual(board.fullmove_number, 4)
@@ -4650,7 +4650,7 @@ class CrazyhouseTestCase(unittest.TestCase):
         board = zhchess.variant.CrazyhouseBoard.empty()
         self.assertTrue(board.is_insufficient_material())
 
-        board.pockets[zhchess.WHITE].add(zhchess.PAWN)
+        board.pockets[zhchess.RED].add(zhchess.PAWN)
         self.assertFalse(board.is_insufficient_material())
 
     def test_mirror_pockets(self):
@@ -4662,9 +4662,9 @@ class CrazyhouseTestCase(unittest.TestCase):
         board = zhchess.variant.CrazyhouseBoard("r2B1rk1/ppp2ppp/3p4/4p3/2B5/2NP1R1P/PPPn2K1/8/QPBQPRNNbp w - - 40 21")
         white_pocket = "qqrbnnpp"
         black_pocket = "bp"
-        self.assertEqual(str(board.root().pockets[zhchess.WHITE]), white_pocket)
+        self.assertEqual(str(board.root().pockets[zhchess.RED]), white_pocket)
         self.assertEqual(str(board.root().pockets[zhchess.BLACK]), black_pocket)
-        self.assertEqual(str(board.copy().root().pockets[zhchess.WHITE]), white_pocket)
+        self.assertEqual(str(board.copy().root().pockets[zhchess.RED]), white_pocket)
         self.assertEqual(str(board.copy().root().pockets[zhchess.BLACK]), black_pocket)
 
         board.push_san("N@h6+")
@@ -4672,9 +4672,9 @@ class CrazyhouseTestCase(unittest.TestCase):
         board.push_san("R@g8+")
         board.push_san("Rxg8")
         board.push_san("Nxf7#")
-        self.assertEqual(str(board.root().pockets[zhchess.WHITE]), white_pocket)
+        self.assertEqual(str(board.root().pockets[zhchess.RED]), white_pocket)
         self.assertEqual(str(board.root().pockets[zhchess.BLACK]), black_pocket)
-        self.assertEqual(str(board.copy().root().pockets[zhchess.WHITE]), white_pocket)
+        self.assertEqual(str(board.copy().root().pockets[zhchess.RED]), white_pocket)
         self.assertEqual(str(board.copy().root().pockets[zhchess.BLACK]), black_pocket)
 
     def test_zh_is_irreversible(self):

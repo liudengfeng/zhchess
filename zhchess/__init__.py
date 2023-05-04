@@ -67,7 +67,7 @@ except ImportError:
 
 
 Color = bool
-COLORS = [WHITE, BLACK] = [True, False]
+COLORS = [RED, BLACK] = [True, False]
 COLOR_NAMES = ["black", "white"]
 
 PieceType = int
@@ -870,7 +870,7 @@ class BaseBoard:
 
         self.promoted = BB_EMPTY
 
-        self.occupied_co[WHITE] = BB_RANK_1 | BB_RANK_2
+        self.occupied_co[RED] = BB_RANK_1 | BB_RANK_2
         self.occupied_co[BLACK] = BB_RANK_7 | BB_RANK_8
         self.occupied = BB_RANK_1 | BB_RANK_2 | BB_RANK_7 | BB_RANK_8
 
@@ -894,7 +894,7 @@ class BaseBoard:
 
         self.promoted = BB_EMPTY
 
-        self.occupied_co[WHITE] = BB_EMPTY
+        self.occupied_co[RED] = BB_EMPTY
         self.occupied_co[BLACK] = BB_EMPTY
         self.occupied = BB_EMPTY
 
@@ -937,7 +937,7 @@ class BaseBoard:
         piece_type = self.piece_type_at(square)
         if piece_type:
             mask = BB_SQUARES[square]
-            color = bool(self.occupied_co[WHITE] & mask)
+            color = bool(self.occupied_co[RED] & mask)
             return Piece(piece_type, color)
         else:
             return None
@@ -964,8 +964,8 @@ class BaseBoard:
     def color_at(self, square: Square) -> Optional[Color]:
         """Gets the color of the piece at the given square."""
         mask = BB_SQUARES[square]
-        if self.occupied_co[WHITE] & mask:
-            return WHITE
+        if self.occupied_co[RED] & mask:
+            return RED
         elif self.occupied_co[BLACK] & mask:
             return BLACK
         else:
@@ -986,7 +986,7 @@ class BaseBoard:
         bb_square = BB_SQUARES[square]
 
         if bb_square & self.pawns:
-            color = bool(bb_square & self.occupied_co[WHITE])
+            color = bool(bb_square & self.occupied_co[RED])
             return BB_PAWN_ATTACKS[color][square]
         elif bb_square & self.knights:
             return BB_KNIGHT_ATTACKS[square]
@@ -1091,9 +1091,9 @@ class BaseBoard:
         >>> import zhchess
         >>>
         >>> board = zhchess.Board("rnb1k2r/ppp2ppp/5n2/3q4/1b1P4/2N5/PP3PPP/R1BQKBNR w KQkq - 3 7")
-        >>> board.is_pinned(zhchess.WHITE, zhchess.C3)
+        >>> board.is_pinned(zhchess.RED, zhchess.C3)
         True
-        >>> direction = board.pin(zhchess.WHITE, zhchess.C3)
+        >>> direction = board.pin(zhchess.RED, zhchess.C3)
         >>> direction
         SquareSet(0x0000_0001_0204_0810)
         >>> print(direction)
@@ -1138,7 +1138,7 @@ class BaseBoard:
             return None
 
         self.occupied ^= mask
-        self.occupied_co[WHITE] &= ~mask
+        self.occupied_co[RED] &= ~mask
         self.occupied_co[BLACK] &= ~mask
 
         self.promoted &= ~mask
@@ -1152,7 +1152,7 @@ class BaseBoard:
 
         :class:`~zhchess.Board` also clears the move stack.
         """
-        color = bool(self.occupied_co[WHITE] & BB_SQUARES[square])
+        color = bool(self.occupied_co[RED] & BB_SQUARES[square])
         piece_type = self._remove_piece_at(square)
         return Piece(piece_type, color) if piece_type else None
 
@@ -1391,7 +1391,7 @@ class BaseBoard:
 
         # Finalize.
         self.pawns = BB_RANK_2 | BB_RANK_7
-        self.occupied_co[WHITE] = BB_RANK_1 | BB_RANK_2
+        self.occupied_co[RED] = BB_RANK_1 | BB_RANK_2
         self.occupied_co[BLACK] = BB_RANK_7 | BB_RANK_8
         self.occupied = BB_RANK_1 | BB_RANK_2 | BB_RANK_7 | BB_RANK_8
         self.promoted = BB_EMPTY
@@ -1408,7 +1408,7 @@ class BaseBoard:
         Gets the Chess960 starting position index between 0 and 959,
         or ``None``.
         """
-        if self.occupied_co[WHITE] != BB_RANK_1 | BB_RANK_2:
+        if self.occupied_co[RED] != BB_RANK_1 | BB_RANK_2:
             return None
         if self.occupied_co[BLACK] != BB_RANK_7 | BB_RANK_8:
             return None
@@ -1509,7 +1509,7 @@ class BaseBoard:
         invert_color: bool = False,
         borders: bool = False,
         empty_square: str = "⭘",
-        orientation: Color = WHITE,
+        orientation: Color = RED,
     ) -> str:
         """
         Returns a string representation of the board with Unicode pieces.
@@ -1569,7 +1569,7 @@ class BaseBoard:
         if isinstance(board, BaseBoard):
             return (
                 self.occupied == board.occupied
-                and self.occupied_co[WHITE] == board.occupied_co[WHITE]
+                and self.occupied_co[RED] == board.occupied_co[RED]
                 and self.pawns == board.pawns
                 and self.knights == board.knights
                 and self.bishops == board.bishops
@@ -1588,7 +1588,7 @@ class BaseBoard:
         self.queens = f(self.queens)
         self.kings = f(self.kings)
 
-        self.occupied_co[WHITE] = f(self.occupied_co[WHITE])
+        self.occupied_co[RED] = f(self.occupied_co[RED])
         self.occupied_co[BLACK] = f(self.occupied_co[BLACK])
         self.occupied = f(self.occupied)
         self.promoted = f(self.promoted)
@@ -1613,9 +1613,9 @@ class BaseBoard:
 
     def apply_mirror(self: BaseBoardT) -> None:
         self.apply_transform(flip_vertical)
-        self.occupied_co[WHITE], self.occupied_co[BLACK] = (
+        self.occupied_co[RED], self.occupied_co[BLACK] = (
             self.occupied_co[BLACK],
-            self.occupied_co[WHITE],
+            self.occupied_co[RED],
         )
 
     def mirror(self: BaseBoardT) -> BaseBoardT:
@@ -1643,7 +1643,7 @@ class BaseBoard:
         board.queens = self.queens
         board.kings = self.kings
 
-        board.occupied_co[WHITE] = self.occupied_co[WHITE]
+        board.occupied_co[RED] = self.occupied_co[RED]
         board.occupied_co[BLACK] = self.occupied_co[BLACK]
         board.occupied = self.occupied
         board.promoted = self.promoted
@@ -1693,7 +1693,7 @@ class _BoardState(Generic[BoardT]):
         self.queens = board.queens
         self.kings = board.kings
 
-        self.occupied_w = board.occupied_co[WHITE]
+        self.occupied_w = board.occupied_co[RED]
         self.occupied_b = board.occupied_co[BLACK]
         self.occupied = board.occupied
 
@@ -1713,7 +1713,7 @@ class _BoardState(Generic[BoardT]):
         board.queens = self.queens
         board.kings = self.kings
 
-        board.occupied_co[WHITE] = self.occupied_w
+        board.occupied_co[RED] = self.occupied_w
         board.occupied_co[BLACK] = self.occupied_b
         board.occupied = self.occupied
 
@@ -1782,7 +1782,7 @@ class Board(BaseBoard):
     captures_compulsory: ClassVar[bool] = False
 
     turn: Color
-    """The side to move (``zhchess.WHITE`` or ``zhchess.BLACK``)."""
+    """The side to move (``zhchess.RED`` or ``zhchess.BLACK``)."""
 
     castling_rights: Bitboard
     """
@@ -1898,7 +1898,7 @@ class Board(BaseBoard):
 
     def reset(self) -> None:
         """Restores the starting position."""
-        self.turn = WHITE
+        self.turn = RED
         self.castling_rights = BB_CORNERS
         self.ep_square = None
         self.halfmove_clock = 0
@@ -1920,7 +1920,7 @@ class Board(BaseBoard):
         In order to be in a valid :func:`~zhchess.Board.status()`, at least kings
         need to be put on the board.
         """
-        self.turn = WHITE
+        self.turn = RED
         self.castling_rights = BB_EMPTY
         self.ep_square = None
         self.halfmove_clock = 0
@@ -2009,7 +2009,7 @@ class Board(BaseBoard):
                     yield Move(from_square, to_square)
 
         # Prepare pawn advance generation.
-        if self.turn == WHITE:
+        if self.turn == RED:
             single_moves = pawns << 8 & ~self.occupied
             double_moves = single_moves << 8 & ~self.occupied & (BB_RANK_3 | BB_RANK_4)
         else:
@@ -2142,7 +2142,7 @@ class Board(BaseBoard):
             if piece != PAWN:
                 return False
 
-            if self.turn == WHITE and square_rank(move.to_square) != 7:
+            if self.turn == RED and square_rank(move.to_square) != 7:
                 return False
             elif self.turn == BLACK and square_rank(move.to_square) != 0:
                 return False
@@ -2568,12 +2568,12 @@ class Board(BaseBoard):
         # Update castling rights.
         self.castling_rights &= ~to_bb & ~from_bb
         if piece_type == KING and not promoted:
-            if self.turn == WHITE:
+            if self.turn == RED:
                 self.castling_rights &= ~BB_RANK_1
             else:
                 self.castling_rights &= ~BB_RANK_8
         elif captured_piece_type == KING and not self.promoted & to_bb:
-            if self.turn == WHITE and square_rank(move.to_square) == 7:
+            if self.turn == RED and square_rank(move.to_square) == 7:
                 self.castling_rights &= ~BB_RANK_8
             elif self.turn == BLACK and square_rank(move.to_square) == 0:
                 self.castling_rights &= ~BB_RANK_1
@@ -2592,7 +2592,7 @@ class Board(BaseBoard):
                 and not captured_piece_type
             ):
                 # Remove pawns captured en passant.
-                down = -8 if self.turn == WHITE else 8
+                down = -8 if self.turn == RED else 8
                 capture_square = ep_square + down
                 captured_piece_type = self._remove_piece_at(capture_square)
 
@@ -2610,11 +2610,11 @@ class Board(BaseBoard):
             self._remove_piece_at(move.to_square)
 
             if a_side:
-                self._set_piece_at(C1 if self.turn == WHITE else C8, KING, self.turn)
-                self._set_piece_at(D1 if self.turn == WHITE else D8, ROOK, self.turn)
+                self._set_piece_at(C1 if self.turn == RED else C8, KING, self.turn)
+                self._set_piece_at(D1 if self.turn == RED else D8, ROOK, self.turn)
             else:
-                self._set_piece_at(G1 if self.turn == WHITE else G8, KING, self.turn)
-                self._set_piece_at(F1 if self.turn == WHITE else F8, ROOK, self.turn)
+                self._set_piece_at(G1 if self.turn == RED else G8, KING, self.turn)
+                self._set_piece_at(F1 if self.turn == RED else F8, ROOK, self.turn)
 
         # Put the piece on the target square.
         if not castling:
@@ -2704,7 +2704,7 @@ class Board(BaseBoard):
                 continue
 
             king_file = square_file(king)
-            backrank = BB_RANK_1 if color == WHITE else BB_RANK_8
+            backrank = BB_RANK_1 if color == RED else BB_RANK_8
 
             for rook_square in scan_reversed(self.clean_castling_rights() & backrank):
                 rook_file = square_file(rook_square)
@@ -2725,7 +2725,7 @@ class Board(BaseBoard):
                 else:
                     ch = "q" if a_side else "k"
 
-                builder.append(ch.upper() if color == WHITE else ch)
+                builder.append(ch.upper() if color == RED else ch)
 
         if builder:
             return "".join(builder)
@@ -2810,10 +2810,10 @@ class Board(BaseBoard):
         try:
             turn_part = parts.pop(0)
         except IndexError:
-            turn = WHITE
+            turn = RED
         else:
             if turn_part == "w":
-                turn = WHITE
+                turn = RED
             elif turn_part == "b":
                 turn = BLACK
             else:
@@ -2896,9 +2896,9 @@ class Board(BaseBoard):
         self.castling_rights = BB_EMPTY
 
         for flag in castling_fen:
-            color = WHITE if flag.isupper() else BLACK
+            color = RED if flag.isupper() else BLACK
             flag = flag.lower()
-            backrank = BB_RANK_1 if color == WHITE else BB_RANK_8
+            backrank = BB_RANK_1 if color == RED else BB_RANK_8
             rooks = self.occupied_co[color] & self.rooks & backrank
             king = self.king(color)
 
@@ -2941,7 +2941,7 @@ class Board(BaseBoard):
     def set_chess960_pos(self, scharnagl: int) -> None:
         super().set_chess960_pos(scharnagl)
         self.chess960 = True
-        self.turn = WHITE
+        self.turn = RED
         self.castling_rights = self.rooks
         self.ep_square = None
         self.halfmove_clock = 0
@@ -2969,7 +2969,7 @@ class Board(BaseBoard):
             return None
 
         if not ignore_turn:
-            if self.turn != WHITE:
+            if self.turn != RED:
                 return None
 
         if not ignore_castling:
@@ -3088,7 +3088,7 @@ class Board(BaseBoard):
 
         epd = [
             self.board_fen(promoted=promoted),
-            "w" if self.turn == WHITE else "b",
+            "w" if self.turn == RED else "b",
             self.castling_shredder_fen() if shredder else self.castling_xfen(),
             SQUARE_NAMES[ep_square] if ep_square is not None else "-",
         ]
@@ -3388,7 +3388,7 @@ class Board(BaseBoard):
             if not board.is_legal(move):
                 raise IllegalMoveError(f"illegal move {move} in position {board.fen()}")
 
-            if board.turn == WHITE:
+            if board.turn == RED:
                 san.append(f"{board.fullmove_number}. {board.san_and_push(move)}")
             elif not san:
                 san.append(f"{board.fullmove_number}...{board.san_and_push(move)}")
@@ -3625,7 +3625,7 @@ class Board(BaseBoard):
         return bool(
             touched & cr
             or cr & BB_RANK_1
-            and touched & self.kings & self.occupied_co[WHITE] & ~self.promoted
+            and touched & self.kings & self.occupied_co[RED] & ~self.promoted
             or cr & BB_RANK_8
             and touched & self.kings & self.occupied_co[BLACK] & ~self.promoted
         )
@@ -3683,7 +3683,7 @@ class Board(BaseBoard):
             return self.castling_rights
 
         castling = self.castling_rights & self.rooks
-        white_castling = castling & BB_RANK_1 & self.occupied_co[WHITE]
+        white_castling = castling & BB_RANK_1 & self.occupied_co[RED]
         black_castling = castling & BB_RANK_8 & self.occupied_co[BLACK]
 
         if not self.chess960:
@@ -3692,7 +3692,7 @@ class Board(BaseBoard):
             black_castling &= BB_A8 | BB_H8
 
             # The kings must be on e1 or e8.
-            if not self.occupied_co[WHITE] & self.kings & ~self.promoted & BB_E1:
+            if not self.occupied_co[RED] & self.kings & ~self.promoted & BB_E1:
                 white_castling = 0
             if not self.occupied_co[BLACK] & self.kings & ~self.promoted & BB_E8:
                 black_castling = 0
@@ -3701,7 +3701,7 @@ class Board(BaseBoard):
         else:
             # The kings must be on the back rank.
             white_king_mask = (
-                self.occupied_co[WHITE] & self.kings & BB_RANK_1 & ~self.promoted
+                self.occupied_co[RED] & self.kings & BB_RANK_1 & ~self.promoted
             )
             black_king_mask = (
                 self.occupied_co[BLACK] & self.kings & BB_RANK_8 & ~self.promoted
@@ -3736,7 +3736,7 @@ class Board(BaseBoard):
 
     def has_castling_rights(self, color: Color) -> bool:
         """Checks if the given side has castling rights."""
-        backrank = BB_RANK_1 if color == WHITE else BB_RANK_8
+        backrank = BB_RANK_1 if color == RED else BB_RANK_8
         return bool(self.clean_castling_rights() & backrank)
 
     def has_kingside_castling_rights(self, color: Color) -> bool:
@@ -3744,7 +3744,7 @@ class Board(BaseBoard):
         Checks if the given side has kingside (that is h-side in Chess960)
         castling rights.
         """
-        backrank = BB_RANK_1 if color == WHITE else BB_RANK_8
+        backrank = BB_RANK_1 if color == RED else BB_RANK_8
         king_mask = self.kings & self.occupied_co[color] & backrank & ~self.promoted
         if not king_mask:
             return False
@@ -3765,7 +3765,7 @@ class Board(BaseBoard):
         Checks if the given side has queenside (that is a-side in Chess960)
         castling rights.
         """
-        backrank = BB_RANK_1 if color == WHITE else BB_RANK_8
+        backrank = BB_RANK_1 if color == RED else BB_RANK_8
         king_mask = self.kings & self.occupied_co[color] & backrank & ~self.promoted
         if not king_mask:
             return False
@@ -3800,7 +3800,7 @@ class Board(BaseBoard):
         # on e1 or e8.
         if (
             castling_rights & BB_RANK_1
-            and not self.occupied_co[WHITE] & self.kings & BB_E1
+            and not self.occupied_co[RED] & self.kings & BB_E1
         ):
             return True
         if (
@@ -3845,7 +3845,7 @@ class Board(BaseBoard):
             errors |= STATUS_EMPTY
 
         # There must be exactly one king of each color.
-        if not self.occupied_co[WHITE] & self.kings:
+        if not self.occupied_co[RED] & self.kings:
             errors |= STATUS_NO_WHITE_KING
         if not self.occupied_co[BLACK] & self.kings:
             errors |= STATUS_NO_BLACK_KING
@@ -3853,13 +3853,13 @@ class Board(BaseBoard):
             errors |= STATUS_TOO_MANY_KINGS
 
         # There can not be more than 16 pieces of any color.
-        if popcount(self.occupied_co[WHITE]) > 16:
+        if popcount(self.occupied_co[RED]) > 16:
             errors |= STATUS_TOO_MANY_WHITE_PIECES
         if popcount(self.occupied_co[BLACK]) > 16:
             errors |= STATUS_TOO_MANY_BLACK_PIECES
 
         # There can not be more than 8 pawns of any color.
-        if popcount(self.occupied_co[WHITE] & self.pawns) > 8:
+        if popcount(self.occupied_co[RED] & self.pawns) > 8:
             errors |= STATUS_TOO_MANY_WHITE_PAWNS
         if popcount(self.occupied_co[BLACK] & self.pawns) > 8:
             errors |= STATUS_TOO_MANY_BLACK_PAWNS
@@ -3912,7 +3912,7 @@ class Board(BaseBoard):
         if not self.ep_square:
             return None
 
-        if self.turn == WHITE:
+        if self.turn == RED:
             ep_rank = 5
             pawn_mask = shift_down(BB_SQUARES[self.ep_square])
             seventh_rank_mask = shift_up(BB_SQUARES[self.ep_square])
@@ -3956,7 +3956,7 @@ class Board(BaseBoard):
         # the capturer are not handled here.)
         assert self.ep_square is not None
 
-        last_double = self.ep_square + (-8 if self.turn == WHITE else 8)
+        last_double = self.ep_square + (-8 if self.turn == RED else 8)
 
         occupancy = (
             self.occupied & ~BB_SQUARES[last_double] & ~BB_SQUARES[capturer]
@@ -4056,7 +4056,7 @@ class Board(BaseBoard):
             # Capture the checking pawn en passant (but avoid yielding
             # duplicate moves).
             if self.ep_square and not BB_SQUARES[self.ep_square] & target:
-                last_double = self.ep_square + (-8 if self.turn == WHITE else 8)
+                last_double = self.ep_square + (-8 if self.turn == RED else 8)
                 if last_double == checker:
                     yield from self.generate_pseudo_legal_ep(from_mask, to_mask)
 
@@ -4114,7 +4114,7 @@ class Board(BaseBoard):
         if self.is_variant_end():
             return
 
-        backrank = BB_RANK_1 if self.turn == WHITE else BB_RANK_8
+        backrank = BB_RANK_1 if self.turn == RED else BB_RANK_8
         king = (
             self.occupied_co[self.turn]
             & self.kings
@@ -4197,7 +4197,7 @@ class Board(BaseBoard):
             self.rooks,
             self.queens,
             self.kings,
-            self.occupied_co[WHITE],
+            self.occupied_co[RED],
             self.occupied_co[BLACK],
             self.turn,
             self.clean_castling_rights(),

@@ -456,7 +456,7 @@ def all_dependencies(targets: Iterable[str], *, one_king: bool = True) -> Iterat
 
 
 def calc_key(board: zhchess.BaseBoard, *, mirror: bool = False) -> str:
-    w = board.occupied_co[zhchess.WHITE ^ mirror]
+    w = board.occupied_co[zhchess.RED ^ mirror]
     b = board.occupied_co[zhchess.BLACK ^ mirror]
 
     return "".join([
@@ -1205,13 +1205,13 @@ class WdlTable(Table):
             if key != self.key:
                 cmirror = 8
                 mirror = 0x38
-                bside = int(board.turn == zhchess.WHITE)
+                bside = int(board.turn == zhchess.RED)
             else:
                 cmirror = mirror = 0
-                bside = int(board.turn != zhchess.WHITE)
+                bside = int(board.turn != zhchess.RED)
         else:
-            cmirror = 0 if board.turn == zhchess.WHITE else 8
-            mirror = 0 if board.turn == zhchess.WHITE else 0x38
+            cmirror = 0 if board.turn == zhchess.RED else 8
+            mirror = 0 if board.turn == zhchess.RED else 0x38
             bside = 0
 
         if not self.has_pawns:
@@ -1220,7 +1220,7 @@ class WdlTable(Table):
             while i < self.num:
                 piece_type = self.pieces[bside][i] & 0x07
                 color = (self.pieces[bside][i] ^ cmirror) >> 3
-                bb = board.pieces_mask(piece_type, zhchess.WHITE if color == 0 else zhchess.BLACK)
+                bb = board.pieces_mask(piece_type, zhchess.RED if color == 0 else zhchess.BLACK)
 
                 for square in zhchess.scan_forward(bb):
                     p[i] = square
@@ -1234,7 +1234,7 @@ class WdlTable(Table):
             k = self.files[0].pieces[0][0] ^ cmirror
             color = k >> 3
             piece_type = k & 0x07
-            bb = board.pieces_mask(piece_type, zhchess.WHITE if color == 0 else zhchess.BLACK)
+            bb = board.pieces_mask(piece_type, zhchess.RED if color == 0 else zhchess.BLACK)
 
             for square in zhchess.scan_forward(bb):
                 p[i] = square ^ mirror
@@ -1245,7 +1245,7 @@ class WdlTable(Table):
             while i < self.num:
                 color = (pc[i] ^ cmirror) >> 3
                 piece_type = pc[i] & 0x07
-                bb = board.pieces_mask(piece_type, zhchess.WHITE if color == 0 else zhchess.BLACK)
+                bb = board.pieces_mask(piece_type, zhchess.RED if color == 0 else zhchess.BLACK)
 
                 for square in zhchess.scan_forward(bb):
                     p[i] = square ^ mirror
@@ -1377,13 +1377,13 @@ class DtzTable(Table):
             if key != self.key:
                 cmirror = 8
                 mirror = 0x38
-                bside = int(board.turn == zhchess.WHITE)
+                bside = int(board.turn == zhchess.RED)
             else:
                 cmirror = mirror = 0
-                bside = int(board.turn != zhchess.WHITE)
+                bside = int(board.turn != zhchess.RED)
         else:
-            cmirror = 0 if board.turn == zhchess.WHITE else 8
-            mirror = 0 if board.turn == zhchess.WHITE else 0x38
+            cmirror = 0 if board.turn == zhchess.RED else 8
+            mirror = 0 if board.turn == zhchess.RED else 0x38
             bside = 0
 
         if not self.has_pawns:
@@ -1398,7 +1398,7 @@ class DtzTable(Table):
             while i < self.num:
                 piece_type = pc[i] & 0x07
                 color = (pc[i] ^ cmirror) >> 3
-                bb = board.pieces_mask(piece_type, zhchess.WHITE if color == 0 else zhchess.BLACK)
+                bb = board.pieces_mask(piece_type, zhchess.RED if color == 0 else zhchess.BLACK)
 
                 for square in zhchess.scan_forward(bb):
                     p[i] = square
@@ -1421,7 +1421,7 @@ class DtzTable(Table):
             k = self.files[0].pieces[0] ^ cmirror
             piece_type = k & 0x07
             color = k >> 3
-            bb = board.pieces_mask(piece_type, zhchess.WHITE if color == 0 else zhchess.BLACK)
+            bb = board.pieces_mask(piece_type, zhchess.RED if color == 0 else zhchess.BLACK)
 
             i = 0
             p = [0 for _ in range(TBPIECES)]
@@ -1436,7 +1436,7 @@ class DtzTable(Table):
             while i < self.num:
                 piece_type = pc[i] & 0x07
                 color = (pc[i] ^ cmirror) >> 3
-                bb = board.pieces_mask(piece_type, zhchess.WHITE if color == 0 else zhchess.BLACK)
+                bb = board.pieces_mask(piece_type, zhchess.RED if color == 0 else zhchess.BLACK)
 
                 for square in zhchess.scan_forward(bb):
                     p[i] = square ^ mirror

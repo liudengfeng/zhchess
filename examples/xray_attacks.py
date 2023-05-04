@@ -54,7 +54,7 @@ def example() -> None:
 
     board = zhchess.Board("r1b1r1k1/pp1n1pbp/1qp3p1/B2p4/3P4/Q3PN2/PP2BPPP/R4RK1 b - - 0 1")
     print("bishop x-ray, white, d8:")
-    print(xray_bishop_attackers(board, zhchess.WHITE, zhchess.D8))
+    print(xray_bishop_attackers(board, zhchess.RED, zhchess.D8))
 
 
 if __name__ == "__main__":
