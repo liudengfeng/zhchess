@@ -23,11 +23,11 @@ Syzygy tablebase probing, and XBoard/UCI engine communication.
 
 from __future__ import annotations
 
-__author__ = "Niklas Fiekas"
+__author__ = "DengFeng Liu"
 
-__email__ = "niklas.fiekas@backscattering.de"
+__email__ = "liudengfeng_sd@outlook.com"
 
-__version__ = "1.9.4"
+__version__ = "2.0.0"
 
 import collections
 import copy
@@ -68,12 +68,15 @@ except ImportError:
 
 Color = bool
 COLORS = [RED, BLACK] = [True, False]
-COLOR_NAMES = ["black", "white"]
+# True False 转换为序号 1 0
+COLOR_NAMES = ["black", "red"]
 
 PieceType = int
-PIECE_TYPES = [PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING] = range(1, 7)
-PIECE_SYMBOLS = [None, "p", "n", "b", "r", "q", "k"]
-PIECE_NAMES = [None, "pawn", "knight", "bishop", "rook", "queen", "king"]
+# TODO:删除
+# PIECE_TYPES = [PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING] = range(1, 7)
+PIECE_TYPES = [PAWN, CANNON, ROOK, HORSE, ELEPHANT, ADVISOR, KING] = range(1, 8)
+PIECE_SYMBOLS = [None, "p", "c", "r", "n", "b", "a", "k"]
+PIECE_NAMES = [None, "pawn", "cannon", "rook", "horse", "elephant", "advisor", "king"]
 
 
 def piece_symbol(piece_type: PieceType) -> str:
@@ -84,21 +87,23 @@ def piece_name(piece_type: PieceType) -> str:
     return typing.cast(str, PIECE_NAMES[piece_type])
 
 
-# TODO:增加+1
 UNICODE_PIECE_SYMBOLS = {
-    "R": "♖",
-    "r": "♜",
-    "N": "♘",
-    "n": "♞",
-    "B": "♗",
-    "b": "♝",
-    "Q": "♕",
-    "q": "♛",
-    "K": "♔",
-    "k": "♚",
-    "P": "♙",
-    "p": "♟",
+    "K": "🩠",
+    "k": "🩧",
+    "A": "🩡",
+    "a": "🩨",
+    "B": "🩢",
+    "b": "🩩",
+    "N": "🩣",
+    "n": "🩪",
+    "R": "🩤",
+    "r": "🩫",
+    "C": "🩥",
+    "c": "🩬",
+    "P": "🩦",
+    "p": "🩭",
 }
+
 
 FILE_NAMES = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
 
@@ -111,6 +116,7 @@ STARTING_FEN = "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - 
 
 STARTING_BOARD_FEN = "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR"
 """The board part of the FEN for the standard zhchess starting position."""
+
 
 # 位移运算效率高
 class Status(enum.IntFlag):

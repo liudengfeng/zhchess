@@ -13,3 +13,8 @@ zhchess.svg.piece(zhchess.Piece.from_symbol("K"))
 # )
 
 print("\u8F66")
+
+print("🩠")
+print("🩠")
+a = "\u1FA60"  # 将
+print(a)
