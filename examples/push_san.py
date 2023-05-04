@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Play the immortal game using push_san() from chess.Board()."""
+"""Play the immortal game using push_san() from zhchess.Board()."""
 
 import zhchess
 import timeit

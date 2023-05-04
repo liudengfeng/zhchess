@@ -1,4 +1,4 @@
-# This file is part of the python-chess library.
+# This file is part of the python-zhchess library.
 # Copyright (C) 2016-2021 Niklas Fiekas <niklas.fiekas@backscattering.de>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ from typing import Dict, Generic, Hashable, Iterable, Iterator, List, Optional, 
 
 class SuicideBoard(zhchess.Board):
 
-    aliases = ["Suicide", "Suicide chess"]
+    aliases = ["Suicide", "Suicide zhchess"]
     uci_variant = "suicide"
     xboard_variant = "suicide"
 
@@ -162,7 +162,7 @@ class SuicideBoard(zhchess.Board):
 
 class GiveawayBoard(SuicideBoard):
 
-    aliases = ["Giveaway", "Giveaway chess", "Give away", "Give away chess"]
+    aliases = ["Giveaway", "Giveaway zhchess", "Give away", "Give away zhchess"]
     uci_variant = "giveaway"
     xboard_variant = "giveaway"
 
@@ -187,7 +187,7 @@ class GiveawayBoard(SuicideBoard):
 
 class AntichessBoard(GiveawayBoard):
 
-    aliases = ["Antichess", "Anti chess", "Anti"]
+    aliases = ["Antichess", "Anti zhchess", "Anti"]
     uci_variant = "antichess"  # Unofficial
     starting_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1"
 
@@ -201,7 +201,7 @@ class AntichessBoard(GiveawayBoard):
 
 class AtomicBoard(zhchess.Board):
 
-    aliases = ["Atomic", "Atom", "Atomic chess"]
+    aliases = ["Atomic", "Atom", "Atomic zhchess"]
     uci_variant = "atomic"
     xboard_variant = "atomic"
 
@@ -437,7 +437,7 @@ class RacingKingsBoard(zhchess.Board):
 
 class HordeBoard(zhchess.Board):
 
-    aliases = ["Horde", "Horde chess"]
+    aliases = ["Horde", "Horde zhchess"]
     uci_variant = "horde"
     xboard_variant = "horde"  # Unofficial
     starting_fen = "rnbqkbnr/pppppppp/8/1PP2PP1/PPPPPPPP/PPPPPPPP/PPPPPPPP/PPPPPPPP w kq - 0 1"
@@ -703,7 +703,7 @@ class _ThreeCheckBoardState(Generic[ThreeCheckBoardT], zhchess._BoardState[Three
 
 class ThreeCheckBoard(zhchess.Board):
 
-    aliases = ["Three-check", "Three check", "Threecheck", "Three check chess", "3-check", "3 check", "3check"]
+    aliases = ["Three-check", "Three check", "Threecheck", "Three check zhchess", "3-check", "3 check", "3check"]
     uci_variant = "3check"
     xboard_variant = "3check"
     starting_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 3+3 0 1"
@@ -947,7 +947,7 @@ class CrazyhouseBoard(zhchess.Board):
 
         It is legal to drop a checkmate.
 
-        Returns a :class:`set of squares <chess.SquareSet>`.
+        Returns a :class:`set of squares <zhchess.SquareSet>`.
         """
         return zhchess.SquareSet(self.legal_drop_squares_mask())
 

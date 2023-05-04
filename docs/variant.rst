@@ -1,11 +1,11 @@
 Variants
 ========
 
-python-chess supports several chess variants.
+python-zhchess supports several zhchess variants.
 
->>> import chess.variant
+>>> import zhchess.variant
 >>>
->>> board = chess.variant.GiveawayBoard()
+>>> board = zhchess.variant.GiveawayBoard()
 
 >>> # General information about the variants.
 >>> type(board).uci_variant
@@ -18,32 +18,32 @@ python-chess supports several chess variants.
 ================ ========================================= ============= ============
 Variant          Board class                               UCI/XBoard    Syzygy
 ================ ========================================= ============= ============
-Standard         :class:`chess.Board`                      chess/normal  .rtbw, .rtbz
-Suicide          :class:`chess.variant.SuicideBoard`       suicide       .stbw, .stbz
-Giveaway         :class:`chess.variant.GiveawayBoard`      giveaway      .gtbw, .gtbz
-Antichess        :class:`chess.variant.AntichessBoard`     antichess     .gtbw, .gtbz
-Atomic           :class:`chess.variant.AtomicBoard`        atomic        .atbw, .atbz
-King of the Hill :class:`chess.variant.KingOfTheHillBoard` kingofthehill
-Racing Kings     :class:`chess.variant.RacingKingsBoard`   racingkings
-Horde            :class:`chess.variant.HordeBoard`         horde
-Three-check      :class:`chess.variant.ThreeCheckBoard`    3check
-Crazyhouse       :class:`chess.variant.CrazyhouseBoard`    crazyhouse
+Standard         :class:`zhchess.Board`                      zhchess/normal  .rtbw, .rtbz
+Suicide          :class:`zhchess.variant.SuicideBoard`       suicide       .stbw, .stbz
+Giveaway         :class:`zhchess.variant.GiveawayBoard`      giveaway      .gtbw, .gtbz
+Antichess        :class:`zhchess.variant.AntichessBoard`     antichess     .gtbw, .gtbz
+Atomic           :class:`zhchess.variant.AtomicBoard`        atomic        .atbw, .atbz
+King of the Hill :class:`zhchess.variant.KingOfTheHillBoard` kingofthehill
+Racing Kings     :class:`zhchess.variant.RacingKingsBoard`   racingkings
+Horde            :class:`zhchess.variant.HordeBoard`         horde
+Three-check      :class:`zhchess.variant.ThreeCheckBoard`    3check
+Crazyhouse       :class:`zhchess.variant.CrazyhouseBoard`    crazyhouse
 ================ ========================================= ============= ============
 
-.. autofunction:: chess.variant.find_variant
+.. autofunction:: zhchess.variant.find_variant
 
 Game end
 --------
 
-See :func:`chess.Board.is_variant_end()`, :func:`~chess.Board.is_variant_win()`,
-:func:`~chess.Board.is_variant_draw()`,
-or :func:`~chess.Board.is_variant_loss()` for special variant end conditions
+See :func:`zhchess.Board.is_variant_end()`, :func:`~zhchess.Board.is_variant_win()`,
+:func:`~zhchess.Board.is_variant_draw()`,
+or :func:`~zhchess.Board.is_variant_loss()` for special variant end conditions
 and results.
 
 Note that if all of them return ``False``, the game may still be over and
-decided by standard conditions like :func:`~chess.Board.is_checkmate()`,
-:func:`~chess.Board.is_stalemate()`,
-:func:`~chess.Board.is_insufficient_material()`, move counters, repetitions,
+decided by standard conditions like :func:`~zhchess.Board.is_checkmate()`,
+:func:`~zhchess.Board.is_stalemate()`,
+:func:`~zhchess.Board.is_insufficient_material()`, move counters, repetitions,
 and legitimate claims.
 
 Chess960
@@ -51,39 +51,39 @@ Chess960
 
 Chess960 is orthogonal to all other variants.
 
->>> chess.Board(chess960=True)
+>>> zhchess.Board(chess960=True)
 Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', chess960=True)
 
-See :func:`chess.BaseBoard.set_chess960_pos()`,
-:func:`~chess.BaseBoard.chess960_pos()`, and
-:func:`~chess.BaseBoard.from_chess960_pos()` for dealing with Chess960 starting
+See :func:`zhchess.BaseBoard.set_chess960_pos()`,
+:func:`~zhchess.BaseBoard.chess960_pos()`, and
+:func:`~zhchess.BaseBoard.from_chess960_pos()` for dealing with Chess960 starting
 positions.
 
 Crazyhouse
 ----------
 
-.. autoclass:: chess.variant.CrazyhousePocket
+.. autoclass:: zhchess.variant.CrazyhousePocket
     :members:
 
-.. autoclass:: chess.variant.CrazyhouseBoard
+.. autoclass:: zhchess.variant.CrazyhouseBoard
     :members: legal_drop_squares
 
     .. py:attribute:: pockets
-       :value: [chess.variant.CrazyhousePocket(), chess.variant.CrazyhousePocket()]
+       :value: [zhchess.variant.CrazyhousePocket(), zhchess.variant.CrazyhousePocket()]
 
-        Pockets for each color. For example, ``board.pockets[chess.WHITE]``
+        Pockets for each color. For example, ``board.pockets[zhchess.WHITE]``
         are the pocket pieces available to White.
 
 Three-check
 -----------
 
-.. autoclass:: chess.variant.ThreeCheckBoard
+.. autoclass:: zhchess.variant.ThreeCheckBoard
 
     .. py:attribute:: remaining_checks
        :value: [3, 3]
 
         Remaining checks until victory for each color. For example,
-        ``board.remaining_checks[chess.WHITE] == 0`` implies that White has won.
+        ``board.remaining_checks[zhchess.WHITE] == 0`` implies that White has won.
 
 UCI/XBoard
 ----------
@@ -92,22 +92,22 @@ UCI/XBoard
 XBoard engines may declare support for ``variants``.
 This is automatically managed.
 
->>> import chess.engine
+>>> import zhchess.engine
 >>>
->>> engine = chess.engine.SimpleEngine.popen_uci("stockfish-mv")
+>>> engine = zhchess.engine.SimpleEngine.popen_uci("stockfish-mv")
 >>>
->>> board = chess.variant.RacingKingsBoard()
->>> result = engine.play(board, chess.engine.Limit(time=1.0))
+>>> board = zhchess.variant.RacingKingsBoard()
+>>> result = engine.play(board, zhchess.engine.Limit(time=1.0))
 
 Syzygy
 ------
 
-Syzygy tablebases are available for suicide, giveaway and atomic chess.
+Syzygy tablebases are available for suicide, giveaway and atomic zhchess.
 
->>> import chess.syzygy
->>> import chess.variant
+>>> import zhchess.syzygy
+>>> import zhchess.variant
 >>>
->>> tables = chess.syzygy.open_tablebase("data/syzygy", VariantBoard=chess.variant.AtomicBoard)
+>>> tables = zhchess.syzygy.open_tablebase("data/syzygy", VariantBoard=zhchess.variant.AtomicBoard)
 
 
 .. _Multi-Variant Stockfish: https://github.com/ddugovic/Stockfish

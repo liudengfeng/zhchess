@@ -118,7 +118,7 @@ if __name__ == "__main__":
     parser.add_argument("--max-nodes", type=int, default=1000000,
         help="Skip larger perft tests. Defaults to 1000000")
     parser.add_argument("-v", "--variant", default="standard",
-        help="Use a non-standard chess variant")
+        help="Use a non-standard zhchess variant")
     parser.add_argument("-t", "--threads", type=int, help="Number of threads")
 
     args = parser.parse_args()

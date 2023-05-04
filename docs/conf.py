@@ -1,17 +1,17 @@
 import sys
 import os
 
-# Import the chess module.
+# Import the zhchess module.
 sys.path.insert(0, os.path.abspath(".."))
 import zhchess
 
 # Do not resolve these.
 autodoc_type_aliases = {
-    "Square": "chess.Square",
-    "Color": "chess.Color",
-    "PieceType": "chess.PieceType",
-    "Bitboard": "chess.Bitboard",
-    "IntoSquareSet": "chess.IntoSquareSet",
+    "Square": "zhchess.Square",
+    "Color": "zhchess.Color",
+    "PieceType": "zhchess.PieceType",
+    "Bitboard": "zhchess.Bitboard",
+    "IntoSquareSet": "zhchess.IntoSquareSet",
 }
 
 # Autodoc.
@@ -28,7 +28,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "python-chess"
+project = "python-zhchess"
 copyright = "2014–2022, Niklas Fiekas"
 
 # The version.

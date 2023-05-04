@@ -9,8 +9,8 @@ chmod +x bin/stockfish
 echo "`pwd`/bin" >> $GITHUB_PATH
 
 # Crafty
-git clone https://github.com/lazydroid/crafty-chess --depth 1
-cd crafty-chess
+git clone https://github.com/lazydroid/crafty-zhchess --depth 1
+cd crafty-zhchess
 make unix-gcc
 pwd >> $GITHUB_PATH
 cd ..

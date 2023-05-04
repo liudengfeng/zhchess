@@ -12,7 +12,7 @@
 8/7k/8/8/3p4/1K6/2P5/8 b - - dm -19;
 
 # Long endgames.
-# Source: http://kirill-kryukov.com/chess/longest-checkmates/longest-checkmates.shtml
+# Source: http://kirill-kryukov.com/zhchess/longest-checkmates/longest-checkmates.shtml
 
 8/8/8/1k6/8/8/K5P1/8 w - - dm 28;
 8/8/8/8/8/2k5/1R6/K7 w - - dm 16;

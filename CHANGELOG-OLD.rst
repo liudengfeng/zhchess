@@ -1,4 +1,4 @@
-Old Changelog for python-chess up to 1.0.0
+Old Changelog for python-zhchess up to 1.0.0
 ==========================================
 
 New in v1.0.0 (24th Sep 2020)
@@ -7,36 +7,36 @@ New in v1.0.0 (24th Sep 2020)
 Changes:
 
 * Now requires Python 3.7+.
-* `chess.engine` will now cut off illegal principal variations at the first
+* `zhchess.engine` will now cut off illegal principal variations at the first
   illegal move instead of discarding them entirely.
-* `chess.engine.EngineProtocol` renamed to `chess.engine.Protocol`.
-* `chess.engine.Option` is no longer a named tuple.
-* Renamed `chess.gaviota` internals.
-* Relaxed type annotations of `chess.pgn.GameNode.variation()` and related
+* `zhchess.engine.EngineProtocol` renamed to `zhchess.engine.Protocol`.
+* `zhchess.engine.Option` is no longer a named tuple.
+* Renamed `zhchess.gaviota` internals.
+* Relaxed type annotations of `zhchess.pgn.GameNode.variation()` and related
   methods.
-* Changed default colors of `chess.svg.Arrow` and
-  `chess.pgn.GameNode.arrows()`. These can be overriden with the new
-  `chess.svg.board(..., colors)` feature.
-* Documentation improvements. Will now show type aliases like `chess.Square`
+* Changed default colors of `zhchess.svg.Arrow` and
+  `zhchess.pgn.GameNode.arrows()`. These can be overriden with the new
+  `zhchess.svg.board(..., colors)` feature.
+* Documentation improvements. Will now show type aliases like `zhchess.Square`
   instead of `int`.
 
 Bugfixes:
 
 * Fix insufficient material with same-color bishops on both sides.
-* Clarify that `chess.Board.can_claim_draw()` and related methods refer to
+* Clarify that `zhchess.Board.can_claim_draw()` and related methods refer to
   claims by the player to move. Three-fold repetition could already be claimed
-  before making the final repeating move. `chess.Board.can_claim_fifty_moves()`
+  before making the final repeating move. `zhchess.Board.can_claim_fifty_moves()`
   now also allows a claim before the final repeating move. The previous
-  behavior is `chess.Board.is_fifty_moves()`.
-* Fix parsing of green arrows/circles in `chess.pgn.GameNode.arrows()`.
-* Fix overloaded type signature of `chess.engine.Protocol.engine()`.
+  behavior is `zhchess.Board.is_fifty_moves()`.
+* Fix parsing of green arrows/circles in `zhchess.pgn.GameNode.arrows()`.
+* Fix overloaded type signature of `zhchess.engine.Protocol.engine()`.
 
 New features:
 
-* Added `chess.parse_square()`, to be used instead of
-  `chess.SQUARE_NAMES.index()`.
-* Added `chess.Board.apply_mirror()`.
-* Added `chess.svg.board(..., colors)`, to allow overriding the default theme.
+* Added `zhchess.parse_square()`, to be used instead of
+  `zhchess.SQUARE_NAMES.index()`.
+* Added `zhchess.Board.apply_mirror()`.
+* Added `zhchess.svg.board(..., colors)`, to allow overriding the default theme.
 
 New in v0.31.4 (9th Aug 2020)
 -----------------------------
@@ -46,7 +46,7 @@ Bugfixes:
 * Fix inconsistency where `board.is_legal()` was not accepting castling moves
   in Chess960 notation (when board is in standard mode), while all other
   methods did.
-* Fix `chess.pgn.GameNode.set_clock()` with negative or floating point values.
+* Fix `zhchess.pgn.GameNode.set_clock()` with negative or floating point values.
 * Avoid leading and trailing spaces in PGN comments when setting annotations.
 
 New features:
@@ -65,22 +65,22 @@ Bugfixes:
 Changes:
 
 * Ignore up to one consecutive empty line between PGN headers.
-* Added PGN Variant `From Position` as an alias for standard chess.
-* `chess.pgn.FileExporter.result()` now returns the number of written
+* Added PGN Variant `From Position` as an alias for standard zhchess.
+* `zhchess.pgn.FileExporter.result()` now returns the number of written
   characters.
-* `chess.engine` now avoids sending 0 for search limits, which some engines
+* `zhchess.engine` now avoids sending 0 for search limits, which some engines
   misunderstand as no limit.
-* `chess.engine` better handles null moves sent to the engine.
-* `chess.engine` now gracefully handles `NULL` ponder moves and uppercase
+* `zhchess.engine` better handles null moves sent to the engine.
+* `zhchess.engine` now gracefully handles `NULL` ponder moves and uppercase
   moves received from UCI engines, which is technically invalid.
 
 New features:
 
-* Added `chess.pgn.GameNode.{clock, set_clock}()` to read and write
+* Added `zhchess.pgn.GameNode.{clock, set_clock}()` to read and write
   `[%clk ...]` **PGN annotations**.
-* Added `chess.pgn.GameNode.{arrows, set_arrows}()` to read and write
+* Added `zhchess.pgn.GameNode.{arrows, set_arrows}()` to read and write
   `[%csl ...]` and `[%cal ...]` PGN annotations.
-* Added `chess.pgn.GameNode.{eval, set_eval}()` to read and write
+* Added `zhchess.pgn.GameNode.{eval, set_eval}()` to read and write
   `[%eval ...]` PGN annotations.
 * Added `SquareSet.ray(a, b)` and `SquareSet.between(a, b)`.
 
@@ -89,13 +89,13 @@ New in v0.31.2 (2nd Jun 2020)
 
 Bugfixes:
 
-* Fix rejected/accepted in `chess.engine.XBoardProtocol`.
+* Fix rejected/accepted in `zhchess.engine.XBoardProtocol`.
 * Misc typing fixes.
 
 Changes:
 
-* Deprecated `chess.syzygy.is_table_name()`. Replaced with
-  `chess.syzygy.is_tablename()` which has additional parameters and defaults to
+* Deprecated `zhchess.syzygy.is_table_name()`. Replaced with
+  `zhchess.syzygy.is_tablename()` which has additional parameters and defaults to
   `one_king`.
 * Take advantage of `int.bit_count()` coming in Python 3.10.
 
@@ -115,7 +115,7 @@ Changes:
 
 * SVG boards now have a background color for the coordinate margin, making
   coordinates readable on dark backgrounds.
-* Added *[Variant "Illegal"]* as an alias for standard chess
+* Added *[Variant "Illegal"]* as an alias for standard zhchess
   (used by Chessbase).
 
 Features:
@@ -127,37 +127,37 @@ New in v0.31.0 (21st Apr 2020)
 
 Changes:
 
-* Replaced lookup table `chess.BB_BETWEEN[a][b]` with a function
-  `chess.between(a, b)`. Improves initialization and runtime performance.
-* `chess.pgn.BaseVisitor.result()` is now an abstract method, forcing
+* Replaced lookup table `zhchess.BB_BETWEEN[a][b]` with a function
+  `zhchess.between(a, b)`. Improves initialization and runtime performance.
+* `zhchess.pgn.BaseVisitor.result()` is now an abstract method, forcing
   subclasses to implement it.
-* Removed helper attributes from `chess.engine.InfoDict`. Instead it is now
+* Removed helper attributes from `zhchess.engine.InfoDict`. Instead it is now
   a `TypedDict`.
-* `chess.engine.PovScore` equality is now semantic instead of structural:
+* `zhchess.engine.PovScore` equality is now semantic instead of structural:
   Scores compare equal to the negative score from the opposite point of view.
 
 Bugfixes:
 
-* `chess.Board.is_irreversible()` now considers ceding legal en passant
+* `zhchess.Board.is_irreversible()` now considers ceding legal en passant
   captures as irreversible. Also documented that false-negatives due to forced
   lines are by design.
-* Fixed stack overflow in `chess.pgn` when exporting, visiting or getting the
+* Fixed stack overflow in `zhchess.pgn` when exporting, visiting or getting the
   final board of a very long game.
 * Clarified documentation regarding board validity.
-* `chess.pgn.GameNode.__repr__()` no longer errors if the root node has invalid
+* `zhchess.pgn.GameNode.__repr__()` no longer errors if the root node has invalid
   FEN or Variant headers.
 * Carriage returns are no longer allowed in PGN header values, fixing
   reparsability.
 * Fixed type error when XBoard name or egt features have a value that looks
   like an integer.
-* `chess.engine` is now passing type checks with mypy.
-* `chess.gaviota` is now passing type checks with mypy.
+* `zhchess.engine` is now passing type checks with mypy.
+* `zhchess.gaviota` is now passing type checks with mypy.
 
 Features:
 
-* Added `chess.Board.gives_check()`.
-* `chess.engine.AnalysisResult.wait()` now returns `chess.engine.BestMove`.
-* Added `empty_square` parameter for `chess.Board.unicode()` with better
+* Added `zhchess.Board.gives_check()`.
+* `zhchess.engine.AnalysisResult.wait()` now returns `zhchess.engine.BestMove`.
+* Added `empty_square` parameter for `zhchess.Board.unicode()` with better
   aligned default (⭘).
 
 New in v0.30.1 (18th Jan 2020)
@@ -166,12 +166,12 @@ New in v0.30.1 (18th Jan 2020)
 Changes:
 
 * Positions with more than two checkers are considered invalid and
-  `board.status()` returns `chess.STATUS_TOO_MANY_CHECKERS`.
+  `board.status()` returns `zhchess.STATUS_TOO_MANY_CHECKERS`.
 * Pawns drops in Crazyhouse are considered zeroing and reset
   `board.halfmove_clock` when played.
 * Now validating file sizes when opening Syzygy tables and Polyglot opening
   books.
-* Explicitly warn about untrusted tablebase files and chess engines.
+* Explicitly warn about untrusted tablebase files and zhchess engines.
 
 Bugfixes:
 
@@ -193,39 +193,39 @@ New in v0.30.0 (1st Jan 2020)
 Changes:
 
 * **Dropped support for Python 3.5.**
-* Remove explicit loop arguments in `chess.engine` module, following
+* Remove explicit loop arguments in `zhchess.engine` module, following
   https://bugs.python.org/issue36373.
 
 Bugfixes:
 
-* `chess.engine.EngineProtocol.returncode` is no longer poisoned when
+* `zhchess.engine.EngineProtocol.returncode` is no longer poisoned when
   `EngineProtocol.quit()` times out.
-* `chess.engine.PlayResult.info` was not always of type
-  `chess.engine.InfoDict`.
+* `zhchess.engine.PlayResult.info` was not always of type
+  `zhchess.engine.InfoDict`.
 
 Features:
 
-* The background thread spawned by `chess.engine.SimpleEngine` is now named
+* The background thread spawned by `zhchess.engine.SimpleEngine` is now named
   for improved debuggability, revealing the PID of the engine process.
-* `chess.engine.EventLoopPolicy` now supports `asyncio.PidfdChildWatcher`
+* `zhchess.engine.EventLoopPolicy` now supports `asyncio.PidfdChildWatcher`
   when running on Python 3.9+ and Linux 5.3+.
-* Add `chess.Board.san_and_push()`.
+* Add `zhchess.Board.san_and_push()`.
 
 New in v0.29.0 (2nd Dec 2019)
 -----------------------------
 
 Changes:
 
-* `chess.variant.GiveawayBoard` **now starts with castling rights**.
-  `chess.variant.AntichessBoard` is the same variant without castling rights.
+* `zhchess.variant.GiveawayBoard` **now starts with castling rights**.
+  `zhchess.variant.AntichessBoard` is the same variant without castling rights.
 * UCI info parser no longer reports errors when encountering unknown tokens.
 * Performance improvements for repetition detection.
-* Since Python 3.8: `chess.syzygy`/`chess.polyglot` use `madvise(MADV_RANDOM)`
+* Since Python 3.8: `zhchess.syzygy`/`zhchess.polyglot` use `madvise(MADV_RANDOM)`
   to prepare table/book files for random access.
 
 Bugfixes:
 
-* Fix syntax error in type annotation of `chess.engine.run_in_background()`.
+* Fix syntax error in type annotation of `zhchess.engine.run_in_background()`.
 * Fix castling rights when king is exploded in Atomic. Mitigated by the fact
   that the game is over and that it did not affect FEN.
 * Fix insufficient material with underpromoted pieces in Crazyhouse. Mitigated
@@ -254,7 +254,7 @@ Bugfixes:
 
 Changes:
 
-* `chess.Move.from_uci()` no longer accepts moves from and to the same square,
+* `zhchess.Move.from_uci()` no longer accepts moves from and to the same square,
   for example `a1a1`. `0000` is now the only valid null move notation.
 
 New in v0.28.1 (25th May 2019)
@@ -270,8 +270,8 @@ Changes:
 * `is_en_passant()`, `is_capture()`, `is_zeroing()`, `is_irreversible()`,
   `is_castling()`, `is_kingside_castling()` and `is_queenside_castling()`
   now consistently return `False` for null moves.
-* Added `chess.engine.InfoDict` class with typed shorthands for common keys.
-* Support `[Variant "3-check"]` (from chess.com PGNs).
+* Added `zhchess.engine.InfoDict` class with typed shorthands for common keys.
+* Support `[Variant "3-check"]` (from zhchess.com PGNs).
 
 New in v0.28.0 (20th May 2019)
 ------------------------------
@@ -279,7 +279,7 @@ New in v0.28.0 (20th May 2019)
 Changes:
 
 * Dropped support for Python 3.4 (end of life reached).
-* `chess.polyglot.Entry.move` **is now a property instead of a method**.
+* `zhchess.polyglot.Entry.move` **is now a property instead of a method**.
   The raw move is now always decoded in the context of the position (relevant
   for castling moves).
 * `Piece`, `Move`, `BaseBoard` and `Board` comparisons no longer support
@@ -296,22 +296,22 @@ Bugfixes:
 * Notation like `Kh1` is no longer accepted for castling moves.
 * Remove stale files from wheels published on PyPI.
 * Parsing Three-Check EPDs with moves was always failing.
-* Some methods in `chess.variant` were returning bool-ish integers, when they
+* Some methods in `zhchess.variant` were returning bool-ish integers, when they
   should have returned `bool`.
-* `chess.engine`: Fix line decoding when Windows line-endings arrive seperately
+* `zhchess.engine`: Fix line decoding when Windows line-endings arrive seperately
   in stdout buffer.
-* `chess.engine`: Survive timeout in analysis.
-* `chess.engine`: Survive unexpected `bestmove` sent by misbehaving UCI engines.
+* `zhchess.engine`: Survive timeout in analysis.
+* `zhchess.engine`: Survive unexpected `bestmove` sent by misbehaving UCI engines.
 
 New features:
 
 * **Experimental type signatures for almost all public APIs** (`typing`).
   Some modules do not yet internally pass typechecking.
 * Added `Board.color_at(square)`.
-* Added `chess.engine.AnalysisResult.get()` and `empty()`.
-* `chess.engine`: The `UCI_AnalyseMode` option is still automatically managed,
+* Added `zhchess.engine.AnalysisResult.get()` and `empty()`.
+* `zhchess.engine`: The `UCI_AnalyseMode` option is still automatically managed,
   but can now be overwritten.
-* `chess.engine.EngineProtocol` and constructors now optionally take
+* `zhchess.engine.EngineProtocol` and constructors now optionally take
   an explicit `loop` argument.
 
 New in v0.27.3 (21st Mar 2019)
@@ -322,7 +322,7 @@ Changes:
 * `XBoardProtocol` will no longer raise an exception when the engine resigned.
   Instead it sets a new flag `PlayResult.resigned`. `resigned` and
   `draw_offered` are keyword-only arguments.
-* Renamed `chess.pgn.{Game,Header,Board}Creator` to
+* Renamed `zhchess.pgn.{Game,Header,Board}Creator` to
   `{Game,Headers,Board}Builder`. Aliases kept in place.
 
 Bugfixes:
@@ -339,8 +339,8 @@ Bugfixes:
 
 New features:
 
-* Added `chess.pgn.Game.builder()`, `chess.pgn.Headers.builder()` and
-  `chess.pgn.GameNode.dangling_node()` to simplify subclassing `GameNode`.
+* Added `zhchess.pgn.Game.builder()`, `zhchess.pgn.Headers.builder()` and
+  `zhchess.pgn.GameNode.dangling_node()` to simplify subclassing `GameNode`.
 * `EngineProtocol.communicate()` is now also available in the synchronous API.
 
 New in v0.27.2 (16th Mar 2019)
@@ -348,22 +348,22 @@ New in v0.27.2 (16th Mar 2019)
 
 Bugfixes:
 
-* `chess.engine.XBoardProtocol.play()` was searching 100 times longer than
-  intended when using `chess.engine.Limit.time`, and searching 100 times more
-  nodes than intended when using `chess.engine.Limit.nodes`. Thanks @pascalgeo.
+* `zhchess.engine.XBoardProtocol.play()` was searching 100 times longer than
+  intended when using `zhchess.engine.Limit.time`, and searching 100 times more
+  nodes than intended when using `zhchess.engine.Limit.nodes`. Thanks @pascalgeo.
 
 New in v0.27.1 (15th Mar 2019)
 ------------------------------
 
 Bugfixes:
 
-* `chess.engine.XBoardProtocol.play()` was raising `KeyError` when using time
+* `zhchess.engine.XBoardProtocol.play()` was raising `KeyError` when using time
   controls with increment or remaining moves. Thanks @pascalgeo.
 
 New in v0.27.0 (14th Mar 2019)
 ------------------------------
 
-This is the second **release candidate for python-chess 1.0**. If you see the
+This is the second **release candidate for python-zhchess 1.0**. If you see the
 need for breaking changes, please speak up now!
 
 Bugfixes:
@@ -371,7 +371,7 @@ Bugfixes:
 * `EngineProtocol.analyse(*, multipv)` was not passing this argument to the
   engine and therefore only returned the first principal variation.
   Thanks @svangordon.
-* `chess.svg.board(*, squares)`: The X symbol on selected squares is now more
+* `zhchess.svg.board(*, squares)`: The X symbol on selected squares is now more
   visible when it overlaps pieces.
 
 Changes:
@@ -386,19 +386,19 @@ Changes:
 New features:
 
 * Added `Board.is_repetition(count=3)`.
-* Document that `chess.engine.EngineProtocol` is compatible with
+* Document that `zhchess.engine.EngineProtocol` is compatible with
   AsyncSSH 1.16.0.
 
 New in v0.26.0 (19th Feb 2019)
 ------------------------------
 
-This is the first **release candidate for python-chess 1.0**. If you see the
+This is the first **release candidate for python-zhchess 1.0**. If you see the
 need for breaking changes, please speak up now!
 
 Changes:
 
-* `chess.engine` **is now stable and replaces**
-  `chess.uci` **and** `chess.xboard`.
+* `zhchess.engine` **is now stable and replaces**
+  `zhchess.uci` **and** `zhchess.xboard`.
 * Advanced: `EngineProtocol.initialize()` is now public for use with custom
   transports.
 * Removed `__ne__` implementations (not required since Python 3).
@@ -419,7 +419,7 @@ New in v0.25.1 (24th Jan 2019)
 
 Bugfixes:
 
-* `chess.engine` did not correctly handle Windows-style line endings.
+* `zhchess.engine` did not correctly handle Windows-style line endings.
   Thanks @Bstylestuff.
 
 New in v0.25.0 (18th Jan 2019)
@@ -427,9 +427,9 @@ New in v0.25.0 (18th Jan 2019)
 
 New features:
 
-* This release introduces a new **experimental API for chess engine
-  communication**, `chess.engine`, based on `asyncio`. It is intended to
-  eventually replace `chess.uci` and `chess.xboard`.
+* This release introduces a new **experimental API for zhchess engine
+  communication**, `zhchess.engine`, based on `asyncio`. It is intended to
+  eventually replace `zhchess.uci` and `zhchess.xboard`.
 
 Bugfixes:
 
@@ -440,7 +440,7 @@ Bugfixes:
 
 Changes:
 
-* `chess.pgn.read_game()` now ignores BOM at the start of the stream.
+* `zhchess.pgn.read_game()` now ignores BOM at the start of the stream.
 * Removed deprecated items.
 
 New in v0.24.2 (5th Jan 2019)
@@ -450,15 +450,15 @@ Bugfixes:
 
 * `CrazyhouseBoard.root()` and `ThreeCheckBoard.root()` were not returning the
   correct pockets and number of remaining checks, respectively. Thanks @gbtami.
-* `chess.pgn.skip_game()` now correctly skips PGN comments that contain
+* `zhchess.pgn.skip_game()` now correctly skips PGN comments that contain
   line-breaks and PGN header tag notation.
 
 Changes:
 
-* Renamed `chess.pgn.GameModelCreator` to `GameCreator`. Alias kept in place
+* Renamed `zhchess.pgn.GameModelCreator` to `GameCreator`. Alias kept in place
   and will be removed in a future release.
-* Renamed `chess.engine` to `chess._engine`. Use re-exports from `chess.uci`
-  or `chess.xboard`.
+* Renamed `zhchess.engine` to `zhchess._engine`. Use re-exports from `zhchess.uci`
+  or `zhchess.xboard`.
 * Renamed `Board.stack` to `Board._stack`. Do not use this directly.
 * Improved memory usage: `Board.legal_moves` and `Board.pseudo_legal_moves`
   no longer create reference cycles. PGN visitors can manage headers
@@ -467,16 +467,16 @@ Changes:
 
 Features:
 
-* Added `chess.pgn.BaseVisitor.visit_board()` and `chess.pgn.BoardCreator`.
+* Added `zhchess.pgn.BaseVisitor.visit_board()` and `zhchess.pgn.BoardCreator`.
 
 New in v0.24.1, v0.23.11 (7th Dec 2018)
 ---------------------------------------
 
 Bugfixes:
 
-* Fix `chess.Board.set_epd()` and `chess.Board.from_epd()` with semicolon
+* Fix `zhchess.Board.set_epd()` and `zhchess.Board.from_epd()` with semicolon
   in string operand. Thanks @jdart1.
-* `chess.pgn.GameNode.uci()` was always raising an exception.
+* `zhchess.pgn.GameNode.uci()` was always raising an exception.
   Also included in v0.24.0.
 
 New in v0.24.0 (3rd Dec 2018)
@@ -489,79 +489,79 @@ Changes:
 
 * **Require Python 3.4.** Thanks @hugovk.
 * No longer using extra pip features:
-  `pip install python-chess[engine,gaviota]` is now `pip install python-chess`.
+  `pip install python-zhchess[engine,gaviota]` is now `pip install python-zhchess`.
 * Various keyword arguments can now be used as **keyword arguments only**.
-* `chess.pgn.GameNode.accept()` now
+* `zhchess.pgn.GameNode.accept()` now
   **also visits the move leading to that node**.
-* `chess.pgn.GameModelCreator` now requires that `begin_game()` be called.
-* `chess.pgn.scan_headers()` and `chess.pgn.scan_offsets()` have been removed.
-  Instead the new functions `chess.pgn.read_headers()` and
-  `chess.pgn.skip_game()` can be used for a similar purpose.
-* `chess.syzygy`: Invalid magic headers now raise `IOError`. Previously they
+* `zhchess.pgn.GameModelCreator` now requires that `begin_game()` be called.
+* `zhchess.pgn.scan_headers()` and `zhchess.pgn.scan_offsets()` have been removed.
+  Instead the new functions `zhchess.pgn.read_headers()` and
+  `zhchess.pgn.skip_game()` can be used for a similar purpose.
+* `zhchess.syzygy`: Invalid magic headers now raise `IOError`. Previously they
   were only checked in an assertion.
   `type(board).{tbw_magic,tbz_magic,pawnless_tbw_magic,pawnless_tbz_magic}`
   are now byte literals.
 * `board.status()` constants (`STATUS_`) are now typed using `enum.IntFlag`.
   Values remain unchanged.
-* `chess.svg.Arrow` is no longer a `namedtuple`.
-* `chess.PIECE_SYMBOLS[0]` and `chess.PIECE_NAMES[0]` are now `None` instead
+* `zhchess.svg.Arrow` is no longer a `namedtuple`.
+* `zhchess.PIECE_SYMBOLS[0]` and `zhchess.PIECE_NAMES[0]` are now `None` instead
   of empty strings.
 * Performance optimizations:
 
-  * `chess.pgn.Game.from_board()`,
-  * `chess.square_name()`
+  * `zhchess.pgn.Game.from_board()`,
+  * `zhchess.square_name()`
   * Replace `collections.deque` with lists almost everywhere.
 
 * Renamed symbols (aliases will be removed in the next release):
 
-  * `chess.BB_VOID` -> `BB_EMPTY`
-  * `chess.bswap()` -> `flip_vertical()`
-  * `chess.pgn.GameNode.main_line()` -> `mainline_moves()`
-  * `chess.pgn.GameNode.is_main_line()` -> `is_mainline()`
-  * `chess.variant.BB_HILL` -> `chess.BB_CENTER`
-  * `chess.syzygy.open_tablebases()` -> `open_tablebase()`
-  * `chess.syzygy.Tablebases` -> `Tablebase`
-  * `chess.syzygy.Tablebase.open_directory()` -> `add_directory()`
-  * `chess.gaviota.open_tablebases()` -> `open_tablebase()`
-  * `chess.gaviota.open_tablebases_native()` -> `open_tablebase_native()`
-  * `chess.gaviota.NativeTablebases` -> `NativeTablebase`
-  * `chess.gaviota.PythonTablebases` -> `PythonTablebase`
-  * `chess.gaviota.NativeTablebase.open_directory()` -> `add_directory()`
-  * `chess.gaviota.PythonTablebase.open_directory()` -> `add_directory()`
+  * `zhchess.BB_VOID` -> `BB_EMPTY`
+  * `zhchess.bswap()` -> `flip_vertical()`
+  * `zhchess.pgn.GameNode.main_line()` -> `mainline_moves()`
+  * `zhchess.pgn.GameNode.is_main_line()` -> `is_mainline()`
+  * `zhchess.variant.BB_HILL` -> `zhchess.BB_CENTER`
+  * `zhchess.syzygy.open_tablebases()` -> `open_tablebase()`
+  * `zhchess.syzygy.Tablebases` -> `Tablebase`
+  * `zhchess.syzygy.Tablebase.open_directory()` -> `add_directory()`
+  * `zhchess.gaviota.open_tablebases()` -> `open_tablebase()`
+  * `zhchess.gaviota.open_tablebases_native()` -> `open_tablebase_native()`
+  * `zhchess.gaviota.NativeTablebases` -> `NativeTablebase`
+  * `zhchess.gaviota.PythonTablebases` -> `PythonTablebase`
+  * `zhchess.gaviota.NativeTablebase.open_directory()` -> `add_directory()`
+  * `zhchess.gaviota.PythonTablebase.open_directory()` -> `add_directory()`
 
 Bugfixes:
 
-* The PGN parser now gives the visitor a chance to handle unknown chess
+* The PGN parser now gives the visitor a chance to handle unknown zhchess
   variants and continue parsing.
-* `chess.pgn.GameNode.uci()` was always raising an exception.
+* `zhchess.pgn.GameNode.uci()` was always raising an exception.
 
 New features:
 
-* `chess.SquareSet` now extends `collections.abc.MutableSet` and can be
+* `zhchess.SquareSet` now extends `collections.abc.MutableSet` and can be
   initialized from iterables.
 * `board.apply_transform(f)` and `board.transform(f)` can apply bitboard
   transformations to a position. Examples:
-  `chess.flip_{vertical,horizontal,diagonal,anti_diagonal}`.
-* `chess.pgn.GameNode.mainline()` iterates over nodes of the mainline.
+  `zhchess.flip_{vertical,horizontal,diagonal,anti_diagonal}`.
+* `zhchess.pgn.GameNode.mainline()` iterates over nodes of the mainline.
   Can also be used with `reversed()`. Reversal is now also supported for
-  `chess.pgn.GameNode.mainline_moves()`.
-* `chess.svg.Arrow(tail, head, color="#888")` gained an optional *color*
+  `zhchess.pgn.GameNode.mainline_moves()`.
+* `zhchess.svg.Arrow(tail, head, color="#888")` gained an optional *color*
   argument.
-* `chess.pgn.BaseVisitor.parse_san(board, san)` is used by parsers and can
+* `zhchess.pgn.BaseVisitor.parse_san(board, san)` is used by parsers and can
   be overwritten to deal with non-standard input formats.
-* `chess.pgn`: Visitors can advise the parser to skip games or variations by
-  returning the special value `chess.pgn.SKIP` from `begin_game()`,
+* `zhchess.pgn`: Visitors can advise the parser to skip games or variations by
+  returning the special value `zhchess.pgn.SKIP` from `begin_game()`,
   `end_headers()` or `begin_variation()`. This is only a hint.
   The corresponding `end_game()` or `end_variation()` will still be called.
-* Added `chess.svg.MARGIN`.
+* Added `zhchess.svg.MARGIN`.
 
 New in v0.23.10 (31st Oct 2018)
 -------------------------------
 
 Bugfixes:
 
-* `chess.SquareSet` now correctly handles negative masks. Thanks @hasnul.
-* `chess.pgn` now accepts `[Variant "chess 960"]` (with the space).
+* `zhchess.SquareSet` now correctly handles negative masks. Thanks @hasnul.
+* `zhchess.pgn` now accepts `[Variant "zhchess 960"]` (with the space).
 
 New in v0.23.9 (4th Jul 2018)
 -----------------------------
@@ -577,7 +577,7 @@ New in v0.23.8 (1st Jul 2018)
 
 Bugfixes:
 
-* `chess.syzygy`: Correctly initialize wide DTZ map for experimental 7 piece
+* `zhchess.syzygy`: Correctly initialize wide DTZ map for experimental 7 piece
   table KRBBPvKQ.
 
 New in v0.23.7 (26th Jun 2018)
@@ -594,9 +594,9 @@ Changes:
 * `Board.move_stack` is now guaranteed to be UCI compatible with respect to
   the representation of castling moves and `board.chess960`.
 * Drop support for Python 3.3, which is long past end of life.
-* `chess.uci`: The `position` command now manages `UCI_Chess960` and
+* `zhchess.uci`: The `position` command now manages `UCI_Chess960` and
   `UCI_Variant` automatically.
-* `chess.uci`: The `position` command will now always send the entire history
+* `zhchess.uci`: The `position` command will now always send the entire history
   of moves from the root position.
 * Various coding style fixes and improvements. Thanks @hugovk.
 
@@ -633,7 +633,7 @@ New in v0.23.5 (11th May 2018)
 
 Bugfixes:
 
-* Atomic chess: KNvKN is not insufficient material.
+* Atomic zhchess: KNvKN is not insufficient material.
 * Crazyhouse: Detect insufficient material. This can not happen unless the
   game was started with insufficient material.
 
@@ -688,18 +688,18 @@ New features:
 
 Changes:
 
-* `chess.syzygy.filenames()` was renamed to `tablenames()` and
+* `zhchess.syzygy.filenames()` was renamed to `tablenames()` and
   gained an optional `piece_count=6` argument.
-* `chess.syzygy.normalize_filename()` was renamed to `normalize_tablename()`.
-* The undocumented constructors of `chess.syzygy.WdlTable` and
-  `chess.syzygy.DtzTable` have been changed.
+* `zhchess.syzygy.normalize_filename()` was renamed to `normalize_tablename()`.
+* The undocumented constructors of `zhchess.syzygy.WdlTable` and
+  `zhchess.syzygy.DtzTable` have been changed.
 
 New in v0.22.2 (15th Mar 2018)
 ------------------------------
 
 Bugfixes:
 
-* In standard chess promoted pieces were incorrectly considered as
+* In standard zhchess promoted pieces were incorrectly considered as
   distinguishable from normal pieces with regard to position equality
   and threefold repetition. Thanks to kn-sq-tb for reporting.
 
@@ -720,18 +720,18 @@ New in v0.22.1 (1st Jan 2018)
 New features:
 
 * Added `Board.mirror()`, `SquareSet.mirror()` and `bswap()`.
-* Added `chess.pgn.GameNode.accept_subgame()`.
+* Added `zhchess.pgn.GameNode.accept_subgame()`.
 * XBoard: Added `resign`, `analyze`, `exit`, `name`, `rating`, `computer`,
   `egtpath`, `pause`, `resume`. Completed option parsing.
 
 Changes:
 
-* `chess.pgn`: Accept FICS wilds without warning.
+* `zhchess.pgn`: Accept FICS wilds without warning.
 * XBoard: Inform engine about game results.
 
 Bugfixes:
 
-* `chess.pgn`: Allow games without movetext.
+* `zhchess.pgn`: Allow games without movetext.
 * XBoard: Fixed draw handling.
 
 New in v0.22.0 (20th Nov 2017)
@@ -754,8 +754,8 @@ New in v0.21.2 (17th Nov 2017)
 
 Changes:
 
-* `chess.svg` is now fully SVG Tiny 1.2 compatible. Removed
-  `chess.svg.DEFAULT_STYLE` which would from now on be always empty.
+* `zhchess.svg` is now fully SVG Tiny 1.2 compatible. Removed
+  `zhchess.svg.DEFAULT_STYLE` which would from now on be always empty.
 
 New in v0.21.1 (14th Nov 2017)
 ------------------------------
@@ -769,7 +769,7 @@ Bugfixes:
 
 New features:
 
-* Added `Game.without_tag_roster()`. `chess.pgn.StringExporter()` can now
+* Added `Game.without_tag_roster()`. `zhchess.pgn.StringExporter()` can now
   handle games without any headers.
 * XBoard: `white`, `black`, `random`, `nps`, `otim`, `undo`, `remove`. Thanks
   to Manik Charan.
@@ -827,7 +827,7 @@ New features:
 
 * **Experimental XBoard engine support.** Thanks to Manik Charan and
   Cash Costello. Expect breaking changes in future releases.
-* Added an undocumented `chess.polyglot.ZobristHasher` to make Zobrist hashing
+* Added an undocumented `zhchess.polyglot.ZobristHasher` to make Zobrist hashing
   easier to extend.
 
 Bugfixes:
@@ -837,25 +837,25 @@ Bugfixes:
   check counters and pockets were ignored.)
 * Checking moves in Three-Check are now considered as irreversible by
   `ThreeCheckBoard.is_irreversible()`.
-* `chess.Move.from_uci("")` was raising `IndexError` instead of `ValueError`.
+* `zhchess.Move.from_uci("")` was raising `IndexError` instead of `ValueError`.
   Thanks Jonny Balls.
 
 Changes:
 
-* `chess.syzygy.Tablebases` constructor no longer supports directly opening
-  a directory. Use `chess.syzygy.open_tablebases()`.
-* `chess.gaviota.PythonTablebases` and `NativeTablebases` constructors
+* `zhchess.syzygy.Tablebases` constructor no longer supports directly opening
+  a directory. Use `zhchess.syzygy.open_tablebases()`.
+* `zhchess.gaviota.PythonTablebases` and `NativeTablebases` constructors
   no longer support directly opening a directory.
-  Use `chess.gaviota.open_tablebases()`.
-* `chess.Board` instances are now compared by the position they represent,
+  Use `zhchess.gaviota.open_tablebases()`.
+* `zhchess.Board` instances are now compared by the position they represent,
   not by exact match of the internal data structures (or even move history).
 * Relaxed castling right validation in Chess960: Kings/rooks of opposing sites
   are no longer required to be on the same file.
 * Removed misnamed `Piece.__unicode__()` and `BaseBoard.__unicode__()`. Use
   `Piece.unicode_symbol()` and `BaseBoard.unicode()` instead.
-* Changed `chess.SquareSet.__repr__()`.
+* Changed `zhchess.SquareSet.__repr__()`.
 * Support `[Variant "normal"]` in PGNs.
-* `pip install python-chess[engine]` instead of `python-chess[uci]` (since
+* `pip install python-zhchess[engine]` instead of `python-zhchess[uci]` (since
   the extra dependencies are required for both UCI and XBoard engines).
 * Mixed documentation fixes and improvements.
 
@@ -872,23 +872,23 @@ New in v0.18.3 (28th Jun 2017)
 
 Bugfixes:
 
-* `chess.gaviota.NativeTablebases.get_dtm()` and `get_wdl()` were missing.
+* `zhchess.gaviota.NativeTablebases.get_dtm()` and `get_wdl()` were missing.
 
 New in v0.18.2 (1st Jun 2017)
 -----------------------------
 
 Bugfixes:
 
-* Fixed castling in atomic chess when there is a rank attack.
+* Fixed castling in atomic zhchess when there is a rank attack.
 * The halfmove clock in Crazyhouse is no longer incremented unconditionally.
   `CrazyhouseBoard.is_zeroing(move)` now considers pawn moves and captures as
   zeroing. Added `Board.is_irreversible(move)` that can be used instead.
-* Fixed an inconsistency where the `chess.pgn` tokenizer accepts long algebraic
+* Fixed an inconsistency where the `zhchess.pgn` tokenizer accepts long algebraic
   notation but `Board.parse_san()` did not.
 
 Changes:
 
-* Added more NAG constants in `chess.pgn`.
+* Added more NAG constants in `zhchess.pgn`.
 
 New in v0.18.1 (1st May 2017)
 -----------------------------
@@ -915,20 +915,20 @@ Bugfixes:
 * Fixed `Board.parse_uci()` for crazyhouse drops. Thanks to Ryan Delaney.
 * Fixed `AtomicBoard.is_insufficient_material()`.
 * Fixed signature of `SuicideBoard.was_into_check()`.
-* Explicitly close input and output streams when a `chess.uci.PopenProcess`
+* Explicitly close input and output streams when a `zhchess.uci.PopenProcess`
   terminates.
 * The documentation of `Board.attackers()` was wrongly stating that en passant
   capturable pawns are considered attacked.
 
 Changes:
 
-* `chess.SquareSet` is no longer hashable (since it is mutable).
+* `zhchess.SquareSet` is no longer hashable (since it is mutable).
 * Removed functions and constants deprecated in v0.17.0.
 * Dropped `gmpy2` and `gmpy` as optional dependencies. They were no longer
   improving performance.
 * Various tweaks and optimizations for 5% improvement in PGN parsing and perft
   speed. (Signature of `_is_safe` and `_ep_skewered` changed).
-* Rewritten `chess.svg.board()` using `xml.etree`. No longer supports *pre* and
+* Rewritten `zhchess.svg.board()` using `xml.etree`. No longer supports *pre* and
   *post*. Use an XML parser if you need to modify the SVG. Now only inserts
   actually used piece defintions.
 * Untangled UCI process and engine instanciation, changing signatures of
@@ -937,14 +937,14 @@ Changes:
 
 New features:
 
-* `chess.svg.board()` now supports arrows. Thanks to @rheber for implementing
+* `zhchess.svg.board()` now supports arrows. Thanks to @rheber for implementing
   this feature.
-* Let `chess.uci.PopenEngine` consistently handle Ctrl+C across platforms
-  and Python versions. `chess.uci.popen_engine()` now supports a `setpgrp`
+* Let `zhchess.uci.PopenEngine` consistently handle Ctrl+C across platforms
+  and Python versions. `zhchess.uci.popen_engine()` now supports a `setpgrp`
   keyword argument to start the engine process in a new process group.
   Thanks to @dubiousjim.
 * Added `board.king(color)` to find the (royal) king of a given side.
-* SVGs now have `viewBox` and `chess.svg.board(size=None)` supports and
+* SVGs now have `viewBox` and `zhchess.svg.board(size=None)` supports and
   defaults to `None` (i.e. scaling to the size of the container).
 
 New in v0.17.0 (6th Mar 2017)
@@ -973,7 +973,7 @@ Bugfixes:
 * **Positions in variant end are now guaranteed to have no legal moves.**
   `board.is_variant_end()` has been added to test for special variant end
   conditions. Thanks to salvador-dali.
-* `chess.svg`: Fixed a typo in the class names of black queens. Fixed fill
+* `zhchess.svg`: Fixed a typo in the class names of black queens. Fixed fill
   color for black rooks and queens. Added SVG Tiny support. These combined
   changes fix display in a number of applications, including
   Jupyter Qt Console. Thanks to Alexander Meshcheryakov.
@@ -1000,7 +1000,7 @@ Changes:
   `Board.push()` (instead of normalized copies for castling moves).
   This ensures they can be used with `Board.variation_san()` amongst others.
 * `board.ep_square` is now `None` instead of `0` for no en passant square.
-* `chess.svg`: Better vector graphics for knights. Thanks to ProgramFox.
+* `zhchess.svg`: Better vector graphics for knights. Thanks to ProgramFox.
 * Documentation improvements.
 
 New in v0.16.1 (12th Dec 2016)
@@ -1008,7 +1008,7 @@ New in v0.16.1 (12th Dec 2016)
 
 Bugfixes:
 
-* Explosions in atomic chess were not destroying castling rights. Thanks to
+* Explosions in atomic zhchess were not destroying castling rights. Thanks to
   ProgramFOX for finding this issue.
 
 New in v0.16.0 (11th Dec 2016)
@@ -1022,17 +1022,17 @@ Bugfixes:
 New features:
 
 * **Variant support: Suicide, Giveaway, Atomic, King of the Hill, Racing Kings,
-  Horde, Three-check, Crazyhouse.** `chess.Move` now supports drops.
-* More fine grained dependencies. Use *pip install python-chess[uci,gaviota]* to
+  Horde, Three-check, Crazyhouse.** `zhchess.Move` now supports drops.
+* More fine grained dependencies. Use *pip install python-zhchess[uci,gaviota]* to
   install dependencies for the full feature set.
-* Added `chess.STATUS_EMPTY` and `chess.STATUS_ILLEGAL_CHECK`.
+* Added `zhchess.STATUS_EMPTY` and `zhchess.STATUS_ILLEGAL_CHECK`.
 * The `board.promoted` mask keeps track of promoted pieces.
 * Optionally copy boards without the move stack: `board.copy(stack=False)`.
 * `examples/bratko_kopec` now supports avoid move (am), variants and
   displays fractional scores immidiately. Thanks to Daniel Dugovic.
 * `perft.py` rewritten with multi-threading support and moved to
   `examples/perft`.
-* `chess.syzygy.dependencies()`, `chess.syzygy.all_dependencies()` to generate
+* `zhchess.syzygy.dependencies()`, `zhchess.syzygy.all_dependencies()` to generate
   Syzygy tablebase dependencies.
 
 Changes:
@@ -1041,8 +1041,8 @@ Changes:
   `probe_dtz()` **and** `probe_dtm()` **now raise** `KeyError` **or**
   `MissingTableError` **instead of returning** *None*. If you prefer getting
   `None` in case  of an error use `get_wdl()`, `get_dtz()` and `get_dtm()`.
-* `chess.pgn.BaseVisitor.result()` returns `True` by default and is no longer
-  used by `chess.pgn.read_game()` if no game was found.
+* `zhchess.pgn.BaseVisitor.result()` returns `True` by default and is no longer
+  used by `zhchess.pgn.read_game()` if no game was found.
 * Non-fast-forward update of the Git repository to reduce size (old binary
   test assets removed).
 * `board.pop()` now uses a boardstate stack to undo moves.
@@ -1101,7 +1101,7 @@ New in v0.15.0 (11th Aug 2016)
 
 Changes:
 
-* `chess.uci.Score` **no longer has** `upperbound` **and** `lowerbound`
+* `zhchess.uci.Score` **no longer has** `upperbound` **and** `lowerbound`
   **attributes**. Previously these were always *False*.
 
 * Significant improvements of move generation speed, around **2.3x faster
@@ -1128,7 +1128,7 @@ New features:
 * Added `Board.chess960_pos()` to identify the Chess960 starting position
   number of positions.
 
-* Added `chess.BB_BACKRANKS` and `chess.BB_PAWN_ATTACKS`.
+* Added `zhchess.BB_BACKRANKS` and `zhchess.BB_PAWN_ATTACKS`.
 
 New in v0.14.1 (7th Jun 2016)
 -----------------------------
@@ -1140,7 +1140,7 @@ Bugfixes:
 
 Changes:
 
-* Added optional argument *max_fds=128* to `chess.syzygy.open_tablebases()`.
+* Added optional argument *max_fds=128* to `zhchess.syzygy.open_tablebases()`.
   An LRU cache is used to keep at most *max_fds* files open. This allows using
   many tables without running out of file descriptors.
   Previously all tables were opened at once.
@@ -1148,7 +1148,7 @@ Changes:
 * Syzygy and Gaviota now store absolute tablebase paths, in case you change
   the working directory of the process.
 
-* The default implementation of `chess.uci.InfoHandler.score()` will no longer
+* The default implementation of `zhchess.uci.InfoHandler.score()` will no longer
   store score bounds in `info["score"]`, only real scores.
 
 * Added `Board.set_chess960_pos()`.
@@ -1186,7 +1186,7 @@ Changes:
   Diagonal skewers on the last double pawn move are now handled correctly,
   even though such positions can not be reached with a sequence of legal moves.
 
-* `chess.syzygy` now uses the more efficient selective move generation.
+* `zhchess.syzygy` now uses the more efficient selective move generation.
 
 New features:
 
@@ -1222,7 +1222,7 @@ Bugfixes:
 
 Changes:
 
-* `chess.uci` now uses `subprocess32` if applicable (and available).
+* `zhchess.uci` now uses `subprocess32` if applicable (and available).
   Additionally a lock is used to work around a race condition in Python 2, that
   can occur when spawning engines from multiple threads at the same time.
 
@@ -1233,7 +1233,7 @@ New in v0.13.2 (19th Jan 2016)
 
 Changes:
 
-* `chess.syzygy.open_tablebases()` now raises if the given directory
+* `zhchess.syzygy.open_tablebases()` now raises if the given directory
   does not exist.
 
 * Allow visitors to handle invalid `FEN` tags in PGNs.
@@ -1242,7 +1242,7 @@ Changes:
 
 Minor new features:
 
-* Added `chess.pgn.Game.from_board()`.
+* Added `zhchess.pgn.Game.from_board()`.
 
 New in v0.13.1 (20th Dec 2015)
 ------------------------------
@@ -1251,29 +1251,29 @@ Changes:
 
 * Missing *SetUp* tags in PGNs are ignored.
 
-* Incompatible comparisons on `chess.Piece`, `chess.Move`, `chess.Board`
-  and `chess.SquareSet` now return *NotImplemented* instead of *False*.
+* Incompatible comparisons on `zhchess.Piece`, `zhchess.Move`, `zhchess.Board`
+  and `zhchess.SquareSet` now return *NotImplemented* instead of *False*.
 
 Minor new features:
 
-* Factored out basic board operations to `chess.BaseBoard`. This is inherited
-  by `chess.Board` and extended with the usual move generation features.
+* Factored out basic board operations to `zhchess.BaseBoard`. This is inherited
+  by `zhchess.Board` and extended with the usual move generation features.
 
-* Added optional *claim_draw* argument to `chess.Base.is_game_over()`.
+* Added optional *claim_draw* argument to `zhchess.Base.is_game_over()`.
 
-* Added `chess.Board.result(claim_draw=False)`.
+* Added `zhchess.Board.result(claim_draw=False)`.
 
-* Allow `chess.Board.set_piece_at(square, None)`.
+* Allow `zhchess.Board.set_piece_at(square, None)`.
 
-* Added `chess.SquareSet.from_square(square)`.
+* Added `zhchess.SquareSet.from_square(square)`.
 
 New in v0.13.0 (10th Nov 2015)
 ------------------------------
 
-* `chess.pgn.Game.export()` and `chess.pgn.GameNode.export()` have been
+* `zhchess.pgn.Game.export()` and `zhchess.pgn.GameNode.export()` have been
   removed and replaced with a new visitor concept.
 
-* `chess.pgn.read_game()` no longer takes an `error_handler` argument. Errors
+* `zhchess.pgn.read_game()` no longer takes an `error_handler` argument. Errors
   are now logged. Use the new visitor concept to change this behaviour.
 
 New in v0.12.5 (18th Oct 2015)
@@ -1367,7 +1367,7 @@ Changes:
   In Chess960 mode the behaviour is as in the previous release. Castling moves
   are represented as a king move to the corresponding rook square.
 
-  In the default standard chess mode castling moves are represented with
+  In the default standard zhchess mode castling moves are represented with
   the standard UCI notation, e.g. `e1g1` for king-side castling.
 
   `Board.uci(move, chess960=None)` creates UCI representations for moves.
@@ -1375,9 +1375,9 @@ Changes:
   position.
 
   `Board.has_chess960_castling_rights()` has been added to test for castling
-  rights that are impossible in standard chess.
+  rights that are impossible in standard zhchess.
 
-  The modules `chess.polyglot`, `chess.pgn` and `chess.uci` will transparently
+  The modules `zhchess.polyglot`, `zhchess.pgn` and `zhchess.uci` will transparently
   handle both modes.
 
 * In a previous release `Board.fen()` has been changed to only display an
@@ -1407,7 +1407,7 @@ New in v0.10.0 (28th Aug 2015)
 New dependencies:
 
 * If you are using Python < 3.2 you have to install `futures` in order to
-  use the `chess.uci` module.
+  use the `zhchess.uci` module.
 
 Changes:
 
@@ -1421,12 +1421,12 @@ Changes:
 
   `stop` and `ponderhit` no longer have a result.
 
-* The values of the color constants `chess.WHITE` and `chess.BLACK` have been
+* The values of the color constants `zhchess.WHITE` and `zhchess.BLACK` have been
   changed. Previously `WHITE` was `0`, `BLACK` was `1`. Now `WHITE` is `True`,
   `BLACK` is `False`. The recommended way to invert `color` is using
   `not color`.
 
-* The pseudo piece type `chess.NONE` has been removed in favor of just using
+* The pseudo piece type `zhchess.NONE` has been removed in favor of just using
   `None`.
 
 * Changed the `Board(fen)` constructor. If the optional `fen` argument is not
@@ -1467,10 +1467,10 @@ New features:
 
   .. code:: python
 
-      >>> chess.Board.empty()
+      >>> zhchess.Board.empty()
       Board('8/8/8/8/8/8/8/8 w - - 0 1')
 
-      >>> board, ops = chess.Board.from_epd("4k3/8/8/8/8/8/8/4K3 b - - fmvn 17; hmvc 13")
+      >>> board, ops = zhchess.Board.from_epd("4k3/8/8/8/8/8/8/4K3 b - - fmvn 17; hmvc 13")
       >>> board
       Board('4k3/8/8/8/8/8/8/4K3 b - - 13 17')
       >>> ops
@@ -1484,7 +1484,7 @@ New features:
 
 * Added `Board.clear_stack()`.
 
-* Support common set operations on `chess.SquareSet()`.
+* Support common set operations on `zhchess.SquareSet()`.
 
 New in v0.9.1 (15th Jul 2015)
 -----------------------------
@@ -1526,14 +1526,14 @@ Incompatible changes:
 
   .. code:: python
 
-      >>> board = chess.Board()
+      >>> board = zhchess.Board()
 
       >>> # Standard castling rights.
-      >>> board.castling_rights == chess.BB_A1 | chess.BB_H1 | chess.BB_A8 | chess.BB_H8
+      >>> board.castling_rights == zhchess.BB_A1 | zhchess.BB_H1 | zhchess.BB_A8 | zhchess.BB_H8
       True
 
       >>> # Check for the presence of a specific castling right.
-      >>> can_white_castle_queenside = chess.BB_A1 & board.castling_rights
+      >>> can_white_castle_queenside = zhchess.BB_A1 & board.castling_rights
 
   Castling moves were previously encoded as the corresponding king movement in
   UCI, e.g. `e1f1` for white kingside castling. **Now castling moves are
@@ -1597,7 +1597,7 @@ New features:
 * **Introduced Chess960 support.** `Board(fen)` and `Board.set_fen(fen)` now
   support X-FENs. Added `Board.shredder_fen()`.
   `Board.status(allow_chess960=True)` has an optional argument allowing to
-  insist on standard chess castling rules.
+  insist on standard zhchess castling rules.
   Added `Board.is_valid(allow_chess960=True)`.
 
 * **Improved move generation using** `Shatranj-style direct lookup
@@ -1735,17 +1735,17 @@ New in v0.5.0 (28th Oct 2014)
   .. code:: python
 
       >>> # Raises ValueError:
-      >>> game = chess.pgn.read_game(file_with_illegal_moves)
+      >>> game = zhchess.pgn.read_game(file_with_illegal_moves)
 
   .. code:: python
 
       >>> # Silently ignores errors and continues parsing:
-      >>> game = chess.pgn.read_game(file_with_illegal_moves, None)
+      >>> game = zhchess.pgn.read_game(file_with_illegal_moves, None)
 
   .. code:: python
 
       >>> # Logs the error, continues parsing:
-      >>> game = chess.pgn.read_game(file_with_illegal_moves, logger.exception)
+      >>> game = zhchess.pgn.read_game(file_with_illegal_moves, logger.exception)
 
   If there are too many closing brackets this is now ignored.
 
@@ -1846,7 +1846,7 @@ New in v0.3.0 (13th Aug 2014)
 
   .. code:: python
 
-      >>> print(chess.Bitboard())
+      >>> print(zhchess.Bitboard())
       r n b q k b n r
       p p p p p p p p
       . . . . . . . .

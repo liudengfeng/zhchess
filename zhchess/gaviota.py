@@ -1,4 +1,4 @@
-# This file is part of the python-chess library.
+# This file is part of the python-zhchess library.
 # Copyright (C) 2015 Jean-Noël Avila <jn.avila@free.fr>
 # Copyright (C) 2015-2021 Niklas Fiekas <niklas.fiekas@backscattering.de>
 #
@@ -1561,18 +1561,18 @@ class PythonTablebase:
 
         In the example position, white to move will get mated in 10 half-moves:
 
-        >>> import chess
-        >>> import chess.gaviota
+        >>> import zhchess
+        >>> import zhchess.gaviota
         >>>
-        >>> with chess.gaviota.open_tablebase("data/gaviota") as tablebase:
-        ...     board = chess.Board("8/8/8/8/8/8/8/K2kr3 w - - 0 1")
+        >>> with zhchess.gaviota.open_tablebase("data/gaviota") as tablebase:
+        ...     board = zhchess.Board("8/8/8/8/8/8/8/K2kr3 w - - 0 1")
         ...     print(tablebase.probe_dtm(board))
         ...
         -10
 
         :raises: :exc:`KeyError` (or specifically
-            :exc:`chess.gaviota.MissingTableError`) if the probe fails. Use
-            :func:`~chess.gaviota.PythonTablebase.get_dtm()` if you prefer
+            :exc:`zhchess.gaviota.MissingTableError`) if the probe fails. Use
+            :func:`~zhchess.gaviota.PythonTablebase.get_dtm()` if you prefer
             to get ``None`` instead of an exception.
 
             Note that probing a corrupted table file is undefined behavior.
@@ -1643,18 +1643,18 @@ class PythonTablebase:
         Returns ``1`` if the side to move is winning, ``0`` if it is a draw,
         and ``-1`` if the side to move is losing.
 
-        >>> import chess
-        >>> import chess.gaviota
+        >>> import zhchess
+        >>> import zhchess.gaviota
         >>>
-        >>> with chess.gaviota.open_tablebase("data/gaviota") as tablebase:
-        ...     board = chess.Board("8/4k3/8/B7/8/8/8/4K3 w - - 0 1")
+        >>> with zhchess.gaviota.open_tablebase("data/gaviota") as tablebase:
+        ...     board = zhchess.Board("8/4k3/8/B7/8/8/8/4K3 w - - 0 1")
         ...     print(tablebase.probe_wdl(board))
         ...
         0
 
         :raises: :exc:`KeyError` (or specifically
-            :exc:`chess.gaviota.MissingTableError`) if the probe fails. Use
-            :func:`~chess.gaviota.PythonTablebase.get_wdl()` if you prefer
+            :exc:`zhchess.gaviota.MissingTableError`) if the probe fails. Use
+            :func:`~zhchess.gaviota.PythonTablebase.get_wdl()` if you prefer
             to get ``None`` instead of an exception.
 
             Note that probing a corrupted table file is undefined behavior.
@@ -1913,7 +1913,7 @@ class PythonTablebase:
 class NativeTablebase:
     """
     Provides access to Gaviota tablebases via the shared library libgtb.
-    Has the same interface as :class:`~chess.gaviota.PythonTablebase`.
+    Has the same interface as :class:`~zhchess.gaviota.PythonTablebase`.
     """
 
     def __init__(self, libgtb: ctypes.CDLL) -> None:
@@ -2077,7 +2077,7 @@ def open_tablebase_native(directory: str, *, libgtb: Optional[str] = None, Libra
     """
     Opens a collection of tables for probing using libgtb.
 
-    In most cases :func:`~chess.gaviota.open_tablebase()` should be used.
+    In most cases :func:`~zhchess.gaviota.open_tablebase()` should be used.
     Use this function only if you do not want to downgrade to pure Python
     tablebase probing.
 

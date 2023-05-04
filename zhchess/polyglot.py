@@ -1,4 +1,4 @@
-# This file is part of the python-chess library.
+# This file is part of the python-zhchess library.
 # Copyright (C) 2012-2021 Niklas Fiekas <niklas.fiekas@backscattering.de>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -308,7 +308,7 @@ class Entry(NamedTuple):
     raw_move: int
     """
     The raw binary representation of the move. Use
-    :data:`~chess.polyglot.Entry.move` instead.
+    :data:`~zhchess.polyglot.Entry.move` instead.
     """
 
     weight: int
@@ -318,7 +318,7 @@ class Entry(NamedTuple):
     """Another integer value that can be used for extra information."""
 
     move: zhchess.Move
-    """The :class:`~chess.Move`."""
+    """The :class:`~zhchess.Move`."""
 
 
 class _EmptyMmap(bytearray):
@@ -459,7 +459,7 @@ class MemoryMappedReader:
         *minimum_weight* ``0`` to select all entries.
 
         :raises: :exc:`IndexError` if no entries are found. Use
-            :func:`~chess.polyglot.MemoryMappedReader.get()` if you prefer to
+            :func:`~zhchess.polyglot.MemoryMappedReader.get()` if you prefer to
             get ``None`` instead of an exception.
         """
         try:
@@ -523,12 +523,12 @@ def open_reader(path: PathLike) -> MemoryMappedReader:
     The following example opens a book to find all entries for the start
     position:
 
-    >>> import chess
-    >>> import chess.polyglot
+    >>> import zhchess
+    >>> import zhchess.polyglot
     >>>
-    >>> board = chess.Board()
+    >>> board = zhchess.Board()
     >>>
-    >>> with chess.polyglot.open_reader("data/polyglot/performance.bin") as reader:
+    >>> with zhchess.polyglot.open_reader("data/polyglot/performance.bin") as reader:
     ...    for entry in reader.find_all(board):
     ...        print(entry.move, entry.weight, entry.learn)
     e2e4 1 0

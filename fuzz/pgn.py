@@ -7,7 +7,7 @@ from pythonfuzz.main import PythonFuzz
 
 
 # The default parser logs errors for syntax errors.
-logging.getLogger("chess.pgn").setLevel(logging.CRITICAL)
+logging.getLogger("zhchess.pgn").setLevel(logging.CRITICAL)
 
 
 @PythonFuzz

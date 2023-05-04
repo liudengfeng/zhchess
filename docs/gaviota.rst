@@ -8,12 +8,12 @@ castling rights are not included.
 .. warning::
     Ensure tablebase files match the known checksums. Maliciously crafted
     tablebase files may cause denial of service with
-    :class:`~chess.gaviota.PythonTablebase` and memory unsafety with
-    :class:`~chess.gaviota.NativeTablebase`.
+    :class:`~zhchess.gaviota.PythonTablebase` and memory unsafety with
+    :class:`~zhchess.gaviota.NativeTablebase`.
 
-.. autofunction:: chess.gaviota.open_tablebase
+.. autofunction:: zhchess.gaviota.open_tablebase
 
-.. autoclass:: chess.gaviota.PythonTablebase
+.. autoclass:: zhchess.gaviota.PythonTablebase
     :members:
 
 libgtb
@@ -31,7 +31,7 @@ Otherwise the pure Python probing code is used.
     sudo make install
 
 
-.. autofunction:: chess.gaviota.open_tablebase_native
+.. autofunction:: zhchess.gaviota.open_tablebase_native
 
-.. autoclass:: chess.gaviota.NativeTablebase
+.. autoclass:: zhchess.gaviota.NativeTablebase
     :members:

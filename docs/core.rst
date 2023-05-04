@@ -6,12 +6,12 @@ Colors
 
 Constants for the side to move or the color of a piece.
 
-.. py:data:: chess.WHITE
-    :type: chess.Color
+.. py:data:: zhchess.WHITE
+    :type: zhchess.Color
     :value: True
 
-.. py:data:: chess.BLACK
-    :type: chess.Color
+.. py:data:: zhchess.BLACK
+    :type: zhchess.Color
     :value: False
 
 You can get the opposite *color* using ``not color``.
@@ -19,155 +19,155 @@ You can get the opposite *color* using ``not color``.
 Piece types
 -----------
 
-.. py:data:: chess.PAWN
-    :type: chess.PieceType
+.. py:data:: zhchess.PAWN
+    :type: zhchess.PieceType
     :value: 1
-.. py:data:: chess.KNIGHT
-    :type: chess.PieceType
+.. py:data:: zhchess.KNIGHT
+    :type: zhchess.PieceType
     :value: 2
-.. py:data:: chess.BISHOP
-    :type: chess.PieceType
+.. py:data:: zhchess.BISHOP
+    :type: zhchess.PieceType
     :value: 3
-.. py:data:: chess.ROOK
-    :type: chess.PieceType
+.. py:data:: zhchess.ROOK
+    :type: zhchess.PieceType
     :value: 4
-.. py:data:: chess.QUEEN
-    :type: chess.PieceType
+.. py:data:: zhchess.QUEEN
+    :type: zhchess.PieceType
     :value: 5
-.. py:data:: chess.KING
-    :type: chess.PieceType
+.. py:data:: zhchess.KING
+    :type: zhchess.PieceType
     :value: 6
 
-.. autofunction:: chess.piece_symbol
+.. autofunction:: zhchess.piece_symbol
 
-.. autofunction:: chess.piece_name
+.. autofunction:: zhchess.piece_name
 
 Squares
 -------
 
-.. py:data:: chess.A1
-    :type: chess.Square
+.. py:data:: zhchess.A1
+    :type: zhchess.Square
     :value: 0
-.. py:data:: chess.B1
-    :type: chess.Square
+.. py:data:: zhchess.B1
+    :type: zhchess.Square
     :value: 1
 
 and so on to
 
-.. py:data:: chess.G8
-    :type: chess.Square
+.. py:data:: zhchess.G8
+    :type: zhchess.Square
     :value: 62
-.. py:data:: chess.H8
-    :type: chess.Square
+.. py:data:: zhchess.H8
+    :type: zhchess.Square
     :value: 63
 
-.. py:data:: chess.SQUARES
-    :value: [chess.A1, chess.B1, ..., chess.G8, chess.H8]
+.. py:data:: zhchess.SQUARES
+    :value: [zhchess.A1, zhchess.B1, ..., zhchess.G8, zhchess.H8]
 
-.. py:data:: chess.SQUARE_NAMES
+.. py:data:: zhchess.SQUARE_NAMES
     :value: ['a1', 'b1', ..., 'g8', 'h8']
 
-.. py:data:: chess.FILE_NAMES
+.. py:data:: zhchess.FILE_NAMES
     :value: ['a', 'b', ..., 'g', 'h']
 
-.. py:data:: chess.RANK_NAMES
+.. py:data:: zhchess.RANK_NAMES
     :value: ['1', '2', ..., '7', '8']
 
-.. autofunction:: chess.parse_square
+.. autofunction:: zhchess.parse_square
 
-.. autofunction:: chess.square_name
+.. autofunction:: zhchess.square_name
 
-.. autofunction:: chess.square
+.. autofunction:: zhchess.square
 
-.. autofunction:: chess.square_file
+.. autofunction:: zhchess.square_file
 
-.. autofunction:: chess.square_rank
+.. autofunction:: zhchess.square_rank
 
-.. autofunction:: chess.square_distance
+.. autofunction:: zhchess.square_distance
 
-.. autofunction:: chess.square_manhattan_distance
+.. autofunction:: zhchess.square_manhattan_distance
 
-.. autofunction:: chess.square_knight_distance
+.. autofunction:: zhchess.square_knight_distance
 
-.. autofunction:: chess.square_mirror
+.. autofunction:: zhchess.square_mirror
 
 Pieces
 ------
 
-.. autoclass:: chess.Piece
+.. autoclass:: zhchess.Piece
     :members:
 
 Moves
 -----
 
-.. autoclass:: chess.Move
+.. autoclass:: zhchess.Move
     :members:
 
 Board
 -----
 
-.. autodata:: chess.STARTING_FEN
+.. autodata:: zhchess.STARTING_FEN
 
-.. autodata:: chess.STARTING_BOARD_FEN
+.. autodata:: zhchess.STARTING_BOARD_FEN
 
-.. autoclass:: chess.Board
+.. autoclass:: zhchess.Board
     :members:
     :exclude-members: set_piece_at, remove_piece_at, reset_board, set_board_fen, set_piece_map, set_chess960_pos, apply_transform
 
-.. autoclass:: chess.BaseBoard
+.. autoclass:: zhchess.BaseBoard
     :members:
 
 Outcome
 -------
 
-.. autoclass:: chess.Outcome
+.. autoclass:: zhchess.Outcome
     :members:
 
-.. autoclass:: chess.Termination
+.. autoclass:: zhchess.Termination
     :members:
 
 Square sets
 -----------
 
-.. autoclass:: chess.SquareSet
+.. autoclass:: zhchess.SquareSet
     :members:
 
 Common integer masks are:
 
-.. py:data:: chess.BB_EMPTY
-    :type: chess.Bitboard
+.. py:data:: zhchess.BB_EMPTY
+    :type: zhchess.Bitboard
     :value: 0
-.. py:data:: chess.BB_ALL
-    :type: chess.Bitboard
+.. py:data:: zhchess.BB_ALL
+    :type: zhchess.Bitboard
     :value: 0xFFFF_FFFF_FFFF_FFFF
 
 Single squares:
 
-.. py:data:: chess.BB_SQUARES
-    :value: [chess.BB_A1, chess.BB_B1, ..., chess.BB_G8, chess.BB_H8]
+.. py:data:: zhchess.BB_SQUARES
+    :value: [zhchess.BB_A1, zhchess.BB_B1, ..., zhchess.BB_G8, zhchess.BB_H8]
 
 Ranks and files:
 
-.. py:data:: chess.BB_RANKS
-    :value: [chess.BB_RANK_1, ..., chess.BB_RANK_8]
+.. py:data:: zhchess.BB_RANKS
+    :value: [zhchess.BB_RANK_1, ..., zhchess.BB_RANK_8]
 
 
-.. py:data:: chess.BB_FILES
-    :value: [chess.BB_FILE_A, ..., chess.BB_FILE_H]
+.. py:data:: zhchess.BB_FILES
+    :value: [zhchess.BB_FILE_A, ..., zhchess.BB_FILE_H]
 
 Other masks:
 
-.. py:data:: chess.BB_LIGHT_SQUARES
-    :type: chess.Bitboard
+.. py:data:: zhchess.BB_LIGHT_SQUARES
+    :type: zhchess.Bitboard
     :value: 0x55AA_55AA_55AA_55AA
-.. py:data:: chess.BB_DARK_SQUARES
-    :type: chess.Bitboard
+.. py:data:: zhchess.BB_DARK_SQUARES
+    :type: zhchess.Bitboard
     :value: 0xAA55_AA55_AA55_AA55
 
-.. py:data:: chess.BB_BACKRANKS
-    :value: chess.BB_RANK_1 | chess.BB_RANK_8
+.. py:data:: zhchess.BB_BACKRANKS
+    :value: zhchess.BB_RANK_1 | zhchess.BB_RANK_8
 
-.. py:data:: chess.BB_CORNERS
-    :value: chess.BB_A1 | chess.BB_H1 | chess.BB_A8 | chess.BB_H8
-.. py:data:: chess.BB_CENTER
-    :value: chess.BB_D4 | chess.BB_E4 | chess.BB_D5 | chess.BB_E5
+.. py:data:: zhchess.BB_CORNERS
+    :value: zhchess.BB_A1 | zhchess.BB_H1 | zhchess.BB_A8 | zhchess.BB_H8
+.. py:data:: zhchess.BB_CENTER
+    :value: zhchess.BB_D4 | zhchess.BB_E4 | zhchess.BB_D5 | zhchess.BB_E5

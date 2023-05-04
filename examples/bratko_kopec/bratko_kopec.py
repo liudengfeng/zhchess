@@ -99,7 +99,7 @@ async def main() -> None:
     parser.add_argument("epd", nargs="+", type=argparse.FileType("r"),
         help="EPD test suite(s).")
     parser.add_argument("-v", "--variant", default="standard",
-        help="Use a non-standard chess variant.")
+        help="Use a non-standard zhchess variant.")
     parser.add_argument("-t", "--threads", default=1, type=int,
         help="Threads for use by the UCI engine.")
     parser.add_argument("-m", "--movetime", default=1.0, type=float,

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# This file is part of the python-chess library.
+# This file is part of the python-zhchess library.
 # Copyright (C) 2012-2021 Niklas Fiekas <niklas.fiekas@backscattering.de>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -490,7 +490,7 @@ class BoardTestCase(unittest.TestCase):
         self.assertEqual(board.epd(), "2r1k3/2qbbpp1/p2pp3/1p3PP1/Pn2P3/1PN1B3/1P3QB1/1K1R3r w - -")
 
     def test_invalid_castling_rights(self):
-        # KQkq is not valid in this standard chess position.
+        # KQkq is not valid in this standard zhchess position.
         board = zhchess.Board("1r2k3/8/8/8/8/8/8/R3KR2 w KQkq - 0 1")
         self.assertEqual(board.status(), zhchess.STATUS_BAD_CASTLING_RIGHTS)
         self.assertEqual(board.fen(), "1r2k3/8/8/8/8/8/8/R3KR2 w Q - 0 1")
@@ -1016,7 +1016,7 @@ class BoardTestCase(unittest.TestCase):
         board = zhchess.Board("2rrk3/8/8/8/8/8/3PPPPP/2RK4 w cd - 0 1")
         self.assertEqual(board.status(), zhchess.STATUS_BAD_CASTLING_RIGHTS)
 
-        # Generally valid position, but not valid standard chess position due
+        # Generally valid position, but not valid standard zhchess position due
         # to non-standard castling rights. Chess960 start position #0.
         board = zhchess.Board("bbqnnrkr/pppppppp/8/8/8/8/PPPPPPPP/BBQNNRKR w KQkq - 0 1", chess960=True)
         self.assertEqual(board.status(), zhchess.STATUS_VALID)
@@ -4315,7 +4315,7 @@ class AtomicTestCase(unittest.TestCase):
         self.assertEqual(tables.probe_wdl(board), -2)
 
     def test_atomic_validity(self):
-        # 14 checkers, the maximum in Atomic chess.
+        # 14 checkers, the maximum in Atomic zhchess.
         board = zhchess.variant.AtomicBoard("3N1NB1/2N1Q1N1/3RkR2/2NP1PN1/3NKN2/8/8/n7 w - - 0 1")
         self.assertEqual(board.status(), zhchess.STATUS_VALID)
 

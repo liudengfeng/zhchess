@@ -9,7 +9,7 @@ positions with up to 7 pieces. Positions with castling rights are not included.
     Ensure tablebase files match the known checksums. Maliciously crafted
     tablebase files may cause denial of service.
 
-.. autofunction:: chess.syzygy.open_tablebase
+.. autofunction:: zhchess.syzygy.open_tablebase
 
-.. autoclass:: chess.syzygy.Tablebase
+.. autoclass:: zhchess.syzygy.Tablebase
     :members:

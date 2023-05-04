@@ -1,4 +1,4 @@
-# This file is part of the python-chess library.
+# This file is part of the python-zhchess library.
 # Copyright (C) 2012-2021 Niklas Fiekas <niklas.fiekas@backscattering.de>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -222,7 +222,7 @@ class GameNode(abc.ABC):
         """
         Returns the number of half-moves up to this node, as indicated by
         fullmove number and turn of the position.
-        See :func:`chess.Board.ply()`.
+        See :func:`zhchess.Board.ply()`.
 
         Usually this is equal to the number of parent nodes, but it may be
         more if the game was started from a custom position.
@@ -230,7 +230,7 @@ class GameNode(abc.ABC):
 
     def turn(self) -> Color:
         """
-        Gets the color to move at this node. See :data:`chess.Board.turn`.
+        Gets the color to move at this node. See :data:`zhchess.Board.turn`.
         """
         return self.ply() % 2 == 0
 
@@ -416,7 +416,7 @@ class GameNode(abc.ABC):
             score: zhchess.engine.Score = zhchess.engine.Mate(mate)
             if mate == 0:
                 # Resolve this ambiguity in the specification in favor of
-                # standard chess: The player to move after mate is the player
+                # standard zhchess: The player to move after mate is the player
                 # who has been mated.
                 return zhchess.engine.PovScore(score, turn)
         else:
@@ -458,7 +458,7 @@ class GameNode(abc.ABC):
         Parses all ``[%csl ...]`` and ``[%cal ...]`` annotations in the comment
         of this node.
 
-        Returns a list of :class:`arrows <chess.svg.Arrow>`.
+        Returns a list of :class:`arrows <zhchess.svg.Arrow>`.
         """
         arrows = []
         for match in ARROWS_REGEX.finditer(self.comment):
@@ -609,7 +609,7 @@ class GameNode(abc.ABC):
 class ChildNode(GameNode):
     """
     A child node of a game, with the move leading to it.
-    Extends :class:`~chess.pgn.GameNode`.
+    Extends :class:`~zhchess.pgn.GameNode`.
     """
 
     parent: GameNode
@@ -621,7 +621,7 @@ class ChildNode(GameNode):
     starting_comment: str
     """
     A comment for the start of a variation. Only nodes that
-    actually start a variation (:func:`~chess.pgn.GameNode.starts_variation()`
+    actually start a variation (:func:`~zhchess.pgn.GameNode.starts_variation()`
     checks this) can have a starting comment. The root node can not have
     a starting comment.
     """
@@ -667,7 +667,7 @@ class ChildNode(GameNode):
     def san(self) -> str:
         """
         Gets the standard algebraic notation of the move leading to this node.
-        See :func:`chess.Board.san()`.
+        See :func:`zhchess.Board.san()`.
 
         Do not call this on the root node.
         """
@@ -676,7 +676,7 @@ class ChildNode(GameNode):
     def uci(self, *, chess960: Optional[bool] = None) -> str:
         """
         Gets the UCI notation of the move leading to this node.
-        See :func:`chess.Board.uci()`.
+        See :func:`zhchess.Board.uci()`.
 
         Do not call this on the root node.
         """
@@ -758,7 +758,7 @@ GameT = TypeVar("GameT", bound="Game")
 class Game(GameNode):
     """
     The root node of a game with extra information such as headers and the
-    starting position. Extends :class:`~chess.pgn.GameNode`.
+    starting position. Extends :class:`~zhchess.pgn.GameNode`.
     """
 
     headers: Headers
@@ -766,9 +766,9 @@ class Game(GameNode):
     A mapping of headers. By default, the following 7 headers are provided
     (Seven Tag Roster):
 
-    >>> import chess.pgn
+    >>> import zhchess.pgn
     >>>
-    >>> game = chess.pgn.Game()
+    >>> game = zhchess.pgn.Game()
     >>> game.headers
     Headers(Event='?', Site='?', Date='????.??.??', Round='?', White='?', Black='?', Result='*')
     """
@@ -849,7 +849,7 @@ class Game(GameNode):
 
     @classmethod
     def from_board(cls: Type[GameT], board: zhchess.Board) -> GameT:
-        """Creates a game from the move stack of a :class:`~chess.Board()`."""
+        """Creates a game from the move stack of a :class:`~zhchess.Board()`."""
         # Setup the initial position.
         game = cls()
         game.setup(board.root())
@@ -905,7 +905,7 @@ class Headers(MutableMapping[str, str]):
     def is_chess960(self) -> bool:
         return self.get("Variant", "").lower() in [
             "chess960",
-            "chess 960",
+            "zhchess 960",
             "fischerandom",  # Cute Chess
             "fischerrandom",
             "fischer random",
@@ -1021,8 +1021,8 @@ class BaseVisitor(abc.ABC, Generic[ResultT]):
     """
     Base class for visitors.
 
-    Use with :func:`chess.pgn.Game.accept()` or
-    :func:`chess.pgn.GameNode.accept()` or :func:`chess.pgn.read_game()`.
+    Use with :func:`zhchess.pgn.Game.accept()` or
+    :func:`zhchess.pgn.GameNode.accept()` or :func:`zhchess.pgn.read_game()`.
 
     The methods are called in PGN order.
     """
@@ -1123,7 +1123,7 @@ class BaseVisitor(abc.ABC, Generic[ResultT]):
 
 class GameBuilder(BaseVisitor[GameT]):
     """
-    Creates a game model. Default visitor for :func:`~chess.pgn.read_game()`.
+    Creates a game model. Default visitor for :func:`~zhchess.pgn.read_game()`.
     """
 
     @typing.overload
@@ -1182,40 +1182,40 @@ class GameBuilder(BaseVisitor[GameT]):
 
     def handle_error(self, error: Exception) -> None:
         """
-        Populates :data:`chess.pgn.Game.errors` with encountered errors and
+        Populates :data:`zhchess.pgn.Game.errors` with encountered errors and
         logs them.
 
         You can silence the log and handle errors yourself after parsing:
 
-        >>> import chess.pgn
+        >>> import zhchess.pgn
         >>> import logging
         >>>
-        >>> logging.getLogger("chess.pgn").setLevel(logging.CRITICAL)
+        >>> logging.getLogger("zhchess.pgn").setLevel(logging.CRITICAL)
         >>>
         >>> pgn = open("data/pgn/kasparov-deep-blue-1997.pgn")
         >>>
-        >>> game = chess.pgn.read_game(pgn)
+        >>> game = zhchess.pgn.read_game(pgn)
         >>> game.errors  # List of exceptions
         []
 
         You can also override this method to hook into error handling:
 
-        >>> import chess.pgn
+        >>> import zhchess.pgn
         >>>
-        >>> class MyGameBuilder(chess.pgn.GameBuilder):
+        >>> class MyGameBuilder(zhchess.pgn.GameBuilder):
         >>>     def handle_error(self, error: Exception) -> None:
         >>>         pass  # Ignore error
         >>>
         >>> pgn = open("data/pgn/kasparov-deep-blue-1997.pgn")
         >>>
-        >>> game = chess.pgn.read_game(pgn, Visitor=MyGameBuilder)
+        >>> game = zhchess.pgn.read_game(pgn, Visitor=MyGameBuilder)
         """
         LOGGER.error("%s while parsing %r", error, self.game)
         self.game.errors.append(error)
 
     def result(self) -> GameT:
         """
-        Returns the visited :class:`~chess.pgn.Game()`.
+        Returns the visited :class:`~zhchess.pgn.Game()`.
         """
         return self.game
 
@@ -1375,11 +1375,11 @@ class StringExporter(StringExporterMixin, BaseVisitor[str]):
     """
     Allows exporting a game as a string.
 
-    >>> import chess.pgn
+    >>> import zhchess.pgn
     >>>
-    >>> game = chess.pgn.Game()
+    >>> game = zhchess.pgn.Game()
     >>>
-    >>> exporter = chess.pgn.StringExporter(headers=True, variations=True, comments=True)
+    >>> exporter = zhchess.pgn.StringExporter(headers=True, variations=True, comments=True)
     >>> pgn_string = game.accept(exporter)
 
     Only *columns* characters are written per line. If *columns* is ``None``,
@@ -1401,18 +1401,18 @@ class StringExporter(StringExporterMixin, BaseVisitor[str]):
 
 class FileExporter(StringExporterMixin, BaseVisitor[int]):
     """
-    Acts like a :class:`~chess.pgn.StringExporter`, but games are written
+    Acts like a :class:`~zhchess.pgn.StringExporter`, but games are written
     directly into a text file.
 
     There will always be a blank line after each game. Handling encodings is up
     to the caller.
 
-    >>> import chess.pgn
+    >>> import zhchess.pgn
     >>>
-    >>> game = chess.pgn.Game()
+    >>> game = zhchess.pgn.Game()
     >>>
     >>> new_pgn = open("/dev/null", "w", encoding="utf-8")
-    >>> exporter = chess.pgn.FileExporter(new_pgn)
+    >>> exporter = zhchess.pgn.FileExporter(new_pgn)
     >>> game.accept(exporter)
     """
 
@@ -1453,12 +1453,12 @@ def read_game(handle: TextIO, *, Visitor: Any = GameBuilder) -> Any:
     """
     Reads a game from a file opened in text mode.
 
-    >>> import chess.pgn
+    >>> import zhchess.pgn
     >>>
     >>> pgn = open("data/pgn/kasparov-deep-blue-1997.pgn")
     >>>
-    >>> first_game = chess.pgn.read_game(pgn)
-    >>> second_game = chess.pgn.read_game(pgn)
+    >>> first_game = zhchess.pgn.read_game(pgn)
+    >>> second_game = zhchess.pgn.read_game(pgn)
     >>>
     >>> first_game.headers["Event"]
     'IBM Man-Machine, New York USA'
@@ -1484,7 +1484,7 @@ def read_game(handle: TextIO, *, Visitor: Any = GameBuilder) -> Any:
     >>> import io
     >>>
     >>> pgn = io.StringIO("1. e4 e5 2. Nf3 *")
-    >>> game = chess.pgn.read_game(pgn)
+    >>> game = zhchess.pgn.read_game(pgn)
 
     The end of a game is determined by a completely blank line or the end of
     the file. (Of course, blank lines in comments are possible).
@@ -1495,8 +1495,8 @@ def read_game(handle: TextIO, *, Visitor: Any = GameBuilder) -> Any:
 
     The parser is relatively forgiving when it comes to errors. It skips over
     tokens it can not parse. By default, any exceptions are logged and
-    collected in :data:`Game.errors <chess.pgn.Game.errors>`. This behavior can
-    be :func:`overridden <chess.pgn.GameBuilder.handle_error>`.
+    collected in :data:`Game.errors <zhchess.pgn.Game.errors>`. This behavior can
+    be :func:`overridden <zhchess.pgn.GameBuilder.handle_error>`.
 
     Returns the parsed game or ``None`` if the end of file is reached.
     """
@@ -1718,7 +1718,7 @@ def read_headers(handle: TextIO) -> Optional[Headers]:
 
     This example scans for the first game with Kasparov as the white player.
 
-    >>> import chess.pgn
+    >>> import zhchess.pgn
     >>>
     >>> pgn = open("data/pgn/kasparov-deep-blue-1997.pgn")
     >>>
@@ -1727,7 +1727,7 @@ def read_headers(handle: TextIO) -> Optional[Headers]:
     >>> while True:
     ...     offset = pgn.tell()
     ...
-    ...     headers = chess.pgn.read_headers(pgn)
+    ...     headers = zhchess.pgn.read_headers(pgn)
     ...     if headers is None:
     ...         break
     ...
@@ -1738,7 +1738,7 @@ def read_headers(handle: TextIO) -> Optional[Headers]:
 
     >>> for offset in kasparov_offsets:
     ...     pgn.seek(offset)
-    ...     chess.pgn.read_game(pgn)  # doctest: +ELLIPSIS
+    ...     zhchess.pgn.read_game(pgn)  # doctest: +ELLIPSIS
     0
     <Game at ... ('Garry Kasparov' vs. 'Deep Blue (Computer)', 1997.??.??)>
     1436

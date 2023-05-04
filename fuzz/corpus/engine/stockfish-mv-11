@@ -16,7 +16,7 @@ option name Minimum Thinking Time type spin default 20 min 0 max 5000
 option name Slow Mover type spin default 84 min 10 max 1000
 option name nodestime type spin default 0 min 0 max 10000
 option name UCI_Chess960 type check default false
-option name UCI_Variant type combo default chess var chess var antichess var atomic var crazyhouse var horde var kingofthehill var racingkings var 3check var giveaway
+option name UCI_Variant type combo default zhchess var zhchess var antichess var atomic var crazyhouse var horde var kingofthehill var racingkings var 3check var giveaway
 option name UCI_AnalyseMode type check default false
 option name UCI_LimitStrength type check default false
 option name UCI_Elo type spin default 1350 min 1350 max 2850

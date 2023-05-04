@@ -1,4 +1,4 @@
-# This file is part of the python-chess library.
+# This file is part of the python-zhchess library.
 # Copyright (C) 2012-2021 Niklas Fiekas <niklas.fiekas@backscattering.de>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -179,7 +179,7 @@ def run_in_background(coroutine: Callable[[concurrent.futures.Future[T]], Corout
     The coroutine and all remaining tasks continue running in the background
     until complete.
 
-    Note: This installs a :class:`chess.engine.EventLoopPolicy` for the entire
+    Note: This installs a :class:`zhchess.engine.EventLoopPolicy` for the entire
     process.
     """
     assert asyncio.iscoroutinefunction(coroutine)
@@ -346,14 +346,14 @@ try:
         """
         Dictionary of aggregated information sent by the engine.
 
-        Commonly used keys are: ``score`` (a :class:`~chess.engine.PovScore`),
-        ``pv`` (a list of :class:`~chess.Move` objects), ``depth``,
+        Commonly used keys are: ``score`` (a :class:`~zhchess.engine.PovScore`),
+        ``pv`` (a list of :class:`~zhchess.Move` objects), ``depth``,
         ``seldepth``, ``time`` (in seconds), ``nodes``, ``nps``, ``multipv``
         (``1`` for the mainline).
 
         Others: ``tbhits``, ``currmove``, ``currmovenumber``, ``hashfull``,
         ``cpuload``, ``refutation``, ``currline``, ``ebf`` (effective branching factor),
-        ``wdl`` (a :class:`~chess.engine.PovWdl`), and ``string``.
+        ``wdl`` (a :class:`~zhchess.engine.PovWdl`), and ``string``.
         """
         score: PovScore
         pv: List[zhchess.Move]
@@ -379,7 +379,7 @@ except AttributeError:
 
 
 class PlayResult:
-    """Returned by :func:`chess.engine.Protocol.play()`."""
+    """Returned by :func:`zhchess.engine.Protocol.play()`."""
 
     move: Optional[zhchess.Move]
     """The best move according to the engine, or ``None``."""
@@ -389,9 +389,9 @@ class PlayResult:
 
     info: InfoDict
     """
-    A dictionary of extra :class:`information <chess.engine.InfoDict>`
+    A dictionary of extra :class:`information <zhchess.engine.InfoDict>`
     sent by the engine, if selected with the *info* argument of
-    :func:`~chess.engine.Protocol.play()`.
+    :func:`~zhchess.engine.Protocol.play()`.
     """
 
     draw_offered: bool
@@ -420,7 +420,7 @@ class PlayResult:
 
 
 class Info(enum.IntFlag):
-    """Used to filter information sent by the chess engine."""
+    """Used to filter information sent by the zhchess engine."""
     NONE = 0
     BASIC = 1
     SCORE = 2
@@ -448,13 +448,13 @@ class Opponent:
 
 
 class PovScore:
-    """A relative :class:`~chess.engine.Score` and the point of view."""
+    """A relative :class:`~zhchess.engine.Score` and the point of view."""
 
     relative: Score
-    """The relative :class:`~chess.engine.Score`."""
+    """The relative :class:`~zhchess.engine.Score`."""
 
     turn: Color
-    """The point of view (``chess.WHITE`` or ``chess.BLACK``)."""
+    """The point of view (``zhchess.WHITE`` or ``zhchess.BLACK``)."""
 
     def __init__(self, relative: Score, turn: Color) -> None:
         self.relative = relative
@@ -477,7 +477,7 @@ class PovScore:
         return self.relative.is_mate()
 
     def wdl(self, *, model: _WdlModel = "sf", ply: int = 30) -> PovWdl:
-        """See :func:`~chess.engine.Score.wdl()`."""
+        """See :func:`~zhchess.engine.Score.wdl()`."""
         return PovWdl(self.relative.wdl(model=model, ply=ply), self.turn)
 
     def __repr__(self) -> str:
@@ -494,13 +494,13 @@ class Score(abc.ABC):
     """
     Evaluation of a position.
 
-    The score can be :class:`~chess.engine.Cp` (centi-pawns),
-    :class:`~chess.engine.Mate` or :py:data:`~chess.engine.MateGiven`.
+    The score can be :class:`~zhchess.engine.Cp` (centi-pawns),
+    :class:`~zhchess.engine.Mate` or :py:data:`~zhchess.engine.MateGiven`.
     A positive value indicates an advantage.
 
     There is a total order defined on centi-pawn and mate scores.
 
-    >>> from chess.engine import Cp, Mate, MateGiven
+    >>> from zhchess.engine import Cp, Mate, MateGiven
     >>>
     >>> Mate(-0) < Mate(-1) < Cp(-50) < Cp(200) < Mate(4) < Mate(1) < MateGiven
     True
@@ -806,7 +806,7 @@ MateGiven = MateGivenType()
 
 class PovWdl:
     """
-    Relative :class:`win/draw/loss statistics <chess.engine.Wdl>` and the point
+    Relative :class:`win/draw/loss statistics <zhchess.engine.Wdl>` and the point
     of view.
 
     .. deprecated:: 1.2
@@ -817,26 +817,26 @@ class PovWdl:
     """
 
     relative: Wdl
-    """The relative :class:`~chess.engine.Wdl`."""
+    """The relative :class:`~zhchess.engine.Wdl`."""
 
     turn: Color
-    """The point of view (``chess.WHITE`` or ``chess.BLACK``)."""
+    """The point of view (``zhchess.WHITE`` or ``zhchess.BLACK``)."""
 
     def __init__(self, relative: Wdl, turn: Color) -> None:
         self.relative = relative
         self.turn = turn
 
     def white(self) -> Wdl:
-        """Gets the :class:`~chess.engine.Wdl` from White's point of view."""
+        """Gets the :class:`~zhchess.engine.Wdl` from White's point of view."""
         return self.pov(zhchess.WHITE)
 
     def black(self) -> Wdl:
-        """Gets the :class:`~chess.engine.Wdl` from Black's point of view."""
+        """Gets the :class:`~zhchess.engine.Wdl` from Black's point of view."""
         return self.pov(zhchess.BLACK)
 
     def pov(self, color: Color) -> Wdl:
         """
-        Gets the :class:`~chess.engine.Wdl` from the point of view of the given
+        Gets the :class:`~zhchess.engine.Wdl` from the point of view of the given
         *color*.
         """
         return self.relative if self.turn == color else -self.relative
@@ -847,7 +847,7 @@ class PovWdl:
     def __repr__(self) -> str:
         return "PovWdl({!r}, {})".format(self.relative, "WHITE" if self.turn else "BLACK")
 
-    # Unfortunately in python-chess v1.1.0, info["wdl"] was a simple tuple
+    # Unfortunately in python-zhchess v1.1.0, info["wdl"] was a simple tuple
     # of the relative permille values, so we have to support __iter__,
     # __len__, __getitem__, and equality comparisons with other tuples.
     # Never mind the ordering, because that's not a sensible operation, anyway.
@@ -977,7 +977,7 @@ class MockTransport(asyncio.SubprocessTransport, asyncio.WriteTransport):
 
 
 class Protocol(asyncio.SubprocessProtocol, metaclass=abc.ABCMeta):
-    """Protocol for communicating with a chess engine process."""
+    """Protocol for communicating with a zhchess engine process."""
 
     options: MutableMapping[str, Option]
     """Dictionary of available options."""
@@ -1125,9 +1125,9 @@ class Protocol(asyncio.SubprocessProtocol, metaclass=abc.ABCMeta):
         Configures global engine options.
 
         :param options: A dictionary of engine options where the keys are
-            names of :data:`~chess.engine.Protocol.options`. Do not set options
+            names of :data:`~zhchess.engine.Protocol.options`. Do not set options
             that are managed automatically
-            (:func:`chess.engine.Option.is_managed()`).
+            (:func:`zhchess.engine.Option.is_managed()`).
         """
 
     @abc.abstractmethod
@@ -1136,7 +1136,7 @@ class Protocol(asyncio.SubprocessProtocol, metaclass=abc.ABCMeta):
         Sends the engine information about its opponent. The information will
         be sent after a new game is announced and before the first move. This
         method should be called before the first move of a game--i.e., the
-        first call to :func:`chess.engine.Protocol.play()`.
+        first call to :func:`zhchess.engine.Protocol.play()`.
 
         :param opponent: Optional. The opponent's information.
         :param engine_rating: Optional. This engine's own rating. Only used by XBoard engines.
@@ -1149,7 +1149,7 @@ class Protocol(asyncio.SubprocessProtocol, metaclass=abc.ABCMeta):
 
         :param board: The position. The entire move stack will be sent to the
             engine.
-        :param limit: An instance of :class:`chess.engine.Limit` that
+        :param limit: An instance of :class:`zhchess.engine.Limit` that
             determines when to stop thinking.
         :param game: Optional. An arbitrary object that identifies the game.
             Will automatically inform the engine if the object is not equal
@@ -1168,11 +1168,11 @@ class Protocol(asyncio.SubprocessProtocol, metaclass=abc.ABCMeta):
         :param options: Optional. A dictionary of engine options for the
             analysis. The previous configuration will be restored after the
             analysis is complete. You can permanently apply a configuration
-            with :func:`~chess.engine.Protocol.configure()`.
+            with :func:`~zhchess.engine.Protocol.configure()`.
         :param opponent: Optional. Information about a new opponent. Information
             about the original opponent will be restored once the move is
             complete. New opponent information can be made permanent with
-            :func:`~chess.engine.Protocol.send_opponent_information()`.
+            :func:`~zhchess.engine.Protocol.send_opponent_information()`.
         """
 
     @typing.overload
@@ -1184,11 +1184,11 @@ class Protocol(asyncio.SubprocessProtocol, metaclass=abc.ABCMeta):
     async def analyse(self, board: zhchess.Board, limit: Limit, *, multipv: Optional[int] = None, game: object = None, info: Info = INFO_ALL, root_moves: Optional[Iterable[zhchess.Move]] = None, options: ConfigMapping = {}) -> Union[List[InfoDict], InfoDict]:
         """
         Analyses a position and returns a dictionary of
-        :class:`information <chess.engine.InfoDict>`.
+        :class:`information <zhchess.engine.InfoDict>`.
 
         :param board: The position to analyse. The entire move stack will be
             sent to the engine.
-        :param limit: An instance of :class:`chess.engine.Limit` that
+        :param limit: An instance of :class:`zhchess.engine.Limit` that
             determines when to stop the analysis.
         :param multipv: Optional. Analyse multiple root moves. Will return
             a list of at most *multipv* dictionaries rather than just a single
@@ -1206,7 +1206,7 @@ class Protocol(asyncio.SubprocessProtocol, metaclass=abc.ABCMeta):
         :param options: Optional. A dictionary of engine options for the
             analysis. The previous configuration will be restored after the
             analysis is complete. You can permanently apply a configuration
-            with :func:`~chess.engine.Protocol.configure()`.
+            with :func:`~zhchess.engine.Protocol.configure()`.
         """
         analysis = await self.analysis(board, limit, multipv=multipv, game=game, info=info, root_moves=root_moves, options=options)
 
@@ -1222,7 +1222,7 @@ class Protocol(asyncio.SubprocessProtocol, metaclass=abc.ABCMeta):
 
         :param board: The position to analyse. The entire move stack will be
             sent to the engine.
-        :param limit: Optional. An instance of :class:`chess.engine.Limit`
+        :param limit: Optional. An instance of :class:`zhchess.engine.Limit`
             that determines when to stop the analysis. Analysis is infinite
             by default.
         :param multipv: Optional. Analyse multiple root moves.
@@ -1239,9 +1239,9 @@ class Protocol(asyncio.SubprocessProtocol, metaclass=abc.ABCMeta):
         :param options: Optional. A dictionary of engine options for the
             analysis. The previous configuration will be restored after the
             analysis is complete. You can permanently apply a configuration
-            with :func:`~chess.engine.Protocol.configure()`.
+            with :func:`~zhchess.engine.Protocol.configure()`.
 
-        Returns :class:`~chess.engine.AnalysisResult`, a handle that allows
+        Returns :class:`~zhchess.engine.AnalysisResult`, a handle that allows
         asynchronously iterating over the information sent by the engine
         and stopping the analysis at any time.
         """
@@ -1549,7 +1549,7 @@ class UciProtocol(Protocol):
         uci_variant = type(board).uci_variant
         if "UCI_Variant" in self.options:
             self._setoption("UCI_Variant", uci_variant)
-        elif uci_variant != "chess":
+        elif uci_variant != "zhchess":
             raise EngineError("engine does not support UCI_Variant")
 
         if "UCI_Chess960" in self.options:
@@ -1562,7 +1562,7 @@ class UciProtocol(Protocol):
         safe_history = all(board.move_stack)
         root = board.root() if safe_history else board
         fen = root.fen(shredder=board.chess960, en_passant="fen")
-        if uci_variant == "chess" and fen == zhchess.STARTING_FEN:
+        if uci_variant == "zhchess" and fen == zhchess.STARTING_FEN:
             builder.append("startpos")
         else:
             builder.append("fen")
@@ -2586,7 +2586,7 @@ def _parse_xboard_post(line: str, root_board: zhchess.Board, selector: Info = IN
 
 
 class BestMove:
-    """Returned by :func:`chess.engine.AnalysisResult.wait()`."""
+    """Returned by :func:`zhchess.engine.AnalysisResult.wait()`."""
 
     move: Optional[zhchess.Move]
     """The best move according to the engine, or ``None``."""
@@ -2606,7 +2606,7 @@ class BestMove:
 class AnalysisResult:
     """
     Handle to ongoing engine analysis.
-    Returned by :func:`chess.engine.Protocol.analysis()`.
+    Returned by :func:`zhchess.engine.Protocol.analysis()`.
 
     Can be used to asynchronously iterate over information sent by the engine.
 
@@ -2678,9 +2678,9 @@ class AnalysisResult:
 
         It might be more convenient to use ``async for info in analysis: ...``.
 
-        :raises: :exc:`chess.engine.AnalysisComplete` if the analysis is
+        :raises: :exc:`zhchess.engine.AnalysisComplete` if the analysis is
             complete (or has been stopped) and all information has been
-            consumed. Use :func:`~chess.engine.AnalysisResult.next()` if you
+            consumed. Use :func:`~zhchess.engine.AnalysisResult.next()` if you
             prefer to get ``None`` instead of an exception.
         """
         if self._seen_kork:
@@ -2697,14 +2697,14 @@ class AnalysisResult:
 
     def would_block(self) -> bool:
         """
-        Checks if calling :func:`~chess.engine.AnalysisResult.get()`,
-        calling :func:`~chess.engine.AnalysisResult.next()`,
+        Checks if calling :func:`~zhchess.engine.AnalysisResult.get()`,
+        calling :func:`~zhchess.engine.AnalysisResult.next()`,
         or advancing the iterator one step would require waiting for the
         engine.
 
         These functions would return immediately if information is
         pending (queue is not
-        :func:`empty <chess.engine.AnalysisResult.empty()>`) or if the search
+        :func:`empty <zhchess.engine.AnalysisResult.empty()>`) or if the search
         is finished.
         """
         return not self._seen_kork and self._queue.empty()
@@ -2797,11 +2797,11 @@ async def _async(sync: Callable[[], T]) -> T:
 class SimpleEngine:
     """
     Synchronous wrapper around a transport and engine protocol pair. Provides
-    the same methods and attributes as :class:`chess.engine.Protocol`
+    the same methods and attributes as :class:`zhchess.engine.Protocol`
     with blocking functions instead of coroutines.
 
     You may not concurrently modify objects passed to any of the methods. Other
-    than that, :class:`~chess.engine.SimpleEngine` is thread-safe. When sending
+    than that, :class:`~zhchess.engine.SimpleEngine` is thread-safe. When sending
     a new command to the engine, any previous running command will be cancelled
     as soon as possible.
 
@@ -2944,7 +2944,7 @@ class SimpleEngine:
     def popen_uci(cls, command: Union[str, List[str]], *, timeout: Optional[float] = 10.0, debug: bool = False, setpgrp: bool = False, **popen_args: Any) -> SimpleEngine:
         """
         Spawns and initializes a UCI engine.
-        Returns a :class:`~chess.engine.SimpleEngine` instance.
+        Returns a :class:`~zhchess.engine.SimpleEngine` instance.
         """
         return cls.popen(UciProtocol, command, timeout=timeout, debug=debug, setpgrp=setpgrp, **popen_args)
 
@@ -2952,7 +2952,7 @@ class SimpleEngine:
     def popen_xboard(cls, command: Union[str, List[str]], *, timeout: Optional[float] = 10.0, debug: bool = False, setpgrp: bool = False, **popen_args: Any) -> SimpleEngine:
         """
         Spawns and initializes an XBoard engine.
-        Returns a :class:`~chess.engine.SimpleEngine` instance.
+        Returns a :class:`~zhchess.engine.SimpleEngine` instance.
         """
         return cls.popen(XBoardProtocol, command, timeout=timeout, debug=debug, setpgrp=setpgrp, **popen_args)
 
@@ -2969,8 +2969,8 @@ class SimpleEngine:
 
 class SimpleAnalysisResult:
     """
-    Synchronous wrapper around :class:`~chess.engine.AnalysisResult`. Returned
-    by :func:`chess.engine.SimpleEngine.analysis()`.
+    Synchronous wrapper around :class:`~zhchess.engine.AnalysisResult`. Returned
+    by :func:`zhchess.engine.SimpleEngine.analysis()`.
     """
 
     def __init__(self, simple_engine: SimpleEngine, inner: AnalysisResult) -> None:

@@ -48,7 +48,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: pip install -e .
       - run: pip install mypy
-      - run: python -m mypy --strict chess
+      - run: python -m mypy --strict zhchess
       - run: python -m mypy --strict examples/**/*.py
   readme:
     runs-on: ubuntu-latest

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Helper script to create and publish a new python-chess release.
+# Helper script to create and publish a new python-zhchess release.
 
 import os
 import zhchess
@@ -61,7 +61,7 @@ def tag_and_push():
         first_section = False
         prev_line = None
         with open(release_filename, "w") as release_txt, open("CHANGELOG.rst", "r") as changelog_file:
-            headline = f"python-chess {tagname}"
+            headline = f"python-zhchess {tagname}"
             release_txt.write(headline + os.linesep)
 
             for line in changelog_file:
@@ -104,7 +104,7 @@ def pypi():
 
 def github_release(tagname):
     print("--- GITHUB RELEASE -----------------------------------------------")
-    print(f"https://github.com/niklasf/python-chess/releases/new?tag={tagname}")
+    print(f"https://github.com/niklasf/python-zhchess/releases/new?tag={tagname}")
 
 
 if __name__ == "__main__":

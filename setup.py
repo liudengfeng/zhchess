@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# This file is part of the python-chess library.
+# This file is part of the python-zhchess library.
 # Copyright (C) 2012-2021 Niklas Fiekas <niklas.fiekas@backscattering.de>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -28,14 +28,14 @@ import setuptools
 
 if sys.version_info < (3, ):
     raise ImportError(textwrap.dedent("""\
-        You are trying to install python-chess on Python 2.
+        You are trying to install python-zhchess on Python 2.
 
         The last compatible branch was 0.23.x, which was supported until the
         end of 2018. Consider upgrading to Python 3.
         """))
 
 if sys.version_info < (3, 7):
-    raise ImportError("Since version 1.0.0, python-chess requires Python 3.7 or later.")
+    raise ImportError("Since version 1.0.0, python-zhchess requires Python 3.7 or later.")
 
 import zhchess
 
@@ -55,8 +55,8 @@ def read_description():
 
     # Use documentation badge for the specific version.
     description = description.replace(
-        "//readthedocs.org/projects/python-chess/badge/?version=latest",
-        "//readthedocs.org/projects/python-chess/badge/?version=v{}".format(zhchess.__version__))
+        "//readthedocs.org/projects/python-zhchess/badge/?version=latest",
+        "//readthedocs.org/projects/python-zhchess/badge/?version=v{}".format(zhchess.__version__))
 
     # Remove doctest comments.
     description = re.sub(r"\s*# doctest:.*", "", description)
@@ -73,8 +73,8 @@ setuptools.setup(
     long_description=read_description(),
     long_description_content_type="text/x-rst",
     license="GPL-3.0+",
-    keywords="chess fen epd pgn polyglot syzygy gaviota uci xboard",
-    url="https://github.com/niklasf/python-chess",
+    keywords="zhchess fen epd pgn polyglot syzygy gaviota uci xboard",
+    url="https://github.com/niklasf/python-zhchess",
     packages=["zhchess"],
     test_suite="test",
     zip_safe=False,  # For mypy
@@ -100,7 +100,7 @@ setuptools.setup(
         "Typing :: Typed",
     ],
     project_urls={
-        "Documentation": "https://python-chess.readthedocs.io",
+        "Documentation": "https://python-zhchess.readthedocs.io",
     },
     obsoletes=["python_chess"],
 )

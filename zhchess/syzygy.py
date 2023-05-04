@@ -1,4 +1,4 @@
-# This file is part of the python-chess library.
+# This file is part of the python-zhchess library.
 # Copyright (C) 2012-2021 Niklas Fiekas <niklas.fiekas@backscattering.de>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -1684,19 +1684,19 @@ class Tablebase:
         loss. Mate can be forced but the position can be drawn due to the
         fifty-move rule.
 
-        >>> import chess
-        >>> import chess.syzygy
+        >>> import zhchess
+        >>> import zhchess.syzygy
         >>>
-        >>> with chess.syzygy.open_tablebase("data/syzygy/regular") as tablebase:
-        ...     board = chess.Board("8/2K5/4B3/3N4/8/8/4k3/8 b - - 0 1")
+        >>> with zhchess.syzygy.open_tablebase("data/syzygy/regular") as tablebase:
+        ...     board = zhchess.Board("8/2K5/4B3/3N4/8/8/4k3/8 b - - 0 1")
         ...     print(tablebase.probe_wdl(board))
         ...
         -2
 
         :raises: :exc:`KeyError` (or specifically
-            :exc:`chess.syzygy.MissingTableError`) if the position could not
+            :exc:`zhchess.syzygy.MissingTableError`) if the position could not
             be found in the tablebase. Use
-            :func:`~chess.syzygy.Tablebase.get_wdl()` if you prefer to get
+            :func:`~zhchess.syzygy.Tablebase.get_wdl()` if you prefer to get
             ``None`` instead of an exception.
 
             Note that probing corrupted table files is undefined behavior.
@@ -1875,11 +1875,11 @@ class Tablebase:
         the tablebase recommendation, for a total of 2 wasted plies, may
         change the outcome of the game.
 
-        >>> import chess
-        >>> import chess.syzygy
+        >>> import zhchess
+        >>> import zhchess.syzygy
         >>>
-        >>> with chess.syzygy.open_tablebase("data/syzygy/regular") as tablebase:
-        ...     board = chess.Board("8/2K5/4B3/3N4/8/8/4k3/8 b - - 0 1")
+        >>> with zhchess.syzygy.open_tablebase("data/syzygy/regular") as tablebase:
+        ...     board = zhchess.Board("8/2K5/4B3/3N4/8/8/4k3/8 b - - 0 1")
         ...     print(tablebase.probe_dtz(board))
         ...
         -53
@@ -1890,9 +1890,9 @@ class Tablebase:
         Both DTZ and WDL tables are required in order to probe for DTZ.
 
         :raises: :exc:`KeyError` (or specifically
-            :exc:`chess.syzygy.MissingTableError`) if the position could not
+            :exc:`zhchess.syzygy.MissingTableError`) if the position could not
             be found in the tablebase. Use
-            :func:`~chess.syzygy.Tablebase.get_dtz()` if you prefer to get
+            :func:`~zhchess.syzygy.Tablebase.get_dtz()` if you prefer to get
             ``None`` instead of an exception.
 
             Note that probing corrupted table files is undefined behavior.
@@ -1966,7 +1966,7 @@ class Tablebase:
 def open_tablebase(directory: str, *, load_wdl: bool = True, load_dtz: bool = True, max_fds: Optional[int] = 128, VariantBoard: Type[zhchess.Board] = zhchess.Board) -> Tablebase:
     """
     Opens a collection of tables for probing. See
-    :class:`~chess.syzygy.Tablebase`.
+    :class:`~zhchess.syzygy.Tablebase`.
 
     .. note::
 
@@ -1975,7 +1975,7 @@ def open_tablebase(directory: str, *, load_wdl: bool = True, load_dtz: bool = Tr
         reachable by captures and promotions.
         This is important because 6-piece and 5-piece (let alone 7-piece) files
         are often distributed separately, but are both required for 6-piece
-        positions. Use :func:`~chess.syzygy.Tablebase.add_directory()` to load
+        positions. Use :func:`~zhchess.syzygy.Tablebase.add_directory()` to load
         tables from additional directories.
 
     :param max_fds: If *max_fds* is not ``None``, will at most use *max_fds*
