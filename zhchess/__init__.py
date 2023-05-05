@@ -72,8 +72,6 @@ COLORS = [RED, BLACK] = [True, False]
 COLOR_NAMES = ["black", "red"]
 
 PieceType = int
-# TODO:删除
-# PIECE_TYPES = [PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING] = range(1, 7)
 # 按棋力价值排序
 PIECE_TYPES = [ELEPHANT, ADVISOR, PAWN, HORSE, CANNON, ROOK, KING] = range(1, 8)
 PIECE_SYMBOLS = [None, "b", "a", "p", "n", "c", "r", "k"]
@@ -975,8 +973,9 @@ class BaseBoard:
         self.pawns = BB_EMPTY
         self.knights = BB_EMPTY
         self.bishops = BB_EMPTY
+        self.ca = BB_EMPTY
+        self.ca = BB_EMPTY
         self.rooks = BB_EMPTY
-        self.queens = BB_EMPTY
         self.kings = BB_EMPTY
 
         self.promoted = BB_EMPTY
@@ -996,14 +995,16 @@ class BaseBoard:
     def pieces_mask(self, piece_type: PieceType, color: Color) -> Bitboard:
         if piece_type == PAWN:
             bb = self.pawns
-        elif piece_type == KNIGHT:
+        elif piece_type == ADVISOR:
             bb = self.knights
-        elif piece_type == BISHOP:
-            bb = self.bishops
+        elif piece_type == ELEPHANT:
+            bb = self.e
+        elif piece_type == HORSE:
+            bb = self.queens
+        elif piece_type == CANNON:
+            bb = self.queens
         elif piece_type == ROOK:
             bb = self.rooks
-        elif piece_type == QUEEN:
-            bb = self.queens
         elif piece_type == KING:
             bb = self.kings
         else:
@@ -1032,19 +1033,20 @@ class BaseBoard:
     def piece_type_at(self, square: Square) -> Optional[PieceType]:
         """Gets the piece type at the given square."""
         mask = BB_SQUARES[square]
-
         if not self.occupied & mask:
             return None  # Early return
         elif self.pawns & mask:
             return PAWN
-        elif self.knights & mask:
-            return KNIGHT
-        elif self.bishops & mask:
-            return BISHOP
+        elif self.elephant & mask:
+            return ELEPHANT
+        elif self.advisors & mask:
+            return ADVISOR
+        elif self.horses & mask:
+            return HORSE
+        elif self.cannons & mask:
+            return CANNON
         elif self.rooks & mask:
             return ROOK
-        elif self.queens & mask:
-            return QUEEN
         else:
             return KING
 
@@ -1211,14 +1213,16 @@ class BaseBoard:
 
         if piece_type == PAWN:
             self.pawns ^= mask
-        elif piece_type == KNIGHT:
-            self.knights ^= mask
-        elif piece_type == BISHOP:
-            self.bishops ^= mask
+        elif piece_type == ELEPHANT:
+            self.elephants ^= mask
+        elif piece_type == ADVISOR:
+            self.advisors ^= mask
+        elif piece_type == HORSE:
+            self.horses ^= mask
+        elif piece_type == CANNON:
+            self.cannons ^= mask
         elif piece_type == ROOK:
             self.rooks ^= mask
-        elif piece_type == QUEEN:
-            self.queens ^= mask
         elif piece_type == KING:
             self.kings ^= mask
         else:
@@ -1256,13 +1260,13 @@ class BaseBoard:
 
         if piece_type == PAWN:
             self.pawns |= mask
-        elif piece_type == KNIGHT:
-            self.knights |= mask
-        elif piece_type == BISHOP:
+        elif piece_type == ELEPHANT:
+            self.elephants |= mask
+        elif piece_type == ADVISOR:
             self.bishops |= mask
         elif piece_type == ROOK:
             self.rooks |= mask
-        elif piece_type == QUEEN:
+        elif piece_type == CANNON:
             self.queens |= mask
         elif piece_type == KING:
             self.kings |= mask
@@ -2088,10 +2092,10 @@ class Board(BaseBoard):
 
             for to_square in scan_reversed(targets):
                 if square_rank(to_square) in [0, 7]:
-                    yield Move(from_square, to_square, QUEEN)
+                    yield Move(from_square, to_square, CANNON)
                     yield Move(from_square, to_square, ROOK)
-                    yield Move(from_square, to_square, BISHOP)
-                    yield Move(from_square, to_square, KNIGHT)
+                    yield Move(from_square, to_square, ADVISOR)
+                    yield Move(from_square, to_square, ELEPHANT)
                 else:
                     yield Move(from_square, to_square)
 
@@ -2111,10 +2115,10 @@ class Board(BaseBoard):
             from_square = to_square + (8 if self.turn == BLACK else -8)
 
             if square_rank(to_square) in [0, 7]:
-                yield Move(from_square, to_square, QUEEN)
+                yield Move(from_square, to_square, CANNON)
                 yield Move(from_square, to_square, ROOK)
-                yield Move(from_square, to_square, BISHOP)
-                yield Move(from_square, to_square, KNIGHT)
+                yield Move(from_square, to_square, ADVISOR)
+                yield Move(from_square, to_square, ELEPHANT)
             else:
                 yield Move(from_square, to_square)
 
@@ -2745,7 +2749,7 @@ class Board(BaseBoard):
         an optional promotion piece type.
 
         For pawn moves to the backrank, the promotion piece type defaults to
-        :data:`zhchess.QUEEN`, unless otherwise specified.
+        :data:`zhchess.CANNON`, unless otherwise specified.
 
         Castling moves are normalized to king moves by two steps, except in
         Chess960.
@@ -2757,7 +2761,7 @@ class Board(BaseBoard):
             and self.pawns & BB_SQUARES[from_square]
             and BB_SQUARES[to_square] & BB_BACKRANKS
         ):
-            promotion = QUEEN
+            promotion = CANNON
 
         move = self._from_chess960(self.chess960, from_square, to_square, promotion)
         if not self.is_legal(move):
