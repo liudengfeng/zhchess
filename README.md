@@ -4,7 +4,7 @@
 
 ### 中国象棋字体
 
-在[babelstone](https://www.babelstone.co.uk/Fonts/Xiangqi.html)下载`ttf`格式文件，以此作为中国象棋字体。
+在[babelstone](https://www.babelstone.co.uk/Fonts/Xiangqi.html)下载`ttf`格式文件，以此作为中国象棋字体。或者直接使用源文件中的`黑白棋子字体`(data/BabelStoneXiangqi.ttf)或者`彩色棋子字体`(data/BabelStoneXiangqiColour.ttf)。
 
 - windows
   
@@ -24,5 +24,9 @@ VS Code的设置(Ctrl/Cmd + ,),在“设置”面板中添加:
 <!-- 如不需要彩色，去掉Colour -->
 "editor.fontFamily": "BabelStone Xiangqi"
 ```
+
+在`VS code`最终显示结果应为
+
+![棋子符号](data/images/unicode_piece_symbols.png)
 
 非windows系统参照以上步骤
