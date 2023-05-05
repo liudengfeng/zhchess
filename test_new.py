@@ -29,6 +29,7 @@ import unittest
 import io
 
 import zhchess
+
 # import zhchess.gaviota
 # import zhchess.engine
 # import zhchess.pgn
@@ -51,40 +52,45 @@ def catchAndSkip(signature, message=None):
                 return f(self)
             except signature as err:
                 raise unittest.SkipTest(message or err)
+
         return _wrapper
+
     return _decorator
 
 
 class SquareTestCase(unittest.TestCase):
-
     def test_square(self):
         for square in zhchess.SQUARES:
             file_index = zhchess.square_file(square)
             rank_index = zhchess.square_rank(square)
-            self.assertEqual(zhchess.square(file_index, rank_index), square, zhchess.square_name(square))
+            self.assertEqual(
+                zhchess.square(file_index, rank_index),
+                square,
+                zhchess.square_name(square),
+            )
 
-    # def test_shifts(self):
-    #     shifts = [
-    #         zhchess.shift_down,
-    #         zhchess.shift_2_down,
-    #         zhchess.shift_up,
-    #         zhchess.shift_2_up,
-    #         zhchess.shift_right,
-    #         zhchess.shift_2_right,
-    #         zhchess.shift_left,
-    #         zhchess.shift_2_left,
-    #         zhchess.shift_up_left,
-    #         zhchess.shift_up_right,
-    #         zhchess.shift_down_left,
-    #         zhchess.shift_down_right,
-    #     ]
+    def test_shifts(self):
+        shifts = [
+            zhchess.shift_down,
+            zhchess.shift_2_down,
+            zhchess.shift_up,
+            zhchess.shift_2_up,
+            zhchess.shift_right,
+            zhchess.shift_2_right,
+            zhchess.shift_left,
+            zhchess.shift_2_left,
+            zhchess.shift_up_left,
+            zhchess.shift_up_right,
+            zhchess.shift_down_left,
+            zhchess.shift_down_right,
+        ]
 
-    #     for shift in shifts:
-    #         for bb_square in zhchess.BB_SQUARES:
-    #             shifted = shift(bb_square)
-    #             c = zhchess.popcount(shifted)
-    #             self.assertLessEqual(c, 1)
-    #             self.assertEqual(c, zhchess.popcount(shifted & zhchess.BB_ALL))
+        for shift in shifts:
+            for bb_square in zhchess.BB_SQUARES:
+                shifted = shift(bb_square)
+                c = zhchess.popcount(shifted)
+                self.assertLessEqual(c, 1)
+                self.assertEqual(c, zhchess.popcount(shifted & zhchess.BB_ALL))
 
     # def test_parse_square(self):
     #     self.assertEqual(zhchess.parse_square("a1"), 0)
@@ -120,7 +126,9 @@ class SquareTestCase(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    verbosity = sum(arg.count("v") for arg in sys.argv if all(c == "v" for c in arg.lstrip("-")))
+    verbosity = sum(
+        arg.count("v") for arg in sys.argv if all(c == "v" for c in arg.lstrip("-"))
+    )
     verbosity += sys.argv.count("--verbose")
 
     if verbosity >= 2:

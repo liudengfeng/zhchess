@@ -391,7 +391,7 @@ Bitboard = int
 BB_EMPTY = 0
 BB_ALL = 0xFFFF_FFFF_FFFF_FFFF
 
-# 2 ^ n
+# 2 ^ sq
 BB_SQUARES = [
     BB_A1,
     BB_B1,
@@ -485,7 +485,8 @@ BB_SQUARES = [
     BB_I10,
 ] = [1 << sq for sq in SQUARES]
 
-BB_CORNERS = BB_A1 | BB_H1 | BB_A8 | BB_H8
+BB_CORNERS = BB_A1 | BB_I1 | BB_A10 | BB_I10
+# TODO:观察用途
 BB_CENTER = BB_D4 | BB_E4 | BB_D5 | BB_E5
 
 BB_LIGHT_SQUARES = 0x55AA_55AA_55AA_55AA
@@ -514,12 +515,23 @@ BB_RANKS = [
     BB_RANK_8,
     BB_RANK_9,
     BB_RANK_10,
-] = [0xFF << (8 * i) for i in range(10)]
+] = [0xFF << (9 * i) for i in range(10)]
 
-BB_BACKRANKS = BB_RANK_1 | BB_RANK_8
+BB_BACKRANKS = BB_RANK_1 | BB_RANK_10
 
 
 def lsb(bb: Bitboard) -> int:
+    """给定国际象棋棋盘上某个位图上最低位的索引
+
+    Args:
+        bb (Bitboard): 位图
+
+    Returns:
+        int: 最低位的索引
+
+    Notes:
+        Performing - operation on an integer x is equivalent to inverting its bits (~) and adding 1.
+    """    
     return (bb & -bb).bit_length() - 1
 
 
@@ -531,6 +543,14 @@ def scan_forward(bb: Bitboard) -> Iterator[Square]:
 
 
 def msb(bb: Bitboard) -> int:
+    """位图上最高位的索引
+
+    Args:
+        bb (Bitboard): 位图
+
+    Returns:
+        int: 最高位的索引
+    """    
     return bb.bit_length() - 1
 
 
