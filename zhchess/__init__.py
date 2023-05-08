@@ -20,14 +20,13 @@ Polyglot opening book probing, PGN reading and writing,
 Gaviota tablebase probing,
 Syzygy tablebase probing, and XBoard/UCI engine communication.
 """
-
 from __future__ import annotations
 
-__author__ = "DengFeng Liu"
+__author__ = "LDF"
 
 __email__ = "liudengfeng_sd@outlook.com"
 
-__version__ = "2.0.0"
+__version__ = "1.0.0"
 
 import collections
 import copy
@@ -72,10 +71,9 @@ COLORS = [RED, BLACK] = [True, False]
 COLOR_NAMES = ["black", "red"]
 
 PieceType = int
-# 按棋力价值排序
-PIECE_TYPES = [ELEPHANT, ADVISOR, PAWN, HORSE, CANNON, ROOK, KING] = range(1, 8)
-PIECE_SYMBOLS = [None, "b", "a", "p", "n", "c", "r", "k"]
-PIECE_NAMES = [None, "elephant", "advisor", "pawn", "horse", "cannon", "rook", "king"]
+PIECE_TYPES = [QUEEN, BISHOP, PAWN, KNIGHT, CANNON, ROOK, KING] = range(1, 8)
+PIECE_SYMBOLS = [None, "a", "b", "p", "n", "c", "r", "k"]
+PIECE_NAMES = [None, "queen", "bishop", "pawn", "knight", "cannon", "rook", "king"]
 
 
 def piece_symbol(piece_type: PieceType) -> str:
@@ -86,38 +84,29 @@ def piece_name(piece_type: PieceType) -> str:
     return typing.cast(str, PIECE_NAMES[piece_type])
 
 
+# fmt: off
 UNICODE_PIECE_SYMBOLS = {
-    "K": "🩠",
-    "k": "🩧",
-    "A": "🩡",
-    "a": "🩨",
-    "B": "🩢",
-    "b": "🩩",
-    "N": "🩣",
-    "n": "🩪",
-    "R": "🩤",
-    "r": "🩫",
-    "C": "🩥",
-    "c": "🩬",
-    "P": "🩦",
-    "p": "🩭",
+    "K": "🩠", "k": "🩧",
+    "R": "🩤", "r": "🩫",
+    "C": "🩥", "c": "🩬",
+    "N": "🩣", "n": "🩪",
+    "B": "🩢", "b": "🩩",
+    "A": "🩡", "a": "🩨",
+    "P": "🩦", "p": "🩭",
 }
-
+# fmt: on
 
 FILE_NAMES = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
 
 RANK_NAMES = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
-# TODO:KQkq含义?
-# STARTING_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 STARTING_FEN = "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1"
-"""The FEN for the standard zhchess starting position."""
+"""The FEN for the standard chess starting position."""
 
 STARTING_BOARD_FEN = "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR"
-"""The board part of the FEN for the standard zhchess starting position."""
+"""The board part of the FEN for the standard chess starting position."""
 
 
-# 位移运算效率高
 class Status(enum.IntFlag):
     VALID = 0
     NO_RED_KING = 1 << 0
@@ -215,99 +204,20 @@ class AmbiguousMoveError(ValueError):
 
 
 Square = int
+# fmt: off
 SQUARES = [
-    A1,
-    B1,
-    C1,
-    D1,
-    E1,
-    F1,
-    G1,
-    H1,
-    I1,
-    A2,
-    B2,
-    C2,
-    D2,
-    E2,
-    F2,
-    G2,
-    H2,
-    I2,
-    A3,
-    B3,
-    C3,
-    D3,
-    E3,
-    F3,
-    G3,
-    H3,
-    I3,
-    A4,
-    B4,
-    C4,
-    D4,
-    E4,
-    F4,
-    G4,
-    H4,
-    I4,
-    A5,
-    B5,
-    C5,
-    D5,
-    E5,
-    F5,
-    G5,
-    H5,
-    I5,
-    A6,
-    B6,
-    C6,
-    D6,
-    E6,
-    F6,
-    G6,
-    H6,
-    I6,
-    A7,
-    B7,
-    C7,
-    D7,
-    E7,
-    F7,
-    G7,
-    H7,
-    I7,
-    A8,
-    B8,
-    C8,
-    D8,
-    E8,
-    F8,
-    G8,
-    H8,
-    I8,
-    A9,
-    B9,
-    C9,
-    D9,
-    E9,
-    F9,
-    G9,
-    H9,
-    I9,
-    A10,
-    B10,
-    C10,
-    D10,
-    E10,
-    F10,
-    G10,
-    H10,
-    I10,
+    A1,  B1,  C1,  D1,  E1,  F1,  G1,  H1,  I1,
+    A2,  B2,  C2,  D2,  E2,  F2,  G2,  H2,  I2,
+    A3,  B3,  C3,  D3,  E3,  F3,  G3,  H3,  I3,
+    A4,  B4,  C4,  D4,  E4,  F4,  G4,  H4,  I4,
+    A5,  B5,  C5,  D5,  E5,  F5,  G5,  H5,  I5,
+    A6,  B6,  C6,  D6,  E6,  F6,  G6,  H6,  I6,
+    A7,  B7,  C7,  D7,  E7,  F7,  G7,  H7,  I7,
+    A8,  B8,  C8,  D8,  E8,  F8,  G8,  H8,  I8,
+    A9,  B9,  C9,  D9,  E9,  F9,  G9,  H9,  I9,
+    A10, B10, C10, D10, E10, F10, G10, H10, I10
 ] = range(90)
-
+# fmt: on
 SQUARE_NAMES = [f + r for r in RANK_NAMES for f in FILE_NAMES]
 
 
@@ -326,21 +236,51 @@ def square_name(square: Square) -> str:
     return SQUARE_NAMES[square]
 
 
-# TODO:比较运算符号及速度
 def square(file_index: int, rank_index: int) -> Square:
-    """Gets a square number by file and rank index."""
+    """Gets a square number by file and rank index.
+
+    Note:
+        the indexing for files and ranks begin from 0 instead of 1
+    """
     return rank_index * 9 + file_index
 
 
+Bitboard = int
+BB_EMPTY = 0
+BB_ALL = 0x3FF_FFFF_FFFF_FFFF_FFFF_FFFF
+
+# fmt: off
+BB_SQUARES = [
+    BB_A1,  BB_B1,  BB_C1,  BB_D1,  BB_E1,  BB_F1,  BB_G1,  BB_H1,  BB_I1,
+    BB_A2,  BB_B2,  BB_C2,  BB_D2,  BB_E2,  BB_F2,  BB_G2,  BB_H2,  BB_I2,
+    BB_A3,  BB_B3,  BB_C3,  BB_D3,  BB_E3,  BB_F3,  BB_G3,  BB_H3,  BB_I3,
+    BB_A4,  BB_B4,  BB_C4,  BB_D4,  BB_E4,  BB_F4,  BB_G4,  BB_H4,  BB_I4,
+    BB_A5,  BB_B5,  BB_C5,  BB_D5,  BB_E5,  BB_F5,  BB_G5,  BB_H5,  BB_I5,
+    BB_A6,  BB_B6,  BB_C6,  BB_D6,  BB_E6,  BB_F6,  BB_G6,  BB_H6,  BB_I6,
+    BB_A7,  BB_B7,  BB_C7,  BB_D7,  BB_E7,  BB_F7,  BB_G7,  BB_H7,  BB_I7,
+    BB_A8,  BB_B8,  BB_C8,  BB_D8,  BB_E8,  BB_F8,  BB_G8,  BB_H8,  BB_I8,
+    BB_A9,  BB_B9,  BB_C9,  BB_D9,  BB_E9,  BB_F9,  BB_G9,  BB_H9,  BB_I9,
+    BB_A10, BB_B10, BB_C10, BB_D10, BB_E10, BB_F10, BB_G10, BB_H10, BB_I10,
+] = [1 << sq for sq in SQUARES]
+# fmt: on
+BB_CORNERS = BB_A1 | BB_I1 | BB_A10 | BB_I10
+# TODO:不一定适用
+BB_CENTER = BB_D4 | BB_E4 | BB_D5 | BB_E5
+
+# BB_LIGHT_SQUARES = 0x55AA_55AA_55AA_55AA
+# BB_DARK_SQUARES = 0xAA55_AA55_AA55_AA55
+# BB_LIGHT_SQUARES = 0x2400_0482_2400_0482
+# BB_DARK_SQUARES = 0x1800_0C24_1800_0C24
+BB_LIGHT_SQUARES = 0x2400_0482_2400_0482_2400_0482_2400_0482_2400_0482
+BB_DARK_SQUARES = 0x1800_0C24_1800_0C24_1800_0C24_1800_0C24_1800_0C24_1800_0C24
+
 def square_file(square: Square) -> int:
     """Gets the file index of the square where ``0`` is the a-file."""
-    # return square & 9
     return square % 9
 
 
 def square_rank(square: Square) -> int:
     """Gets the rank index of the square where ``0`` is the first rank."""
-    # return square >> 3
     return square // 9
 
 
@@ -360,6 +300,7 @@ def square_manhattan_distance(a: Square, b: Square) -> int:
     return abs(square_file(a) - square_file(b)) + abs(square_rank(a) - square_rank(b))
 
 
+# TODO:不一定适用
 def square_knight_distance(a: Square, b: Square) -> int:
     """
     Gets the Knight distance (i.e., the number of knight moves) from square *a* to *b*.
@@ -381,118 +322,14 @@ def square_knight_distance(a: Square, b: Square) -> int:
     return m + ((m + dx + dy) % 2)
 
 
-def square_mirror(square: Square) -> Square:
+def square_mirror(sq: Square) -> Square:
     """Mirrors the square vertically."""
-    return square ^ 0x38
+    f, r = square_file(sq), square_rank(sq)
+    return square(f, 10 - r - 1)
 
 
 SQUARES_180 = [square_mirror(sq) for sq in SQUARES]
 
-
-Bitboard = int
-BB_EMPTY = 0
-BB_ALL = 0xFFFF_FFFF_FFFF_FFFF
-
-# 2 ^ sq
-BB_SQUARES = [
-    BB_A1,
-    BB_B1,
-    BB_C1,
-    BB_D1,
-    BB_E1,
-    BB_F1,
-    BB_G1,
-    BB_H1,
-    BB_I1,
-    BB_A2,
-    BB_B2,
-    BB_C2,
-    BB_D2,
-    BB_E2,
-    BB_F2,
-    BB_G2,
-    BB_H2,
-    BB_I2,
-    BB_A3,
-    BB_B3,
-    BB_C3,
-    BB_D3,
-    BB_E3,
-    BB_F3,
-    BB_G3,
-    BB_H3,
-    BB_I3,
-    BB_A4,
-    BB_B4,
-    BB_C4,
-    BB_D4,
-    BB_E4,
-    BB_F4,
-    BB_G4,
-    BB_H4,
-    BB_I4,
-    BB_A5,
-    BB_B5,
-    BB_C5,
-    BB_D5,
-    BB_E5,
-    BB_F5,
-    BB_G5,
-    BB_H5,
-    BB_I5,
-    BB_A6,
-    BB_B6,
-    BB_C6,
-    BB_D6,
-    BB_E6,
-    BB_F6,
-    BB_G6,
-    BB_H6,
-    BB_I6,
-    BB_A7,
-    BB_B7,
-    BB_C7,
-    BB_D7,
-    BB_E7,
-    BB_F7,
-    BB_G7,
-    BB_H7,
-    BB_I7,
-    BB_A8,
-    BB_B8,
-    BB_C8,
-    BB_D8,
-    BB_E8,
-    BB_F8,
-    BB_G8,
-    BB_H8,
-    BB_I8,
-    BB_A9,
-    BB_B9,
-    BB_C9,
-    BB_D9,
-    BB_E9,
-    BB_F9,
-    BB_G9,
-    BB_H9,
-    BB_I9,
-    BB_A10,
-    BB_B10,
-    BB_C10,
-    BB_D10,
-    BB_E10,
-    BB_F10,
-    BB_G10,
-    BB_H10,
-    BB_I10,
-] = [1 << sq for sq in SQUARES]
-
-BB_CORNERS = BB_A1 | BB_I1 | BB_A10 | BB_I10
-# TODO:观察用途
-BB_CENTER = BB_D4 | BB_E4 | BB_D5 | BB_E5
-
-BB_LIGHT_SQUARES = 0x55AA_55AA_55AA_55AA
-BB_DARK_SQUARES = 0xAA55_AA55_AA55_AA55
 
 BB_FILES = [
     BB_FILE_A,
@@ -569,11 +406,20 @@ popcount: Callable[[Bitboard], int] = getattr(
 )
 
 
+# def flip_vertical(bb: Bitboard) -> Bitboard:
+#     # https://www.chessprogramming.org/Flipping_Mirroring_and_Rotating#FlipVertically
+#     bb = ((bb >> 8) & 0x00FF_00FF_00FF_00FF) | ((bb & 0x00FF_00FF_00FF_00FF) << 8)
+#     bb = ((bb >> 16) & 0x0000_FFFF_0000_FFFF) | ((bb & 0x0000_FFFF_0000_FFFF) << 16)
+#     bb = (bb >> 32) | ((bb & 0x0000_0000_FFFF_FFFF) << 32)
+#     return bb
+
+
+# TODO:翻转需要验证
 def flip_vertical(bb: Bitboard) -> Bitboard:
     # https://www.chessprogramming.org/Flipping_Mirroring_and_Rotating#FlipVertically
-    bb = ((bb >> 8) & 0x00FF_00FF_00FF_00FF) | ((bb & 0x00FF_00FF_00FF_00FF) << 8)
-    bb = ((bb >> 16) & 0x0000_FFFF_0000_FFFF) | ((bb & 0x0000_FFFF_0000_FFFF) << 16)
-    bb = (bb >> 32) | ((bb & 0x0000_0000_FFFF_FFFF) << 32)
+    bb = ((bb >> 9) & 0x01FF_01FF_01FF_01FF) | ((bb & 0x01FF_01FF_01FF_01FF) << 9)
+    bb = ((bb >> 18) & 0x0003_FE00_0003_FE00) | ((bb & 0x0003_FE00_0003_FE00) << 18)
+    bb = (bb >> 32) | ((bb & 0x0000_01FF_FFFF_FFFF) << 32)
     return bb
 
 
@@ -608,19 +454,19 @@ def flip_anti_diagonal(bb: Bitboard) -> Bitboard:
 
 
 def shift_down(b: Bitboard) -> Bitboard:
-    return b >> 8
+    return b >> 9
 
 
 def shift_2_down(b: Bitboard) -> Bitboard:
-    return b >> 16
+    return b >> 18
 
 
 def shift_up(b: Bitboard) -> Bitboard:
-    return (b << 8) & BB_ALL
+    return (b << 9) & BB_ALL
 
 
 def shift_2_up(b: Bitboard) -> Bitboard:
-    return (b << 16) & BB_ALL
+    return (b << 18) & BB_ALL
 
 
 def shift_right(b: Bitboard) -> Bitboard:
@@ -639,22 +485,28 @@ def shift_2_left(b: Bitboard) -> Bitboard:
     return (b >> 2) & ~BB_FILE_G & ~BB_FILE_H
 
 
+# TODO:验算
 def shift_up_left(b: Bitboard) -> Bitboard:
     return (b << 7) & ~BB_FILE_H & BB_ALL
 
 
+# TODO:验算
 def shift_up_right(b: Bitboard) -> Bitboard:
     return (b << 9) & ~BB_FILE_A & BB_ALL
 
 
+# TODO:验算
 def shift_down_left(b: Bitboard) -> Bitboard:
     return (b >> 9) & ~BB_FILE_H
 
 
+# TODO:验算
 def shift_down_right(b: Bitboard) -> Bitboard:
     return (b >> 7) & ~BB_FILE_A
 
 
+# TODO:以下需要重写
+# occupied 占领
 def _sliding_attacks(
     square: Square, occupied: Bitboard, deltas: Iterable[int]
 ) -> Bitboard:
@@ -665,7 +517,7 @@ def _sliding_attacks(
 
         while True:
             sq += delta
-            if not (0 <= sq < 64) or square_distance(sq, sq - delta) > 2:
+            if not (0 <= sq < 90) or square_distance(sq, sq - delta) > 2:
                 break
 
             attacks |= BB_SQUARES[sq]
@@ -680,6 +532,7 @@ def _step_attacks(square: Square, deltas: Iterable[int]) -> Bitboard:
     return _sliding_attacks(square, BB_ALL, deltas)
 
 
+# 马 攻击
 BB_KNIGHT_ATTACKS = [
     _step_attacks(sq, [17, 15, 10, 6, -17, -15, -10, -6]) for sq in SQUARES
 ]
@@ -779,7 +632,7 @@ class Piece:
 
     def symbol(self) -> str:
         """
-        Gets the symbol ``P``, ``N``, ``A``,``B``, ``R``, ``C`` or ``K`` for red
+        Gets the symbol ``A``,``B``,``P``,  ``N``, ``C``, ``R`` or ``K`` for red
         pieces or the lower-case variants for the black pieces.
         """
         symbol = piece_symbol(self.piece_type)
@@ -792,7 +645,6 @@ class Piece:
         symbol = self.symbol().swapcase() if invert_color else self.symbol()
         return UNICODE_PIECE_SYMBOLS[symbol]
 
-    # TODO:验证，红黑棋子连续，红色棋子开始
     def __hash__(self) -> int:
         return self.piece_type + (-1 if self.color else 6)
 
@@ -946,18 +798,31 @@ class BaseBoard:
             self._set_board_fen(board_fen)
 
     def _reset_board(self) -> None:
-        self.pawns = BB_RANK_2 | BB_RANK_7
-        self.knights = BB_B1 | BB_G1 | BB_B8 | BB_G8
-        self.bishops = BB_C1 | BB_F1 | BB_C8 | BB_F8
+        # fmt: off
+        self.pawns = (BB_A4 | BB_C4 | BB_E4 | BB_G4 | BB_I4 | 
+                      BB_A7 | BB_C7 | BB_E7 | BB_G7 | BB_I7 )
+        # fmt: on
+        self.cannons = BB_B3 | BB_H3 | BB_B8 | BB_H8
         self.rooks = BB_CORNERS
-        self.queens = BB_D1 | BB_D8
-        self.kings = BB_E1 | BB_E8
+        self.knights = BB_B1 | BB_H1 | BB_B10 | BB_H10
+        self.bishops = BB_C1 | BB_G1 | BB_C10 | BB_G10
+        # queens -> 士
+        self.queens = BB_D1 | BB_F1 | BB_D10 | BB_F10
+        self.kings = BB_E1 | BB_E10
 
         self.promoted = BB_EMPTY
 
-        self.occupied_co[RED] = BB_RANK_1 | BB_RANK_2
-        self.occupied_co[BLACK] = BB_RANK_7 | BB_RANK_8
-        self.occupied = BB_RANK_1 | BB_RANK_2 | BB_RANK_7 | BB_RANK_8
+        # 红黑双方
+        self.occupied_co[RED] = (
+            BB_RANK_1 | BB_A4 | BB_C4 | BB_E4 | BB_G4 | BB_I4 | BB_B3 | BB_H3
+        )
+        self.occupied_co[BLACK] = (
+            BB_RANK_7 | BB_A7 | BB_C7 | BB_E7 | BB_G7 | BB_I7 | BB_B8 | BB_H8
+        )
+        # 国际象棋初始棋子区域
+        self.occupied = (
+            BB_RANK_1 | BB_RANK_10 | BB_B3 | BB_H3 | BB_B8 | BB_H8 | self.pawns
+        )
 
     def reset_board(self) -> None:
         """
@@ -971,11 +836,11 @@ class BaseBoard:
 
     def _clear_board(self) -> None:
         self.pawns = BB_EMPTY
+        self.cannons = BB_EMPTY
+        self.rooks = BB_EMPTY
         self.knights = BB_EMPTY
         self.bishops = BB_EMPTY
-        self.ca = BB_EMPTY
-        self.ca = BB_EMPTY
-        self.rooks = BB_EMPTY
+        self.queens = BB_EMPTY
         self.kings = BB_EMPTY
 
         self.promoted = BB_EMPTY
@@ -995,21 +860,20 @@ class BaseBoard:
     def pieces_mask(self, piece_type: PieceType, color: Color) -> Bitboard:
         if piece_type == PAWN:
             bb = self.pawns
-        elif piece_type == ADVISOR:
-            bb = self.knights
-        elif piece_type == ELEPHANT:
-            bb = self.e
-        elif piece_type == HORSE:
-            bb = self.queens
         elif piece_type == CANNON:
-            bb = self.queens
+            bb = self.cannons
         elif piece_type == ROOK:
             bb = self.rooks
+        elif piece_type == KNIGHT:
+            bb = self.knights
+        elif piece_type == BISHOP:
+            bb = self.bishops
+        elif piece_type == QUEEN:
+            bb = self.queens
         elif piece_type == KING:
             bb = self.kings
         else:
             assert False, f"expected PieceType, got {piece_type!r}"
-
         return bb & self.occupied_co[color]
 
     def pieces(self, piece_type: PieceType, color: Color) -> SquareSet:
@@ -1037,12 +901,12 @@ class BaseBoard:
             return None  # Early return
         elif self.pawns & mask:
             return PAWN
-        elif self.elephant & mask:
-            return ELEPHANT
-        elif self.advisors & mask:
-            return ADVISOR
-        elif self.horses & mask:
-            return HORSE
+        elif self.bishops & mask:
+            return BISHOP
+        elif self.queens & mask:
+            return QUEEN
+        elif self.knights & mask:
+            return KNIGHT
         elif self.cannons & mask:
             return CANNON
         elif self.rooks & mask:
@@ -1071,6 +935,7 @@ class BaseBoard:
         king_mask = self.occupied_co[color] & self.kings & ~self.promoted
         return msb(king_mask) if king_mask else None
 
+    # TODO:
     def attacks_mask(self, square: Square) -> Bitboard:
         bb_square = BB_SQUARES[square]
 
@@ -1092,6 +957,7 @@ class BaseBoard:
                 )
             return attacks
 
+    # TODO:
     def attacks(self, square: Square) -> SquareSet:
         """
         Gets the set of attacked squares from the given square.
@@ -1213,12 +1079,12 @@ class BaseBoard:
 
         if piece_type == PAWN:
             self.pawns ^= mask
-        elif piece_type == ELEPHANT:
-            self.elephants ^= mask
-        elif piece_type == ADVISOR:
-            self.advisors ^= mask
-        elif piece_type == HORSE:
-            self.horses ^= mask
+        elif piece_type == BISHOP:
+            self.bishops ^= mask
+        elif piece_type == QUEEN:
+            self.queens ^= mask
+        elif piece_type == KNIGHT:
+            self.knights ^= mask
         elif piece_type == CANNON:
             self.cannons ^= mask
         elif piece_type == ROOK:
@@ -1243,6 +1109,7 @@ class BaseBoard:
 
         :class:`~zhchess.Board` also clears the move stack.
         """
+        # TODO:为什么一定是红方?
         color = bool(self.occupied_co[RED] & BB_SQUARES[square])
         piece_type = self._remove_piece_at(square)
         return Piece(piece_type, color) if piece_type else None
@@ -1260,13 +1127,15 @@ class BaseBoard:
 
         if piece_type == PAWN:
             self.pawns |= mask
-        elif piece_type == ELEPHANT:
-            self.elephants |= mask
-        elif piece_type == ADVISOR:
-            self.bishops |= mask
+        elif piece_type == CANNON:
+            self.cannons |= mask
         elif piece_type == ROOK:
             self.rooks |= mask
-        elif piece_type == CANNON:
+        elif piece_type == KNIGHT:
+            self.knights |= mask
+        elif piece_type == BISHOP:
+            self.bishops |= mask
+        elif piece_type == QUEEN:
             self.queens |= mask
         elif piece_type == KING:
             self.kings |= mask
@@ -1302,7 +1171,7 @@ class BaseBoard:
         """
         builder = []
         empty = 0
-
+        # TODO:？SQUARES_180
         for square in SQUARES_180:
             piece = self.piece_at(square)
 
@@ -1316,7 +1185,7 @@ class BaseBoard:
                 if promoted and BB_SQUARES[square] & self.promoted:
                     builder.append("~")
 
-            if BB_SQUARES[square] & BB_FILE_H:
+            if BB_SQUARES[square] & BB_FILE_I:
                 if empty:
                     builder.append(str(empty))
                     empty = 0
@@ -1336,7 +1205,7 @@ class BaseBoard:
 
         # Ensure the FEN is valid.
         rows = fen.split("/")
-        if len(rows) != 8:
+        if len(rows) != 10:
             raise ValueError(f"expected 8 rows in position part of fen: {fen!r}")
 
         # Validate each row.
@@ -1346,7 +1215,7 @@ class BaseBoard:
             previous_was_piece = False
 
             for c in row:
-                if c in ["1", "2", "3", "4", "5", "6", "7", "8"]:
+                if c in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                     if previous_was_digit:
                         raise ValueError(
                             f"two subsequent digits in position part of fen: {fen!r}"
@@ -1370,9 +1239,9 @@ class BaseBoard:
                         f"invalid character in position part of fen: {fen!r}"
                     )
 
-            if field_sum != 8:
+            if field_sum != 9:
                 raise ValueError(
-                    f"expected 8 columns per row in position part of fen: {fen!r}"
+                    f"expected 9 columns per row in position part of fen: {fen!r}"
                 )
 
         # Clear the board.
@@ -1381,7 +1250,7 @@ class BaseBoard:
         # Put pieces on the board.
         square_index = 0
         for c in fen:
-            if c in ["1", "2", "3", "4", "5", "6", "7", "8"]:
+            if c in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 square_index += int(c)
             elif c.lower() in PIECE_SYMBOLS:
                 piece = Piece.from_symbol(c)
@@ -1610,7 +1479,7 @@ class BaseBoard:
         :param borders: Show borders and a coordinate margin.
         """
         builder = []
-        for rank_index in range(7, -1, -1) if orientation else range(8):
+        for rank_index in range(9, -1, -1) if orientation else range(9):
             if borders:
                 builder.append("  ")
                 builder.append("-" * 17)
@@ -1620,7 +1489,7 @@ class BaseBoard:
                 builder.append(" ")
 
             for i, file_index in enumerate(
-                range(8) if orientation else range(7, -1, -1)
+                range(9) if orientation else range(7, -1, -1)
             ):
                 square_index = square(file_index, rank_index)
 
@@ -1646,7 +1515,7 @@ class BaseBoard:
             builder.append("  ")
             builder.append("-" * 17)
             builder.append("\n")
-            letters = "a b c d e f g h" if orientation else "h g f e d c b a"
+            letters = "a b c d e f g h i" if orientation else "i h g f e d c b a"
             builder.append("   " + letters)
 
         return "".join(builder)
@@ -1673,9 +1542,10 @@ class BaseBoard:
 
     def apply_transform(self, f: Callable[[Bitboard], Bitboard]) -> None:
         self.pawns = f(self.pawns)
+        self.cannons = f(self.cannons)
+        self.rooks = f(self.rooks)
         self.knights = f(self.knights)
         self.bishops = f(self.bishops)
-        self.rooks = f(self.rooks)
         self.queens = f(self.queens)
         self.kings = f(self.kings)
 
@@ -1728,9 +1598,10 @@ class BaseBoard:
         board = type(self)(None)
 
         board.pawns = self.pawns
+        board.cannons = self.cannons
+        board.rooks = self.rooks
         board.knights = self.knights
         board.bishops = self.bishops
-        board.rooks = self.rooks
         board.queens = self.queens
         board.kings = self.kings
 
@@ -1778,9 +1649,10 @@ BoardT = TypeVar("BoardT", bound="Board")
 class _BoardState(Generic[BoardT]):
     def __init__(self, board: BoardT) -> None:
         self.pawns = board.pawns
+        self.cannons = board.cannons
+        self.rooks = board.rooks
         self.knights = board.knights
         self.bishops = board.bishops
-        self.rooks = board.rooks
         self.queens = board.queens
         self.kings = board.kings
 
@@ -1798,9 +1670,10 @@ class _BoardState(Generic[BoardT]):
 
     def restore(self, board: BoardT) -> None:
         board.pawns = self.pawns
+        self.cannons = board.cannons
+        board.rooks = self.rooks
         board.knights = self.knights
         board.bishops = self.bishops
-        board.rooks = self.rooks
         board.queens = self.queens
         board.kings = self.kings
 
@@ -2005,7 +1878,7 @@ class Board(BaseBoard):
         """
         Clears the board.
 
-        Resets move stack and move counters. The side to move is white. There
+        Resets move stack and move counters. The side to move is red. There
         are no rooks or kings, so castling rights are removed.
 
         In order to be in a valid :func:`~zhchess.Board.status()`, at least kings
@@ -2089,13 +1962,13 @@ class Board(BaseBoard):
                 & self.occupied_co[not self.turn]
                 & to_mask
             )
-
+            # TODO:缺失???
             for to_square in scan_reversed(targets):
                 if square_rank(to_square) in [0, 7]:
                     yield Move(from_square, to_square, CANNON)
                     yield Move(from_square, to_square, ROOK)
-                    yield Move(from_square, to_square, ADVISOR)
-                    yield Move(from_square, to_square, ELEPHANT)
+                    yield Move(from_square, to_square, QUEEN)
+                    yield Move(from_square, to_square, BISHOP)
                 else:
                     yield Move(from_square, to_square)
 
@@ -2113,12 +1986,12 @@ class Board(BaseBoard):
         # Generate single pawn moves.
         for to_square in scan_reversed(single_moves):
             from_square = to_square + (8 if self.turn == BLACK else -8)
-
+            # 缺失???
             if square_rank(to_square) in [0, 7]:
                 yield Move(from_square, to_square, CANNON)
                 yield Move(from_square, to_square, ROOK)
-                yield Move(from_square, to_square, ADVISOR)
-                yield Move(from_square, to_square, ELEPHANT)
+                yield Move(from_square, to_square, QUEEN)
+                yield Move(from_square, to_square, BISHOP)
             else:
                 yield Move(from_square, to_square)
 
@@ -4694,7 +4567,7 @@ class SquareSet:
 
     def tolist(self) -> List[bool]:
         """Converts the set to a list of 64 bools."""
-        result = [False] * 64
+        result = [False] * 90
         for square in self:
             result[square] = True
         return result
