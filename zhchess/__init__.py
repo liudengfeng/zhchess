@@ -151,10 +151,13 @@ STATUS_IMPOSSIBLE_CHECK = Status.IMPOSSIBLE_CHECK
 class Termination(enum.Enum):
     """Enum with reasons for a game to be over."""
 
+    # 将死
     CHECKMATE = enum.auto()
     """See :func:`zhchess.Board.is_checkmate()`."""
+    # 困毙
     STALEMATE = enum.auto()
     """See :func:`zhchess.Board.is_stalemate()`."""
+    # 指没有进攻子力
     INSUFFICIENT_MATERIAL = enum.auto()
     """See :func:`zhchess.Board.is_insufficient_material()`."""
     SEVENTYFIVE_MOVES = enum.auto()
@@ -163,6 +166,7 @@ class Termination(enum.Enum):
     """See :func:`zhchess.Board.is_fivefold_repetition()`."""
     FIFTY_MOVES = enum.auto()
     """See :func:`zhchess.Board.can_claim_fifty_moves()`."""
+    # 三次重复
     THREEFOLD_REPETITION = enum.auto()
     """See :func:`zhchess.Board.can_claim_threefold_repetition()`."""
     VARIANT_WIN = enum.auto()
@@ -247,7 +251,9 @@ def square(file_index: int, rank_index: int) -> Square:
 
 Bitboard = int
 BB_EMPTY = 0
-BB_ALL = 0x3FF_FFFF_FFFF_FFFF_FFFF_FFFF
+# 90位1转换为16进制
+BB_ALL = 0x3FFFFFFFFFFFFFFFFFFFFFF
+
 
 # fmt: off
 BB_SQUARES = [
@@ -267,12 +273,9 @@ BB_CORNERS = BB_A1 | BB_I1 | BB_A10 | BB_I10
 # TODO:不一定适用
 BB_CENTER = BB_D4 | BB_E4 | BB_D5 | BB_E5
 
-# BB_LIGHT_SQUARES = 0x55AA_55AA_55AA_55AA
-# BB_DARK_SQUARES = 0xAA55_AA55_AA55_AA55
-# BB_LIGHT_SQUARES = 0x2400_0482_2400_0482
-# BB_DARK_SQUARES = 0x1800_0C24_1800_0C24
 BB_LIGHT_SQUARES = 0x2400_0482_2400_0482_2400_0482_2400_0482_2400_0482
 BB_DARK_SQUARES = 0x1800_0C24_1800_0C24_1800_0C24_1800_0C24_1800_0C24_1800_0C24
+
 
 def square_file(square: Square) -> int:
     """Gets the file index of the square where ``0`` is the a-file."""
@@ -300,7 +303,7 @@ def square_manhattan_distance(a: Square, b: Square) -> int:
     return abs(square_file(a) - square_file(b)) + abs(square_rank(a) - square_rank(b))
 
 
-# TODO:不一定适用
+# TODO:废除
 def square_knight_distance(a: Square, b: Square) -> int:
     """
     Gets the Knight distance (i.e., the number of knight moves) from square *a* to *b*.
@@ -330,6 +333,40 @@ def square_mirror(sq: Square) -> Square:
 
 SQUARES_180 = [square_mirror(sq) for sq in SQUARES]
 
+# binary_str = "111111111"
+# binary_num = int(binary_str, 2)
+# hex_num = hex(binary_num)
+# print(hex_num)
+# hex_num = 0xFF
+# binary_num = bin(hex_num)
+# print(binary_num)
+
+# decimal_num = 10
+# binary_num = bin(decimal_num)
+# print(binary_num)
+
+
+# def view_board_binary_str_8(num: int):
+#     """在棋盘上显示2进制"""
+#     res = []
+#     binary_num = bin(num)
+#     trimed = binary_num[2:]
+#     for i in range(8):
+#         res.append(trimed[i * 8 : (i + 1) * 8])
+#     for r in reversed(res):
+#         print(r)
+
+
+# def view_board_binary_str(num: int):
+#     """在棋盘上显示2进制"""
+#     res = []
+#     binary_num = bin(num & BB_ALL) 
+#     trimed = binary_num[2:]
+#     for i in range(10):
+#         res.append(trimed[i * 9 : (i + 1) * 9])
+#     for r in reversed(res):
+#         print(r)
+
 
 BB_FILES = [
     BB_FILE_A,
@@ -341,7 +378,8 @@ BB_FILES = [
     BB_FILE_G,
     BB_FILE_H,
     BB_FILE_I,
-] = [0x0101_0101_0101_0101 << i for i in range(9)]
+] = [0x20100804020100804020100 << i for i in range(9)]
+
 
 BB_RANKS = [
     BB_RANK_1,
@@ -354,7 +392,7 @@ BB_RANKS = [
     BB_RANK_8,
     BB_RANK_9,
     BB_RANK_10,
-] = [0xFF << (9 * i) for i in range(10)]
+] = [0x1FF << (9 * i) for i in range(10)]
 
 BB_BACKRANKS = BB_RANK_1 | BB_RANK_10
 
@@ -478,11 +516,11 @@ def shift_2_right(b: Bitboard) -> Bitboard:
 
 
 def shift_left(b: Bitboard) -> Bitboard:
-    return (b >> 1) & ~BB_FILE_H
+    return (b >> 1) & ~BB_FILE_I
 
 
 def shift_2_left(b: Bitboard) -> Bitboard:
-    return (b >> 2) & ~BB_FILE_G & ~BB_FILE_H
+    return (b >> 2) & ~BB_FILE_G & ~BB_FILE_I
 
 
 # TODO:验算
@@ -497,7 +535,7 @@ def shift_up_right(b: Bitboard) -> Bitboard:
 
 # TODO:验算
 def shift_down_left(b: Bitboard) -> Bitboard:
-    return (b >> 9) & ~BB_FILE_H
+    return (b >> 9) & ~BB_FILE_I
 
 
 # TODO:验算

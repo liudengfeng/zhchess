@@ -69,35 +69,30 @@ class SquareTestCase(unittest.TestCase):
                 zhchess.square_name(square),
             )
 
-    # TODO
     def test_bb_square_base(self):
         for square in zhchess.SQUARES:
             file_index = zhchess.square_file(square)
             rank_index = zhchess.square_rank(square)
-            v = zhchess.square_mirror(square)
-            v_f = zhchess.square_file(v)
-            v_r = zhchess.square_rank(v)
-            print(f"{square=} {file_index=} {rank_index=} {v=} {v_f=} {v_r=}")
-            # self.assertEqual(
-            #     zhchess.square(file_index, rank_index),
-            #     square,
-            #     zhchess.square_name(square),
-            # )
+            mirror = zhchess.square_mirror(square)
+            file = zhchess.square_file(mirror)
+            rank = zhchess.square_rank(mirror)
+            assert file_index == file
+            assert rank_index == 10 - rank - 1
 
     def test_shifts(self):
         shifts = [
             zhchess.shift_down,
-            # zhchess.shift_2_down,
-            # zhchess.shift_up,
-            # zhchess.shift_2_up,
-            # zhchess.shift_right,
-            # zhchess.shift_2_right,
-            # zhchess.shift_left,
-            # zhchess.shift_2_left,
-            # zhchess.shift_up_left,
-            # zhchess.shift_up_right,
-            # zhchess.shift_down_left,
-            # zhchess.shift_down_right,
+            zhchess.shift_2_down,
+            zhchess.shift_up,
+            zhchess.shift_2_up,
+            zhchess.shift_right,
+            zhchess.shift_2_right,
+            zhchess.shift_left,
+            zhchess.shift_2_left,
+            zhchess.shift_up_left,
+            zhchess.shift_up_right,
+            zhchess.shift_down_left,
+            zhchess.shift_down_right,
         ]
 
         for shift in shifts:
