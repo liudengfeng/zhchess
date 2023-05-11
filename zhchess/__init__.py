@@ -254,6 +254,20 @@ BB_EMPTY = 0
 # 90位1转换为16进制
 BB_ALL = 0x3FFFFFFFFFFFFFFFFFFFFFF
 
+# 中国象棋示意图
+"""
+10 . . . . . . . . .
+9  . . . . . . . . .
+8  . . . . . . . . .
+7  . . . . . . . . .
+6  . . . . . . . . .
+5  . . . . . . . . .
+4  . . . . . . . . .
+3  . . . . . . . . .
+2  . . . . . . . . .
+1  . . . . . . . . .
+   a b c d e f g h i
+"""
 
 # fmt: off
 BB_SQUARES = [
@@ -333,40 +347,6 @@ def square_mirror(sq: Square) -> Square:
 
 SQUARES_180 = [square_mirror(sq) for sq in SQUARES]
 
-# binary_str = "111111111"
-# binary_num = int(binary_str, 2)
-# hex_num = hex(binary_num)
-# print(hex_num)
-# hex_num = 0xFF
-# binary_num = bin(hex_num)
-# print(binary_num)
-
-# decimal_num = 10
-# binary_num = bin(decimal_num)
-# print(binary_num)
-
-
-# def view_board_binary_str_8(num: int):
-#     """在棋盘上显示2进制"""
-#     res = []
-#     binary_num = bin(num)
-#     trimed = binary_num[2:]
-#     for i in range(8):
-#         res.append(trimed[i * 8 : (i + 1) * 8])
-#     for r in reversed(res):
-#         print(r)
-
-
-# def view_board_binary_str(num: int):
-#     """在棋盘上显示2进制"""
-#     res = []
-#     binary_num = bin(num & BB_ALL) 
-#     trimed = binary_num[2:]
-#     for i in range(10):
-#         res.append(trimed[i * 9 : (i + 1) * 9])
-#     for r in reversed(res):
-#         print(r)
-
 
 BB_FILES = [
     BB_FILE_A,
@@ -378,7 +358,7 @@ BB_FILES = [
     BB_FILE_G,
     BB_FILE_H,
     BB_FILE_I,
-] = [0x20100804020100804020100 << i for i in range(9)]
+] = [0x201008040201008040201 << i for i in range(9)]
 
 
 BB_RANKS = [
@@ -442,14 +422,6 @@ def scan_reversed(bb: Bitboard) -> Iterator[Square]:
 popcount: Callable[[Bitboard], int] = getattr(
     int, "bit_count", lambda bb: bin(bb).count("1")
 )
-
-
-# def flip_vertical(bb: Bitboard) -> Bitboard:
-#     # https://www.chessprogramming.org/Flipping_Mirroring_and_Rotating#FlipVertically
-#     bb = ((bb >> 8) & 0x00FF_00FF_00FF_00FF) | ((bb & 0x00FF_00FF_00FF_00FF) << 8)
-#     bb = ((bb >> 16) & 0x0000_FFFF_0000_FFFF) | ((bb & 0x0000_FFFF_0000_FFFF) << 16)
-#     bb = (bb >> 32) | ((bb & 0x0000_0000_FFFF_FFFF) << 32)
-#     return bb
 
 
 # TODO:翻转需要验证
@@ -520,27 +492,23 @@ def shift_left(b: Bitboard) -> Bitboard:
 
 
 def shift_2_left(b: Bitboard) -> Bitboard:
-    return (b >> 2) & ~BB_FILE_G & ~BB_FILE_I
+    return (b >> 2) & ~BB_FILE_H & ~BB_FILE_I
 
 
-# TODO:验算
 def shift_up_left(b: Bitboard) -> Bitboard:
-    return (b << 7) & ~BB_FILE_H & BB_ALL
+    return (b << 8) & ~BB_FILE_I & BB_ALL
 
 
-# TODO:验算
 def shift_up_right(b: Bitboard) -> Bitboard:
-    return (b << 9) & ~BB_FILE_A & BB_ALL
+    return (b << 10) & ~BB_FILE_A & BB_ALL
 
 
-# TODO:验算
 def shift_down_left(b: Bitboard) -> Bitboard:
-    return (b >> 9) & ~BB_FILE_I
+    return (b >> 10) & ~BB_FILE_I
 
 
-# TODO:验算
 def shift_down_right(b: Bitboard) -> Bitboard:
-    return (b >> 7) & ~BB_FILE_A
+    return (b >> 8) & ~BB_FILE_A
 
 
 # TODO:以下需要重写
@@ -857,7 +825,7 @@ class BaseBoard:
         self.occupied_co[BLACK] = (
             BB_RANK_7 | BB_A7 | BB_C7 | BB_E7 | BB_G7 | BB_I7 | BB_B8 | BB_H8
         )
-        # 国际象棋初始棋子区域
+        # 棋子区域
         self.occupied = (
             BB_RANK_1 | BB_RANK_10 | BB_B3 | BB_H3 | BB_B8 | BB_H8 | self.pawns
         )
@@ -973,7 +941,6 @@ class BaseBoard:
         king_mask = self.occupied_co[color] & self.kings & ~self.promoted
         return msb(king_mask) if king_mask else None
 
-    # TODO:
     def attacks_mask(self, square: Square) -> Bitboard:
         bb_square = BB_SQUARES[square]
 
@@ -995,7 +962,6 @@ class BaseBoard:
                 )
             return attacks
 
-    # TODO:
     def attacks(self, square: Square) -> SquareSet:
         """
         Gets the set of attacked squares from the given square.
@@ -1205,11 +1171,10 @@ class BaseBoard:
     def board_fen(self, *, promoted: Optional[bool] = False) -> str:
         """
         Gets the board FEN (e.g.,
-        ``rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR``).
+        ``rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR``).
         """
         builder = []
         empty = 0
-        # TODO:？SQUARES_180
         for square in SQUARES_180:
             piece = self.piece_at(square)
 
@@ -1228,7 +1193,7 @@ class BaseBoard:
                     builder.append(str(empty))
                     empty = 0
 
-                if square != H1:
+                if square != I1:
                     builder.append("/")
 
         return "".join(builder)

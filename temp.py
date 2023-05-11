@@ -1,7 +1,4 @@
-import xml.etree.ElementTree as ET
+from zhchess import *
 
-tree = ET.parse('data/svgs/bA.svg')
-root = tree.getroot()
-
-for child in root:
-    print(child.tag, child.attrib)
+for square in range(8, 90, 9):
+    print(f"{square} -> {BB_SQUARES[square] & BB_FILE_H}")
